@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/login.css';
+// import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -35,8 +36,33 @@ const Login = () => {
       return;
     }
 
-    console.log('Datos de login enviados:', formData);
-    setSuccess('¡Inicio de sesión exitoso! Redirigiendo...');
+// Obtener lista de usuarios
+const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+// Buscar si hay un usuario con ese email y password
+const usuarioValido = usuarios.find(
+  u => u.email === formData.email && u.password === formData.password
+);
+
+if (!usuarioValido) {
+  setError('Email o contraseña incorrectos.');
+  return;
+}
+
+// Simular sesión iniciada
+localStorage.setItem('usuarioActivo', JSON.stringify(usuarioValido));
+
+setSuccess(`¡Bienvenido, ${usuarioValido.nombre}! Redirigiendo...`);
+
+/* PARA REDIRECCIONAR A HOME AL INICIAR SESIÓN
+
+const navigate = useNavigate();
+
+setTimeout(() => {
+    navigate('/home'); 
+}, 2000);
+
+*/
 
     setTimeout(() => {
       setFormData({

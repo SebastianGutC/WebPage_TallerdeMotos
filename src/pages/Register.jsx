@@ -13,6 +13,11 @@ aceptaTerminos: false
 });
 const [error, setError] = useState('');
 const [success, setSuccess] = useState('');
+const eliminarUsuarios = () => {
+  localStorage.removeItem('usuarios');
+  alert('Todos los usuarios fueron eliminados del almacenamiento.');
+};
+
 
 const handleChange = (e) => {
 const { name, value, type, checked } = e.target;
@@ -56,8 +61,29 @@ if (!formData.aceptaTerminos) {
   return;
 }
 
-console.log('Datos de registro enviados:', formData);
-setSuccess('¡Registro exitoso! Redirigiendo...');
+// Guardar usuario en localStorage
+const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+// Verificar si el correo ya está registrado
+const usuarioExistente = usuarios.find(u => u.email === formData.email);
+if (usuarioExistente) {
+  setError('Este correo ya está registrado.');
+  return;
+}
+
+// Agregar nuevo usuario
+usuarios.push({
+  nombre: formData.nombre,
+  apellido: formData.apellido,
+  email: formData.email,
+  password: formData.password,
+  telefono: formData.telefono
+});
+
+// Guardar lista actualizada
+localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+setSuccess('¡Registro exitoso!');
 
 setTimeout(() => {
   setFormData({
@@ -81,34 +107,7 @@ setSuccess('');
 };
 
 return ( <div className="register-container"> <div className="grid-container"> <div className="grid-x grid-padding-x"> <div className="cell"> <div className="form-wrapper"> <h2 className="title">Registrar Cuenta</h2> <form onSubmit={handleSubmit}>
-
-```
-            {/* Mensajes de error o éxito */}
-            {error && (
-              <div className="alert-error" data-closable>
-                <p>{error}</p>
-                <button
-                  className="close-button-custom"
-                  type="button"
-                  onClick={handleCloseAlert}
-                >
-                  &times;
-                </button>
-              </div>
-            )}
-            {success && (
-              <div className="alert-success" data-closable>
-                <p>{success}</p>
-                <button
-                  className="close-button-custom"
-                  type="button"
-                  onClick={handleCloseAlert}
-                >
-                  &times;
-                </button>
-              </div>
-            )}
-            
+  
             {/* Nombre y Apellido */}
             <div className="grid-x grid-padding-x">
               <div className="medium-6 cell">
@@ -251,6 +250,33 @@ return ( <div className="register-container"> <div className="grid-container"> <
                 </p>
               </div>
             </div>
+                        {/* Mensajes de error o éxito */}
+            {error && (
+              <div className="alert-error" data-closable>
+                <p>{error}</p>
+                <button
+                  className="close-button-custom"
+                  type="button"
+                  onClick={handleCloseAlert}
+                >
+                  &times;
+                </button>
+              </div>
+            )}
+            {success && (
+              <div className="alert-success" data-closable>
+                <p>{success}</p>
+                <button
+                  className="close-button-custom"
+                  type="button"
+                  onClick={handleCloseAlert}
+                >
+                  &times;
+                </button>
+              </div>
+            )}
+            <button onClick={eliminarUsuarios}>Borrar todos los usuarios</button>
+
           </form>
         </div>
       </div>
