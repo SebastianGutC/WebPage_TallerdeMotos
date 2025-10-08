@@ -1,0 +1,223 @@
+:root {
+  --bg-dark: #0A0903;
+  --red: #FF0000;
+  --orange: #FF8200;
+  --gold: #FFC100;
+  --yellow: #FFEAAE;
+  --text: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato', 'Outfit', 'Source Sans 3', sans-serif; /* Fuentes importadas de index.html */
+  background-color: var(--bg-dark);
+  color: var(--text); /* Blanco por defecto; cambia a var(--yellow) si quieres dorado */
+}
+
+/* HERO */
+.hero-section {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 1rem;
+}
+
+.overlay {
+  max-width: 1100px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.title {
+  margin: 0 0 1rem;
+  color: var(--yellow);
+  font-family: 'Outfit', sans-serif; /* Outfit para títulos: moderno y bold */
+  font-weight: 800; /* Asegura bold de la fuente importada */
+  font-size: clamp(2rem, 6vw, 4rem);
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+}
+
+.description {
+  margin: 0 auto;
+  max-width: 900px;
+  color: rgba(255, 255, 255, 0.95);
+  font-family: 'Lato', sans-serif; /* Lato para texto: legible y clean */
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* TIMELINE */
+.timeline-section {
+  background: var(--bg-dark);
+  padding: 3rem 1rem 4rem;
+}
+
+.timeline-title {
+  margin: 0 0 1.75rem;
+  color: var(--yellow);
+  font-family: 'Outfit', sans-serif; /* Outfit para subtítulos */
+  font-weight: 700;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  text-align: left;
+}
+
+.timeline {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 48px;
+}
+
+/* Línea principal */
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 34px;
+  height: 6px;
+  background: linear-gradient(90deg, var(--orange), var(--gold));
+  border-radius: 4px;
+  z-index: 1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+}
+
+/* Contenedor de items */
+.timeline-items {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+/* Cada item */
+.timeline-item {
+  flex: 1 1 22%;
+  position: relative;
+  padding-top: 12px;
+  text-align: left;
+}
+
+/* Punto sobre la línea */
+.dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bg-dark);
+  border: 4px solid rgba(255, 255, 255, 0.08);
+  position: absolute;
+  top: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+/* Item activo */
+.timeline-item.active .dot {
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 30px rgba(255, 130, 0, 0.18);
+  transform: translateX(-50%) scale(1.25);
+}
+
+/* Separación para el contenido debajo del punto/línea */
+.content {
+  margin-top: 48px;
+}
+
+.timeline-item h3 {
+  margin: 0 0 0.5rem;
+  font-family: 'Outfit', sans-serif; /* Outfit para fechas/títulos de items */
+  font-weight: 700;
+  font-size: clamp(1.05rem, 2.6vw, 1.5rem);
+  color: var(--text);
+}
+
+.timeline-item p {
+  margin: 0;
+  font-family: 'Lato', sans-serif; /* Lato para descripciones */
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Hover para dot */
+.timeline-item:hover .dot {
+  transform: translateX(-50%) scale(1.35);
+  box-shadow: 0 14px 40px rgba(255, 160, 50, 0.14);
+}
+
+/* Responsive: convertir a vertical en pantallas pequeñas */
+@media (max-width: 900px) {
+  .timeline::before {
+    left: 40px;
+    right: auto;
+    top: 0;
+    width: 4px;
+    height: 100%;
+  }
+
+  .timeline-items {
+    display: block;
+    padding-top: 1.5rem;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-left: 96px;
+    margin-bottom: 2.2rem;
+    width: auto;
+  }
+
+  .dot {
+    position: absolute;
+    left: 40px;
+    top: 8px;
+    transform: none;
+  }
+
+  .content {
+    margin-top: 0;
+  }
+
+  .timeline-title {
+    text-align: center;
+  }
+}
+
+/* Helpers */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+::selection {
+  background: rgba(255, 200, 0, 0.16);
+}
+
+::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
