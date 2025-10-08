@@ -1,0 +1,65 @@
+.header{
+  background: linear-gradient(to right, #FF0000, #FF8200, #FFC100);
+  display: flex;
+  border-bottom: #0A0903 5px solid;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  width: 100%;
+}
+
+.header-logo {
+  height: 85px;
+  margin-right: 10px;
+}
+
+
+.top-bar-center .menu {
+  margin-right: 40px;
+  display: flex;
+  gap: 15px;
+  list-style: none;
+}
+
+.menu a {
+  font-size: 16px;
+  color: #0A0903;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.menu a:hover {
+  border-radius: 60px;
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn {
+  border-radius: 10px;
+  padding: 6px 16px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-login {
+  background-color: #0A0903;
+  color:#ffffff;
+  border: #000;
+  border: 2px solid #ffffff;
+}
+
+.btn-register {
+  background-color: #FF0000;
+  color: white;
+  margin-right: 15px;
+  border: 2px solid #0A0903;
+}
+
+.btn-login:hover,
+.btn-register:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 2px 7px #0A0903;
+}
