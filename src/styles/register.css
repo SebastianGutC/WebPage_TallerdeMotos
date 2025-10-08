@@ -78,34 +78,38 @@ outline: none;
 }
 
 
-/* Botón personalizado */
+/* Botón*/
 .button-custom {
-background-color: #0A0903;
-color: #FFEAAE;
-padding: 1rem;
-border: none;
-font-size: 1.1rem;
-font-weight: bold;
-transition: background-color 0.3s ease, transform 0.2s ease;
-cursor: pointer;
-width: 100%;
-border-radius: 14px !important;
+  background-color: #0A0903;
+  color: #FFEAAE;
+  padding: 1rem;
+  border: 1px solid rgba(255, 234, 174, 0.2); /* Borde sutil dorado para definición */
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Agregada transición para sombra */
+  cursor: pointer;
+  width: 100%;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra sutil en estado normal para profundidad */
 }
 
 .button-custom:hover:not(:disabled) {
-background-color: #FFC100;
-color: #0A0903;
-transform: translateY(-2px);
-border-radius: 14px;
-
+  background-color: #FFC100;
+  color: #0A0903;
+  transform: translateY(-2px);
+  border: 1px solid rgba(255, 193, 0, 0.5); /* Borde más visible en hover */
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(255, 193, 0, 0.3); /* Sombra más intensa y dorada en hover */
 }
 
 .button-custom:disabled {
-background-color: #f0e9e9;
-color: #0A0903;
-cursor: not-allowed;
-transform: none;
-border-radius: 14px;
+  background-color: #f0e9e9;
+  color: #0A0903;
+  cursor: not-allowed;
+  transform: none;
+  border: 1px solid rgba(0, 0, 0, 0.1); /* Borde gris sutil para disabled */
+  border-radius: 14px;
+  box-shadow: none; /* Sin sombra en disabled para indicar inactividad */
 }
 
 /* Alertas de error y éxito */

@@ -1,10 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './nosotros.css';
 import f_nosotros from '../../assets/fnoso.png';
 
 const Nosotros = () => {
   const heroStyle = {
     backgroundImage: `linear-gradient(rgba(10,9,3,0.66), rgba(10,9,3,0.66)), url(${f_nosotros})`
+  };
+
+  // Datos de la timeline 
+  const timelineData = [
+    {
+      date: 'Enero 2021',
+      description: 'Fundamos la empresa con la visión de crear soluciones digitales innovadoras y accesibles para todos.'
+    },
+    {
+      date: 'Junio 2022',
+      description: 'Lanzamos nuestro primer producto web, una plataforma enfocada en la optimización de procesos empresariales.'
+    },
+    {
+      date: 'Abril 2023',
+      description: 'Ampliamos nuestro equipo con nuevos desarrolladores y diseñadores para mejorar la experiencia de usuario.'
+    },
+    {
+      date: 'Septiembre 2024',
+      description: 'Iniciamos proyectos internacionales y fortalecimos nuestras alianzas tecnológicas.'
+    }
+  ];
+
+  // Estado para el item expandido/activo (null = ninguno, o índice 0-3)
+  const [expandedItem, setExpandedItem] = useState(0); // Inicialmente, el primero expandido
+
+  const toggleItem = (index) => {
+    setExpandedItem(expandedItem === index ? null : index);
   };
 
   return (
@@ -24,44 +51,30 @@ const Nosotros = () => {
 
           <div className="timeline">
             <div className="timeline-items">
-              <div className="timeline-item active">
-                <div className="dot" aria-hidden="true" />
-                <div className="content">
-                  <h3>Enero 2021</h3>
-                  <p>Fundamos la empresa con la visión de crear soluciones digitales innovadoras y accesibles para todos.</p>
-                </div>
-              </div>
-
-              <div className="timeline-item">
-                <div className="dot" aria-hidden="true" />
-                <div className="content">
-                  <h3>Junio 2022</h3>
-                  <p>Lanzamos nuestro primer producto web, una plataforma enfocada en la optimización de procesos empresariales.</p>
-                </div>
-              </div>
-
-              <div className="timeline-item">
-                <div className="dot" aria-hidden="true" />
-                <div className="content">
-                  <h3>Abril 2023</h3>
-                  <p>Ampliamos nuestro equipo con nuevos desarrolladores y diseñadores para mejorar la experiencia de usuario.</p>
-                </div>
-              </div>
-
-              <div className="timeline-item">
-                <div className="dot" aria-hidden="true" />
-                <div className="content">
-                  <h3>Septiembre 2024</h3>
-                  <p>Iniciamos proyectos internacionales y fortalecimos nuestras alianzas tecnológicas.</p>
-                </div>
-              </div>
+              {timelineData.map((item, index) => {
+                const isActive = expandedItem === index;
+                return (
+                  <div
+                    key={index}
+                    className={`timeline-item ${isActive ? 'active' : ''}`}
+                    onClick={() => toggleItem(index)}
+                  >
+                    <div className="dot" aria-hidden="true" />
+                    <div className="content">
+                      <h3>{item.date}</h3>
+                      {isActive && (
+                        <p className="timeline-description">{item.description}</p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </section>
     </div>
   );
-  // Nota: Las fuentes se aplican automáticamente vía CSS (nosotros.css). Si quieres una fuente específica en un elemento, agrega una clase o style inline.
 };
 
 export default Nosotros;

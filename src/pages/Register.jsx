@@ -206,7 +206,7 @@ return ( <div className="register-container"> <div className="grid-container"> <
               </div>
             </div>
             
-            {/* Checkbox de términos (layout corregido) */}
+            {/* Checkbox de términos */}
             <div className="grid-x grid-padding-x">
               <div className="medium-12 cell">
                 <div className="terms-checkbox">
