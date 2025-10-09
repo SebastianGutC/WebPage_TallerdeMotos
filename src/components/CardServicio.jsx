@@ -3,8 +3,8 @@ import "foundation-sites/dist/css/foundation.min.css";
 
 const CardServicio = ({ titulo, descripcion, icono, precio }) => {
   return (
-    <div className="cell small-8 medium-6 large-4">
-      <div className="card text-center" style={{ padding: "1rem", minHeight: "100%" }}>
+    <div className="cell small-12 medium-6 large-4">
+      <div className="card text-center" style={{ padding: "1rem", minHeight: "100%", boxShadow: "10px 15px 10px rgba(0, 0, 0, 0.1)", borderRadius: "30px" }}>
         <div className="card-divider"  style={{ backgroundColor: "transparent", border: "none" }}>
           <div style={{            
             backgroundColor:"rgba(255, 234, 174, 0.8)",

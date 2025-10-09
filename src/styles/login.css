@@ -4,7 +4,7 @@
 /* Contenedor principal */
 .login-container {
   background: linear-gradient(to right, #FF0000, #FF8200, #FFC100);
-  color: #FFEAAE;
+  color: black;
   min-height: 100vh;
   padding: 2rem 0;
 }

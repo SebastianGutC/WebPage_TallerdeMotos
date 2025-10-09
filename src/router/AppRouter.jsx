@@ -3,6 +3,7 @@ import Register from "../pages/Register";
 import Login from "../pages/Login";
 import Home from "../pages/Home/Home";
 import Nosotros from "../pages/Nosotros/Nosotros";
+import Servicios from "../pages/Servicios";
 
 
 const AppRouter = () => {
