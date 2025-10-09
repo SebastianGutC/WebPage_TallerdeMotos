@@ -1,3 +1,46 @@
 *{
     font-family: "source sans 3", sans-serif;
 }
+
+.contenedor-servicios{
+    margin-top: 45px;
+}
+
+.contenedor-catalogo{
+    margin-bottom: 20px;
+}
+
+.titulo-catalogo{
+    font-size: 2rem;
+    font-weight: bolder;
+    margin-bottom: 20px;
+}
+
+.card{
+    border-radius: 20px;
+}
+
+.card:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    transition: 0.3s;
+    cursor: pointer;
+    transform: scale(1.05);
+}
+.button{
+    background-color: #FFC100;
+    color: black; 
+    margin-top: 1rem;
+    font-weight: bolder;
+    border-radius: 20px;
+    border:2px black solid;
+    font-size: 15px;
+}
+
+.button:hover{
+    background-color: white;
+    border: none;
+    color: white;
+    transition: 0.3s;
+    cursor: pointer;
+    transform: scale(1.05);
+}
