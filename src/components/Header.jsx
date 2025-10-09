@@ -2,7 +2,7 @@ import React from "react";
 import "./Header.css";
 import $ from "jquery";
 import "foundation-sites";
-import isologo from "../../assets/isologo.png";
+import isologo from "../assets/isologo.png";
 
 const Header = () => {
   // Iniciar Foundation al cargar
@@ -27,8 +27,8 @@ const Header = () => {
       </div>
 
       <div className="top-bar-right">
-        <button className="btn btn-login">Iniciar Sesión</button>
-        <button className="btn btn-register">Registrarme</button>
+        <button className="btn btn-login" onClick={() => window.location.href='/login'}>Iniciar Sesión</button>
+        <button className="btn btn-register" onClick={() => window.location.href='/register'}>Registrarme</button>
       </div>
     </header>
   );

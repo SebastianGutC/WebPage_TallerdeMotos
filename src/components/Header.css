@@ -1,3 +1,7 @@
+body{
+  font-family: "source sans 3", sans-serif;
+}
+
 .header{
   background: linear-gradient(to right, #FF0000, #FF8200, #FFC100);
   display: flex;
