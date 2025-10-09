@@ -86,44 +86,44 @@ function CardServicioEnCurso({ servicio }) {
             >
               <thead style={{ backgroundColor: "#FFC100", color: "#0A0903" }}>
                 <tr>
-                  <th>Producto</th>
-                  <th>Cantidad</th>
-                  <th>Precio unitario</th>
-                  <th>Subtotal</th>
+                  <th className="text-center">Producto</th>
+                  <th className="text-center">Cantidad</th>
+                  <th className="text-center">Precio unitario</th>
+                  <th className="text-center">Subtotal</th>
                 </tr>
               </thead>
               <tbody>
                 {servicio.repuestosUsados.map((r, i) => (
                   <tr key={i}>
-                    <td>{r.repuesto.getNombre()}</td>
-                    <td>{r.cantidad}</td>
-                    <td>${r.repuesto.getPrecio().toLocaleString()}</td>
-                    <td>${r.getSubtotal().toLocaleString()}</td>
+                    <td className="text-center">{r.repuesto.getNombre()}</td>
+                    <td className="text-center">{r.cantidad}</td>
+                    <td className="text-center">${r.repuesto.getPrecio().toLocaleString()}</td>
+                    <td className="text-center">${r.getSubtotal().toLocaleString()}</td>
                   </tr>
                 ))}
                 <tr>
-                  <td colSpan="3">
+                  <td colSpan="3" className="text-center">
                     <strong>Total Repuestos</strong>
                   </td>
-                  <td>${servicio.getTotalRepuestos().toLocaleString()}</td>
+                  <td className="text-center">${servicio.getTotalRepuestos().toLocaleString()}</td>
                 </tr>
               </tbody>
             </table>
             <table className="unstriped">
               <tbody>
                 <tr>
-                  <td colSpan="2">
+                  <td colSpan="2" className="text-center">
                     <p>
                       <strong>Servicio </strong>
                     </p>
                   </td>
-                  <td colSpan="2"> {servicio.servicio.getTitulo()}</td>
+                  <td colSpan="2" className="text-center"> {servicio.servicio.getTitulo()}</td>
                 </tr>
                 <tr>
-                  <td colSpan="3">
+                  <td colSpan="3" className="text-center">
                     <strong>Precio Servicio</strong>
                   </td>
-                  <td>${servicio.servicio.getPrecio().toLocaleString()}</td>
+                  <td className="text-center">${servicio.servicio.getPrecio().toLocaleString()}</td>
                 </tr>
               </tbody>
             </table>
