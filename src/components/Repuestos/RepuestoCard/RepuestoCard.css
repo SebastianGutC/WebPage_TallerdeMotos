@@ -1,0 +1,100 @@
+.repuestos-section {
+  background-color: #0a0903;
+  padding: 3rem 1rem;
+}
+
+.repuestos-titulo {
+  color: #ffeaae;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+/* Card */
+.repuesto-card {
+  background-color: #ffeaae;
+  border: 3px solid #ff8200;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.repuesto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(255, 130, 0, 0.5);
+}
+
+/* Imagen */
+.repuesto-imagen {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 4px solid #ffc100;
+}
+
+/* Información */
+.repuesto-info {
+  color: #0a0903;
+}
+
+.repuesto-nombre {
+  font-weight: 700;
+  color: #ff0000;
+}
+
+.repuesto-tipo {
+  color: #ff8200;
+  margin-bottom: 0.3rem;
+}
+
+.repuesto-marca,
+.repuesto-modelo {
+  font-size: 0.9rem;
+}
+
+.repuesto-precio {
+  color: #ff0000;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+/* Estado */
+.repuesto-disponible {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.en-stock {
+  background-color: #ffc100;
+  color: #0a0903;
+}
+
+.agotado {
+  background-color: #ff0000;
+  color: #ffeaae;
+}
+
+/* Botón */
+.repuesto-btn {
+  background-color: #ff8200;
+  color: #0a0903;
+  font-weight: bold;
+  border: none;
+  width: 100%;
+  margin-top: 0.8rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.repuesto-btn:hover {
+  background-color: #ffc100;
+  color: #0a0903;
+}
+
+.repuesto-btn.disabled {
+  background-color: #999;
+  color: #fff;
+  cursor: not-allowed;
+}
