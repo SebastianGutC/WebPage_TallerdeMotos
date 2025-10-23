@@ -38,7 +38,7 @@ const Nosotros = () => {
     <div className="nosotros-page">
       <section className="hero-section" style={heroStyle}>
         <div className="overlay">
-          <h1 className="title">Nuestro camino al éxito</h1>
+          <h1 className="nosotros-title">Nuestro camino al éxito</h1>
           <p className="description">
             Desde nuestros primeros pasos en el desarrollo de software, hemos crecido y evolucionado hasta convertirnos en un equipo comprometido con la innovación y la excelencia tecnológica. Nuestro objetivo es ofrecer soluciones inteligentes que impulsen el crecimiento y la transformación digital de las empresas.
           </p>
