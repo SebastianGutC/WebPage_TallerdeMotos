@@ -1,6 +1,7 @@
 import AceiteMotul from "../RepuestosImg/AceiteMotul.png"
 import LlantaMichelin from "../RepuestosImg/LlantaMichelin.webp"
 import PastillaFrenoBrembo from "../RepuestosImg/PastillasFrenoBrembo.png"
+import TapasLateralesNKD125 from "../RepuestosImg/TapasLateralesNKD125.png"
 
 
 const repuestos = [
@@ -36,6 +37,16 @@ const repuestos = [
     precio: 38000,
     disponible: true,
     descripcion: "Las pastillas BREMBO son sinónimo de fiabilidad. Compuesto sinterizado, específico para aplicación en freno delantero, caracterizado por una óptima eficiencia en cualquier condición de uso. Este compuesto está caracterizado por el desgaste limitado que asegura una duración y un kilometraje adecuados"
+  },
+    {
+    imagen: TapasLateralesNKD125,
+    nombre: "Tapas Laterales Negra Flexi Con Calcas AK 125 NKD-NKDR-SLR RKJ Kit",
+    tipo: "Tapas",
+    marca: "AKT",
+    modelo: "NKD 125",
+    precio: 38200,
+    disponible: true,
+    descripcion: "Tapas laterales para AKT NKD 125, diseñadas para ofrecer un ajuste perfecto y mantener la estética original de la motocicleta. Fabricadas con materiales resistentes a impactos y a la exposición solar, garantizan durabilidad y una apariencia impecable. Ideales para reemplazar piezas dañadas o renovar el look de tu moto."
   },
 ];
 

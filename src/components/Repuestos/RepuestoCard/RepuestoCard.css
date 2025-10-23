@@ -1,59 +1,38 @@
-.repuestos-section {
-  padding: 2rem 1rem;
-}
+/* ---------- RepuestoCard.css (Versión tipo Éxito) ---------- */
 
-.repuestos-titulo {
-  font-weight: 700;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-/* --- IGUALAR ALTURA SIN CORTAR CONTENIDO --- */
-.equal-card {
-  display: flex;
-  flex-direction: column;
-  height: auto;              /* ✅ Altura automática */
-  min-height: 340px;         /* ✅ Altura mínima sugerida */
-}
-
-.grid-x > .cell {
-  display: flex;
-}
-
-/* --- CARD --- */
+/* Contenedor principal */
 .repuesto-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  text-align: center;
-  background-color: #ffeaae;
-  border: 3px solid #ff8200;
-  border-radius: 10px;
-  overflow: visible;         /* ✅ Permite mostrar todo el contenido */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   width: 100%;
+  height: 380px; /* altura uniforme */
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.25s ease;
 }
 
 .repuesto-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(255, 130, 0, 0.5);
+  transform: translateY(-3px);
 }
 
-/* --- IMAGEN --- */
+/* --- Imagen --- */
 .repuesto-imagen-container {
   width: 100%;
-  height: 160px;
+  height: 150px;
+  background: #fafafa;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
-  border-bottom: 2px solid #ff8200;
-  padding: 8px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 .repuesto-imagen {
-  max-width: 85%;
-  max-height: 85%;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   transition: transform 0.3s ease;
 }
@@ -62,99 +41,93 @@
   transform: scale(1.05);
 }
 
-/* --- INFORMACIÓN --- */
+/* --- Bloque central --- */
 .repuesto-info {
-  flex-grow: 1;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  color: #0a0903;
-  padding: 0.8rem 1rem;
-}
-
-/* --- TEXTO PRINCIPAL --- */
-.repuesto-textos {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: flex-start;
-  flex-grow: 1;
-  gap: 0.2rem;
-  flex-shrink: 0;
+  text-align: center;
+  padding: 0.8rem;
 }
 
+/* --- Título principal --- */
 .repuesto-nombre {
-  font-weight: 700;
-  font-size: 1rem;
-  margin-bottom: 0.2rem;
+  color: #111;
+  margin-bottom: 0.3rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;  /* máximo 2 líneas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 2.4em; /* fuerza espacio para 2 líneas */
 }
 
-.repuesto-tipo {
-  color: #ff8200;
-  font-size: 0.9rem;
-}
 
-.repuesto-marca,
-.repuesto-modelo {
-  font-size: 0.85rem;
-}
-
+/* --- Precio --- */
 .repuesto-precio {
-  color: #ff8200;
-  font-weight: 700;
-  font-size: 0.95rem;
-  margin-top: 0.3rem;
+  color: #e67e22;
+  margin: 0.6rem 0 0.4rem;
+  display: flex;
+  justify-content: center;  
 }
 
-/* --- FOOTER TARJETA --- */
+/* --- Footer con botón --- */
 .repuesto-footer {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* 👈 apila el texto y el botón verticalmente */
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  justify-content: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0.6rem 0.8rem;
+  gap: 0.4rem; /* espacio entre “Disponible” y el botón */
+  background: #fff;
+  margin-top: auto; /* empuja el footer al fondo */
 }
 
-/* --- ESTADO --- */
-.repuesto-disponible {
-  display: inline-block;
-  padding: 0.3rem 0.7rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.8rem;
-}
-
-.en-stock {
-  background-color: #ffc100;
-  color: #0a0903;
-}
-
-.agotado {
-  background-color: #ff0000;
-  color: #ffeaae;
-}
-
-/* --- BOTÓN --- */
 .repuesto-btn {
-  background-color: #ffc100 !important;
-  color: #0a0903 !important;
-  font-weight: bold !important;
-  border: 2px solid #000 !important;
-  width: 90% !important;
-  border-radius: 9999px !important;
-  transition: background-color 0.3s ease !important;
-  font-size: 0.8rem !important;
-  padding: 0.4rem 0.3rem !important;
+  background: #ff7e00 !important;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  width: 100%;         
+  max-width: 180px;   
 }
 
 .repuesto-btn:hover {
-  background-color: #ffd84d;
-  color: #0a0903;
+  background: #e96b00;
 }
 
-.repuesto-btn.disabled {
-  background-color: #999;
-  color: #fff;
+.repuesto-btn.disabled,
+.repuesto-btn:disabled {
+  background-color: #ccc !important;
   cursor: not-allowed;
+}
+
+/* Estado de disponibilidad */
+.repuesto-disponible {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.en-stock { color: #2ea44f;
+    font-weight: bold; }
+.agotado { color: #d64545; 
+    font-weight: bold;}
+
+
+/* --- Responsive --- */
+@media (max-width: 640px) {
+  .repuesto-card {
+    height: 340px;
+  }
+  .repuesto-imagen-container {
+    height: 130px;
+  }
 }
 

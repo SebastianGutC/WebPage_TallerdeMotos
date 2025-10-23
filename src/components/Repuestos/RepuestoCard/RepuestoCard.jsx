@@ -1,7 +1,7 @@
 import React from "react";
 import "./RepuestoCard.css";
 
-const RepuestoCard = ({ imagen, nombre, tipo, marca, modelo, precio, disponible, onClick }) => {
+const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
   return (
     <div className="cell small-12 medium-6 large-4">
       <div
@@ -16,11 +16,9 @@ const RepuestoCard = ({ imagen, nombre, tipo, marca, modelo, precio, disponible,
         <div className="card-section repuesto-info">
           <div className="repuesto-textos">
             <h6 className="repuesto-nombre">{nombre}</h6>
-            <p className="repuesto-tipo">{tipo}</p>
-            <p className="repuesto-marca">Marca: {marca}</p>
-            <p className="repuesto-modelo">Modelo: {modelo}</p>
-            <p className="repuesto-precio">${precio}</p>
+            <h4 className="repuesto-precio">${precio}</h4>
           </div>
+
 
           <div className="repuesto-footer">
             <span
@@ -44,3 +42,4 @@ const RepuestoCard = ({ imagen, nombre, tipo, marca, modelo, precio, disponible,
 };
 
 export default RepuestoCard;
+
