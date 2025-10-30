@@ -4,14 +4,23 @@ import $ from "jquery";
 import "foundation-sites";
 import isologo from "../../src/assets/isologo.png";
 import { NavLink } from "react-router-dom";
+import LoginModal from "../pages/Login/LoginModal";
+import RegisterModal from "../pages/Register/RegisterModal";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  
-  // Iniciar Foundation al cargar
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+
   useEffect(() => {
     $(document).foundation();
   }, []);
+
+
+  const openLoginModal = () => setIsLoginOpen(true);
+  const closeLoginModal = () => setIsLoginOpen(false);
+  const openRegisterModal = () => setIsRegisterOpen(true);
+  const closeRegisterModal = () => setIsRegisterOpen(false);
 
   return (
     <header className="header">
@@ -30,14 +39,19 @@ const Header = () => {
       </div>
 
       <div className="top-bar-right">
-        <NavLink to="/login" className="btn btn-login btn-link">
+        {/* Botón de Login */}
+        <button className="btn btn-login btn-link" onClick={openLoginModal}>
           <i className="fi-torso icon-btn"></i>
           <span className="btn-text">Iniciar Sesión</span>
-        </NavLink>
-        <NavLink to="/register" className="btn btn-register btn-link">
+        </button>
+
+        {/* Botón de Registro */}
+        <button className="btn btn-register btn-link" onClick={openRegisterModal}>
           <i className="fi-pencil icon-btn"></i>
           <span className="btn-text">Registrarme</span>
-        </NavLink>
+        </button>
+
+        {/* Botón menú móvil */}
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
           <svg xmlns="http://www.w3.org/2000/svg" className="svg-icon">
             <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z" />
@@ -45,6 +59,18 @@ const Header = () => {
         </button>
       </div>
 
+      
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={closeLoginModal}
+        openRegisterModal={openRegisterModal} 
+      />
+
+      <RegisterModal
+        isOpen={isRegisterOpen}
+        onClose={closeRegisterModal}
+        openLoginModal={openLoginModal} 
+      />
     </header>
   );
 };
