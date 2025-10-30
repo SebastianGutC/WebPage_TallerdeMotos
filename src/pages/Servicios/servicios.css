@@ -1,0 +1,164 @@
+
+*{
+    font-family: 'Source Sans 3' !important;
+}
+h2{
+    font-size: 32px !important;
+}
+.banner-servicios {
+  background: linear-gradient(90deg, #0a0903, #1a1a1a);
+  background-image: url("../../assets/Serviciosimg/bannerServicios.png");
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+  color: #fff;
+  padding: 5rem 1rem;
+  position: relative;
+  height: 400px;
+  box-shadow: 0px 10px 20px black;
+}
+
+.banner-servicios::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 9, 3, 0.5);
+}
+
+.banner-titulo{
+  position: relative;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 800;
+  z-index: 2;
+  text-align: center;
+  float: right;
+  height: 100%;
+  align-content: center;
+  margin-right: 5%;
+  line-height: 40px;
+}
+
+.banner-titulo span {
+  font-size: clamp(2rem, 6vw, 3rem);;
+  color: #ffc100;
+  transition: color 0.3s ease;
+}
+
+.banner-titulo:hover span {
+  background: linear-gradient(90deg, #ff0000, #ff8200, #ffc100);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* === Sección: Servicios en curso === */
+.servicios-en-curso {
+  padding: 4rem 1rem;
+}
+
+.titulo-seccion {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #ff0000, #ff8200, #ffc100);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.subtitulo-seccion {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* === Cards uniformes === */
+.card-servicio-curso {
+  background: #fff;
+  border-radius: 1.2rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  text-align: center;
+  position: relative;
+  border-top: 4px solid #ff8200;
+}
+
+.card-servicio-curso:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+}
+
+.card-servicio-curso h4 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0a0903;
+}
+
+.card-servicio-curso p {
+  font-size: 0.95rem;
+  color: #333;
+  margin: 0.3rem 0;
+}
+
+.card-servicio-curso .estado {
+  background: #ffc100;
+  color: #0a0903;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+/* === Botones uniformes === */
+.btn-ver, .btn-pagar {
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 25px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-ver {
+  background: #fff;
+  border: 2px solid #ff8200;
+  color: #ff8200;
+}
+
+.btn-ver:hover {
+  background: #ff8200;
+  color: #fff;
+}
+
+
+
+
+/* === Catálogo === */
+.contenedor-servicios {
+  padding: 4rem 1rem;
+}
+
+.titulo-catalogo {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.texto-catalogo {
+  color: #333;
+  font-size: 1rem;
+}
+
+.texto-rojo {
+  color: #ff0000;
+}
+
+
+
+
+
