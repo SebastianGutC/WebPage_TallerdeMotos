@@ -106,7 +106,7 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
             value={formData.email}
             onChange={handleChange}
             placeholder="tu@email.com"
-            className="input"
+            className="login-input"
           />
 
           <label className="form-label">Contraseña</label>
@@ -116,10 +116,10 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
             value={formData.password}
             onChange={handleChange}
             placeholder="Mínimo 6 caracteres"
-            className="input"
+            className="login-input"
           />
 
-          <button type="submit" className="button-custom">
+          <button type="submit" className="login-button">
             Iniciar Sesión
           </button>
         </form>
