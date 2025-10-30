@@ -202,25 +202,41 @@
   cursor: pointer;
 }
 
-.input {
+.login-input {
   width: 100%;
   margin-bottom: 1rem;
   padding: 0.6rem;
-  border-radius: 6px;
+  border-radius: 10px !important;
   border: 1px solid #ccc;
 }
 
-.button-custom {
-  width: 100%;
-  background-color: #3066be;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 0.7rem;
+.login-button {
+  background-color: #0A0903;
+  color: #FFEAAE;
+  padding: 1rem;
+  border: 1px solid rgba(255, 234, 174, 0.2);
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 1.2rem;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   cursor: pointer;
-  transition: background-color 0.2s;
+  width: 100%;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.button-custom:hover {
-  background-color: #090c9b;
+.login-button:hover:not(:disabled) {
+  background-color: #FFC100;
+  color: #0A0903;
+  transform: translateY(-2px);
+  border: 1px solid rgba(255, 193, 0, 0.5);
+  box-shadow: 0 8px 25px rgba(255, 193, 0, 0.3);
+}
+
+.login-button:disabled {
+  background-color: #f0e9e9;
+  color: #0A0903;
+  cursor: not-allowed;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
