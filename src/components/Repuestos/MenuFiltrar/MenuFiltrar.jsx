@@ -11,21 +11,37 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setLocalFiltros({
-      ...localFiltros,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    const newFilters = { ...localFiltros, [name]: type === "checkbox" ? checked : value };
+    setLocalFiltros(newFilters);
+
+    // Solo aplican filtros inmediatos para: marca, modelo, tipo y disponibilidad
+    if (name !== "precioMin" && name !== "precioMax") {
+      onFiltroChange(newFilters);
+    }
   };
 
-  // ✅ Ejecuta el filtro solo cuando se presiona la lupa
+  // ✅ Aplica filtros de precio cuando se presiona el botón
   const aplicarFiltroPrecio = () => {
     onFiltroChange(localFiltros);
   };
 
-  // ✅ Función para el slider
-  const handleSliderChange = (e) => {
-    const nuevoMax = e.target.value;
-    const nuevosFiltros = { ...localFiltros, precioMax: nuevoMax };
+  // ✅ Slider doble (Min–Max)
+  const handleSliderChange = (e, target) => {
+    const value = Number(e.target.value);
+    let nuevosFiltros = { ...localFiltros };
+
+    if (target === "min") {
+      nuevosFiltros.precioMin = value;
+      if (value > Number(nuevosFiltros.precioMax)) {
+        nuevosFiltros.precioMax = value;
+      }
+    } else {
+      nuevosFiltros.precioMax = value;
+      if (value < Number(nuevosFiltros.precioMin)) {
+        nuevosFiltros.precioMin = value;
+      }
+    }
+
     setLocalFiltros(nuevosFiltros);
     onFiltroChange(nuevosFiltros);
   };
@@ -60,7 +76,7 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
 
       {/* Rango de Precios */}
       <div className="precio-filtro">
-        <h4>Rango De Precios</h4>
+        <h4>Rango de Precio</h4>
 
         <div className="precio-inputs">
           <input
@@ -90,26 +106,32 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
           />
 
           <button className="buscar-precio-btn" onClick={aplicarFiltroPrecio}>
-            🔍
+            <i className="fi-magnifying-glass"></i>
           </button>
         </div>
 
-        <div className="precio-rango-textos">
-          <span>Min.</span>
-          <span>Max.</span>
+        {/* Slider doble */}
+        <div className="sliders-container">
+          <input
+            type="range"
+            min="0"
+            max="1500000"
+            value={localFiltros.precioMin || 0}
+            className="rango-slider"
+            onChange={(e) => handleSliderChange(e, "min")}
+          />
+          <input
+            type="range"
+            min="0"
+            max="1500000"
+            value={localFiltros.precioMax || 0}
+            className="rango-slider"
+            onChange={(e) => handleSliderChange(e, "max")}
+          />
         </div>
-
-        {/* Slider funcionando */}
-        <input
-          type="range"
-          min="0"
-          max="1000000"
-          value={localFiltros.precioMax || 0}
-          className="rango-slider"
-          onChange={handleSliderChange}
-        />
       </div>
 
+      {/* Checkbox Solo Disponibles */}
       <label className="checkbox-label">
         <input
           type="checkbox"
