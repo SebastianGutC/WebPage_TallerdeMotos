@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Header.css";
-import $ from "jquery";
 import "foundation-sites";
-import isologo from "../../src/assets/isologo.png";
+import isologo from "../../../assets/isologo.png";
 import { NavLink } from "react-router-dom";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   
-  // Iniciar Foundation al cargar
-  useEffect(() => {
-    $(document).foundation();
-  }, []);
-
   return (
     <header className="header">
       <div className="top-bar-left">

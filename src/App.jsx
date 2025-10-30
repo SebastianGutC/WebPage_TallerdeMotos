@@ -1,16 +1,19 @@
 import { BrowserRouter } from "react-router-dom";
-import Header from "./components/Header";
+import Header from "./components/common/Header/Header";
 import AppRouter from "./router/AppRouter"
-import 'foundation-icons/foundation-icons.css';
+import Footer from "./components/common/Footer/Footer";
 
 
 function App() {
   return (
     <BrowserRouter>
+    <div className="app-container">
       <Header />
-      <main>
+      <main className="main-content">
         <AppRouter />
       </main>
+      <Footer />
+    </div>
     </BrowserRouter>
   );
 }
