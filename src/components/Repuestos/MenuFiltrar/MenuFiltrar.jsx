@@ -5,17 +5,43 @@ import "./MenuFiltrar.css";
 const MenuFiltrar = ({ filtros, onFiltroChange }) => {
   const [localFiltros, setLocalFiltros] = useState(filtros);
 
-  // 🔹 Se generan listas únicas dinámicamente desde los datos actuales
   const marcas = useMemo(() => [...new Set(repuestos.map(r => r.marca))], []);
   const tipos = useMemo(() => [...new Set(repuestos.map(r => r.tipo))], []);
   const modelos = useMemo(() => [...new Set(repuestos.map(r => r.modelo))], []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    const nuevosFiltros = {
-      ...localFiltros,
-      [name]: type === "checkbox" ? checked : value,
-    };
+    const newFilters = { ...localFiltros, [name]: type === "checkbox" ? checked : value };
+    setLocalFiltros(newFilters);
+
+    // Solo aplican filtros inmediatos para: marca, modelo, tipo y disponibilidad
+    if (name !== "precioMin" && name !== "precioMax") {
+      onFiltroChange(newFilters);
+    }
+  };
+
+  // ✅ Aplica filtros de precio cuando se presiona el botón
+  const aplicarFiltroPrecio = () => {
+    onFiltroChange(localFiltros);
+  };
+
+  // ✅ Slider doble (Min–Max)
+  const handleSliderChange = (e, target) => {
+    const value = Number(e.target.value);
+    let nuevosFiltros = { ...localFiltros };
+
+    if (target === "min") {
+      nuevosFiltros.precioMin = value;
+      if (value > Number(nuevosFiltros.precioMax)) {
+        nuevosFiltros.precioMax = value;
+      }
+    } else {
+      nuevosFiltros.precioMax = value;
+      if (value < Number(nuevosFiltros.precioMin)) {
+        nuevosFiltros.precioMin = value;
+      }
+    }
+
     setLocalFiltros(nuevosFiltros);
     onFiltroChange(nuevosFiltros);
   };
@@ -24,7 +50,6 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
     <aside className="menu-filtrar">
       <h3 className="menu-filtrar-titulo">Filtrar repuestos</h3>
 
-      {/* Marca */}
       <label>Marca</label>
       <select name="marca" value={localFiltros.marca} onChange={handleChange}>
         <option value="">Todas</option>
@@ -33,7 +58,6 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
         ))}
       </select>
 
-      {/* Modelo */}
       <label>Modelo</label>
       <select name="modelo" value={localFiltros.modelo} onChange={handleChange}>
         <option value="">Todos</option>
@@ -42,7 +66,6 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
         ))}
       </select>
 
-      {/* Tipo */}
       <label>Tipo</label>
       <select name="tipo" value={localFiltros.tipo} onChange={handleChange}>
         <option value="">Todos</option>
@@ -51,26 +74,64 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
         ))}
       </select>
 
-      {/* Precio */}
-      <label>Precio mínimo</label>
-      <input
-        type="number"
-        name="precioMin"
-        value={localFiltros.precioMin}
-        placeholder="Desde..."
-        onChange={handleChange}
-      />
+      {/* Rango de Precios */}
+      <div className="precio-filtro">
+        <h4>Rango de Precio</h4>
 
-      <label>Precio máximo</label>
-      <input
-        type="number"
-        name="precioMax"
-        value={localFiltros.precioMax}
-        placeholder="Hasta..."
-        onChange={handleChange}
-      />
+        <div className="precio-inputs">
+          <input
+            type="text"
+            name="precioMin"
+            value={localFiltros.precioMin ? Number(localFiltros.precioMin).toLocaleString("es-CO") : ""}
+            placeholder="$ Min"
+            onChange={(e) =>
+              setLocalFiltros({
+                ...localFiltros,
+                precioMin: e.target.value.replace(/\./g, "").replace(/,/g, "")
+              })
+            }
+          />
 
-      {/* Disponibilidad */}
+          <input
+            type="text"
+            name="precioMax"
+            value={localFiltros.precioMax ? Number(localFiltros.precioMax).toLocaleString("es-CO") : ""}
+            placeholder="$ Max"
+            onChange={(e) =>
+              setLocalFiltros({
+                ...localFiltros,
+                precioMax: e.target.value.replace(/\./g, "").replace(/,/g, "")
+              })
+            }
+          />
+
+          <button className="buscar-precio-btn" onClick={aplicarFiltroPrecio}>
+            <i className="fi-magnifying-glass"></i>
+          </button>
+        </div>
+
+        {/* Slider doble */}
+        <div className="sliders-container">
+          <input
+            type="range"
+            min="0"
+            max="1500000"
+            value={localFiltros.precioMin || 0}
+            className="rango-slider"
+            onChange={(e) => handleSliderChange(e, "min")}
+          />
+          <input
+            type="range"
+            min="0"
+            max="1500000"
+            value={localFiltros.precioMax || 0}
+            className="rango-slider"
+            onChange={(e) => handleSliderChange(e, "max")}
+          />
+        </div>
+      </div>
+
+      {/* Checkbox Solo Disponibles */}
       <label className="checkbox-label">
         <input
           type="checkbox"

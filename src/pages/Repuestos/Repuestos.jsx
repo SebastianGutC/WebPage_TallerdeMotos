@@ -16,7 +16,7 @@ const Repuestos = () => {
     soloDisponibles: false,
   });
 
-  // 🔹 Lógica de filtrado (listo para adaptarse al backend)
+
   const repuestosFiltrados = repuestos.filter((r) => {
     return (
       (!filtros.marca || r.marca === filtros.marca) &&
@@ -26,7 +26,7 @@ const Repuestos = () => {
       (!filtros.precioMax || r.precio <= filtros.precioMax) &&
       (!filtros.soloDisponibles || r.disponible)
     );
-  });
+  }).sort((a, b) => (b.disponible === a.disponible ? 0 : b.disponible ? 1 : -1));;
 
   return (
     <section className="repuestos-section">
@@ -34,12 +34,12 @@ const Repuestos = () => {
         <h2 className="text-center repuestos-titulo">Catálogo de repuestos</h2>
 
         <div className="grid-x grid-margin-x">
-          {/* 🔹 Lateral izquierdo */}
+
           <div className="cell small-12 medium-4 large-3">
             <MenuFiltrar filtros={filtros} onFiltroChange={setFiltros} />
           </div>
 
-          {/* 🔹 Contenido principal */}
+
           <div className="cell small-12 medium-8 large-9">
             <div className="grid-x grid-margin-x small-up-1 medium-up-2 large-up-3">
               {repuestosFiltrados.map((rep, index) => (

@@ -2,6 +2,8 @@ import AceiteMotul from "../RepuestosImg/AceiteMotul.png"
 import LlantaMichelin from "../RepuestosImg/LlantaMichelin.webp"
 import PastillaFrenoBrembo from "../RepuestosImg/PastillasFrenoBrembo.png"
 import TapasLateralesNKD125 from "../RepuestosImg/TapasLateralesNKD125.png"
+import TapasTanqueFz150 from "../RepuestosImg/TapasTanqueFz150.png"
+import AceiteMotorMobil from "../RepuestosImg/aceite_motor_mobil.png"
 
 
 const repuestos = [
@@ -47,6 +49,26 @@ const repuestos = [
     precio: 38200,
     disponible: true,
     descripcion: "Tapas laterales para AKT NKD 125, diseñadas para ofrecer un ajuste perfecto y mantener la estética original de la motocicleta. Fabricadas con materiales resistentes a impactos y a la exposición solar, garantizan durabilidad y una apariencia impecable. Ideales para reemplazar piezas dañadas o renovar el look de tu moto."
+  },
+      {
+    imagen: TapasTanqueFz150,
+    nombre: "Tapas Laterales Tanque Yamaha Fz 2.0 Original",
+    tipo: "Tapas",
+    marca: "Yamaha",
+    modelo: "Fz 150",
+    precio: 310000,
+    disponible: true,
+    descripcion: "Par de tapas tanque Yamaha FZ 2.0 original Viene en pasta negra para pintar Sin garantía"
+  },
+      {
+    imagen: AceiteMotorMobil,
+    nombre: "ACEITE DE MOTOR MOBIL SUPER 4T ULTRA 20W-50 LITRO",
+    tipo: "Aceite",
+    marca: "Mobil Super",
+    modelo: "Universal",
+    precio: 34400,
+    disponible: true,
+    descripcion: "Aceite de motor Mobil Super 4T Ultra 20W-50 de 1 litro, diseñado para motores de motocicletas de 4 tiempos. Ofrece excelente protección contra el desgaste, mantiene el motor limpio y garantiza un óptimo rendimiento incluso en condiciones de alta temperatura. Ideal para uso diario y trayectos prolongados."
   },
 ];
 

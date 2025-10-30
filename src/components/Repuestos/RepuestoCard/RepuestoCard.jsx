@@ -16,7 +16,9 @@ const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
         <div className="card-section repuesto-info">
           <div className="repuesto-textos">
             <h6 className="repuesto-nombre">{nombre}</h6>
-            <h4 className="repuesto-precio">${precio}</h4>
+            <h4 className="repuesto-precio">
+              ${precio.toLocaleString("es-CO")}
+            </h4>
           </div>
 
 
@@ -28,7 +30,7 @@ const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
             </span>
 
             <button
-              className={`button repuesto-btn ${!disponible ? "disabled" : ""}`}
+              className={`repuesto-btn ${!disponible ? "disabled" : ""}`}
               disabled={!disponible}
               onClick={(e) => e.stopPropagation()}
             >

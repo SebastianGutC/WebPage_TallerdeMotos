@@ -12,6 +12,9 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.25s ease;
+  border-radius: 14px !important; /* un poco más visible */
+  overflow: hidden !important;    /* asegura que la imagen respete el borde */
+  border: 1px solid rgba(0,0,0,0.08) !important; /* borde suave opcional */
 }
 
 .repuesto-card:hover {
@@ -66,7 +69,7 @@
 
 /* --- Precio --- */
 .repuesto-precio {
-  color: #e67e22;
+
   margin: 0.6rem 0 0.4rem;
   display: flex;
   justify-content: center;  
@@ -75,7 +78,7 @@
 /* --- Footer con botón --- */
 .repuesto-footer {
   display: flex;
-  flex-direction: column; /* 👈 apila el texto y el botón verticalmente */
+  flex-direction: column; /* apila el texto y el botón verticalmente */
   align-items: center;
   justify-content: center;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
@@ -86,17 +89,26 @@
 }
 
 .repuesto-btn {
-  background: #ff7e00 !important;
-  color: white;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  padding: 0.75rem 1.5rem;   /* Tamaño similar a Foundation */
+  min-height: 2.5rem;
+  width: auto;
+
+  background-color: #FFC100;
+  color: black;
+  font-weight: bold;
+  font-size: 15px;
+
+  border-radius: 20px;
+  border: 2px solid black;
+  margin-top: 1rem;
+
   cursor: pointer;
-  transition: background 0.2s ease;
-  width: 100%;         
-  max-width: 180px;   
+  transition: background-color 0.2s ease;
 }
 
 .repuesto-btn:hover {
