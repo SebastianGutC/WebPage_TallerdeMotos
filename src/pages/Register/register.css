@@ -1,0 +1,192 @@
+/* register.css */
+/* 🎨 Estilos exclusivos del modal de registro */
+
+/* === Modal general === */
+.register-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 9, 3, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.register-modal-container {
+  background: #fbfff1;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+}
+
+.register-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #0A0903;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.register-modal-close:hover {
+  color: #FF8200;
+}
+
+/* === Título === */
+.register-title {
+  color: #0A0903;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 2.2rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  font-weight: bold;
+}
+
+/* === Etiquetas === */
+.register-form-label {
+  display: block;
+  font-size: 1.1rem;
+  color: #0A0903;
+  font-weight: bold;
+  margin-top: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+
+/* === Campos de entrada === */
+.register-input {
+  background-color: #f0e9e9 !important;
+  color: #0A0903 !important;
+  border: 2px solid #0A0903 !important;
+  border-radius: 4px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-input:focus {
+  border-color: #FF8200 !important;
+  box-shadow: 0 0 8px rgba(255, 130, 0, 0.3);
+  outline: none;
+}
+
+/* === Botón principal === */
+.register-button {
+  background-color: #0A0903;
+  color: #FFEAAE;
+  padding: 1rem;
+  border: 1px solid rgba(255, 234, 174, 0.2);
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 1.2rem;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.register-button:hover:not(:disabled) {
+  background-color: #FFC100;
+  color: #0A0903;
+  transform: translateY(-2px);
+  border: 1px solid rgba(255, 193, 0, 0.5);
+  box-shadow: 0 8px 25px rgba(255, 193, 0, 0.3);
+}
+
+.register-button:disabled {
+  background-color: #f0e9e9;
+  color: #0A0903;
+  cursor: not-allowed;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: none;
+}
+
+/* === Alertas === */
+.register-alert-error {
+  background-color: #FF0000;
+  color: #FFEAAE;
+  border: 1px solid #FF0000;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.register-alert-success {
+  background-color: #FF8200;
+  color: #0A0903;
+  border: 1px solid #FF8200;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+/* Botón para cerrar alerta */
+.register-close-alert {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.6rem;
+  background: none;
+  border: none;
+  color: #FFEAAE;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.register-close-alert:hover {
+  color: #FFC100;
+}
+
+/* === Checkbox de términos === */
+.register-terms-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.register-terms-input {
+  width: 1.1rem;
+  height: 1.1rem;
+  cursor: pointer;
+}
+
+.register-terms-label {
+  color: #0A0903;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* === Enlaces y texto final === */
+.register-link {
+  color: #FFC100;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.register-link:hover {
+  color: #FF8200;
+}
+
+.register-login-text {
+  color: #0A0903;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+

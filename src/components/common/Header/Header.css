@@ -5,16 +5,19 @@ body{
 .header{
   background: linear-gradient(to right, #FF0000, #FF8200, #FFC100);
   display: flex;
-  border-bottom: #0A0903 5px solid;
   align-items: center;
   justify-content: space-between;
   padding: 10px 15px;
   position: relative;
   z-index: 100;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 .header-logo {
-  height: 85px;
+  height: 65px;
   margin-right: 10px;
 }
 
@@ -26,9 +29,9 @@ body{
 }
 
 .menu a {
-  font-size: 16px;
+  font-size: 15px;
   color: #0A0903;
-  font-weight: 600;
+  font-weight: bold;
   transition: color 0.3s ease;
 }
 
@@ -51,9 +54,9 @@ body{
 }
 
 .btn {
-  font-size: 16px;
+  font-size: 15px;
   border-radius: 10px;
-  padding: 6px 16px;
+  padding: 5px 16px;
   margin-left: 10px;
   cursor: pointer;
   font-weight: bold;
@@ -104,7 +107,7 @@ body{
     align-items: center;
     padding: 4px 8px;
     background: linear-gradient(to right, #FF0000, #FF8200, #FFC100);
-    border-bottom: 4px solid #0A0903;
+    border-bottom: 3px solid #0A0903;
     position: relative;
     overflow: visible;
   }
@@ -239,7 +242,7 @@ body{
     }
     to {
       opacity: 0.5;
-      transform: translateY(4px);
+      transform: translateY(2px);
     }
   }
 }
@@ -253,6 +256,7 @@ body{
     align-items: center;
     padding: 10px 15px;
     position: relative;
+    border-bottom: 3px solid #0A0903;
   }
 
   .header-logo {
@@ -332,11 +336,11 @@ body{
   @keyframes slideDown {
     from {
       opacity: 0;
-      transform: translateY(-5px);
+      transform: translateY(-4px);
     }
     to {
       opacity: 0.5;
-      transform: translateY(4px);
+      transform: translateY(2px);
     }
   }
 }
