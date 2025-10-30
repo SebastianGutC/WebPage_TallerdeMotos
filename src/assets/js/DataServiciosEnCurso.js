@@ -104,8 +104,8 @@ const serviciosEnCurso = [
     "Yamaha FZ 2.0",
     servicios[0], // Cambio de aceite y revisión general
     "En proceso",
-    "2025-10-08",
-    "2025-10-10",
+    "08-10-2025",
+    "10-10-2025",
     "Andrés Gómez",
     [
       new RepuestoUsado(repuesto1, 1),
@@ -120,8 +120,8 @@ const serviciosEnCurso = [
     "Honda CB 125",
     servicios[2], // Cambio de kit de arrastre (por ejemplo)
     "Pendiente de entrega",
-    "2025-10-05",
-    "2025-10-09",
+    "05-10-2025",
+    "09-10-2025",
     "Laura Rodríguez",
     [
       new RepuestoUsado(repuesto4, 1),
@@ -135,8 +135,8 @@ const serviciosEnCurso = [
     "Bajaj Pulsar NS 200",
     servicios[4], // Cambio de frenos o revisión eléctrica
     "Finalizado",
-    "2025-10-01",
-    "2025-10-07",
+    "01-10-2025",
+    "07-10-2025",
     "Camilo Torres",
     [
       new RepuestoUsado(repuesto5, 1),
