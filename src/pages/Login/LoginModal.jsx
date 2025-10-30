@@ -67,9 +67,9 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
-        <button className="modal-close" onClick={onClose}>
+    <div className="login-modal-overlay">
+      <div className="login-modal-container">
+        <button className="login-modal-close" onClick={onClose}>
           &times;
         </button>
         <h2 className="title">Iniciar Sesión</h2>

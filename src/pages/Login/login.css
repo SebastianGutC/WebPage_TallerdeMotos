@@ -1,6 +1,47 @@
 /* login.css - Estilo adaptado del registro */
 /* Paleta: #0A0903 (fondo oscuro), #FF0000 (rojo), #FF8200 (naranja), #FFC100 (dorado), #FFEAAE (amarillo claro) */
 
+
+.login-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 9, 3, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.login-modal-container {
+  background: #fbfff1;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+}
+
+.login-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #0A0903;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.login-modal-close:hover {
+  color: #FF8200;
+}
+
 /* Contenedor principal */
 .login-container {
   background: linear-gradient(to right, #FF0000, #FF8200, #FFC100);
@@ -208,6 +249,12 @@
   padding: 0.6rem;
   border-radius: 10px !important;
   border: 1px solid #ccc;
+}
+
+.login-input:focus {
+  border-color: #FF8200 !important;
+  box-shadow: 0 0 8px rgba(255, 130, 0, 0.3);
+  outline: none;
 }
 
 .login-button {
