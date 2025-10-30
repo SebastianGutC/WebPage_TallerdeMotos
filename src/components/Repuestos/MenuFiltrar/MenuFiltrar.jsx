@@ -5,17 +5,27 @@ import "./MenuFiltrar.css";
 const MenuFiltrar = ({ filtros, onFiltroChange }) => {
   const [localFiltros, setLocalFiltros] = useState(filtros);
 
-  // 🔹 Se generan listas únicas dinámicamente desde los datos actuales
   const marcas = useMemo(() => [...new Set(repuestos.map(r => r.marca))], []);
   const tipos = useMemo(() => [...new Set(repuestos.map(r => r.tipo))], []);
   const modelos = useMemo(() => [...new Set(repuestos.map(r => r.modelo))], []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    const nuevosFiltros = {
+    setLocalFiltros({
       ...localFiltros,
       [name]: type === "checkbox" ? checked : value,
-    };
+    });
+  };
+
+  // ✅ Ejecuta el filtro solo cuando se presiona la lupa
+  const aplicarFiltroPrecio = () => {
+    onFiltroChange(localFiltros);
+  };
+
+  // ✅ Función para el slider
+  const handleSliderChange = (e) => {
+    const nuevoMax = e.target.value;
+    const nuevosFiltros = { ...localFiltros, precioMax: nuevoMax };
     setLocalFiltros(nuevosFiltros);
     onFiltroChange(nuevosFiltros);
   };
@@ -24,7 +34,6 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
     <aside className="menu-filtrar">
       <h3 className="menu-filtrar-titulo">Filtrar repuestos</h3>
 
-      {/* Marca */}
       <label>Marca</label>
       <select name="marca" value={localFiltros.marca} onChange={handleChange}>
         <option value="">Todas</option>
@@ -33,7 +42,6 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
         ))}
       </select>
 
-      {/* Modelo */}
       <label>Modelo</label>
       <select name="modelo" value={localFiltros.modelo} onChange={handleChange}>
         <option value="">Todos</option>
@@ -42,7 +50,6 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
         ))}
       </select>
 
-      {/* Tipo */}
       <label>Tipo</label>
       <select name="tipo" value={localFiltros.tipo} onChange={handleChange}>
         <option value="">Todos</option>
@@ -51,26 +58,58 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
         ))}
       </select>
 
-      {/* Precio */}
-      <label>Precio mínimo</label>
-      <input
-        type="number"
-        name="precioMin"
-        value={localFiltros.precioMin}
-        placeholder="Desde..."
-        onChange={handleChange}
-      />
+      {/* Rango de Precios */}
+      <div className="precio-filtro">
+        <h4>Rango De Precios</h4>
 
-      <label>Precio máximo</label>
-      <input
-        type="number"
-        name="precioMax"
-        value={localFiltros.precioMax}
-        placeholder="Hasta..."
-        onChange={handleChange}
-      />
+        <div className="precio-inputs">
+          <input
+            type="text"
+            name="precioMin"
+            value={localFiltros.precioMin ? Number(localFiltros.precioMin).toLocaleString("es-CO") : ""}
+            placeholder="$ Min"
+            onChange={(e) =>
+              setLocalFiltros({
+                ...localFiltros,
+                precioMin: e.target.value.replace(/\./g, "").replace(/,/g, "")
+              })
+            }
+          />
 
-      {/* Disponibilidad */}
+          <input
+            type="text"
+            name="precioMax"
+            value={localFiltros.precioMax ? Number(localFiltros.precioMax).toLocaleString("es-CO") : ""}
+            placeholder="$ Max"
+            onChange={(e) =>
+              setLocalFiltros({
+                ...localFiltros,
+                precioMax: e.target.value.replace(/\./g, "").replace(/,/g, "")
+              })
+            }
+          />
+
+          <button className="buscar-precio-btn" onClick={aplicarFiltroPrecio}>
+            🔍
+          </button>
+        </div>
+
+        <div className="precio-rango-textos">
+          <span>Min.</span>
+          <span>Max.</span>
+        </div>
+
+        {/* Slider funcionando */}
+        <input
+          type="range"
+          min="0"
+          max="1000000"
+          value={localFiltros.precioMax || 0}
+          className="rango-slider"
+          onChange={handleSliderChange}
+        />
+      </div>
+
       <label className="checkbox-label">
         <input
           type="checkbox"

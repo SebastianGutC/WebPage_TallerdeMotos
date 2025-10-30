@@ -1,45 +1,30 @@
-.menu-filtrar {
-
-  padding: 1.5rem;
-  border-radius: 10px;
-  width: 260px;
-  height: fit-content;
-  box-shadow: 0 0 10px rgba(0,0,0,0.4);
-  position: sticky;
-  top: 100px;
+.precio-inputs {
+  display: flex;
+  gap: 0.4rem;
 }
 
-.menu-filtrar-titulo {
-  font-weight: 700;
-  color: #ffc100;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.menu-filtrar label {
-  display: block;
-  margin-top: 0.8rem;
-  margin-bottom: 0.3rem;
-  font-weight: 600;
-}
-
-.menu-filtrar select,
-.menu-filtrar input {
+.precio-inputs input {
   width: 100%;
-  padding: 0.4rem;
+  padding: 0.45rem;
   border-radius: 6px;
   border: 1px solid #444;
+  height: 38px;
 }
 
-.menu-filtrar select:focus,
-.menu-filtrar input:focus {
-  outline: none;
-  border-color: #ffc100;
-}
-
-.checkbox-label {
+.buscar-precio-btn {
+  width: 40px;
+  height: 38px; /* ✅ Igual que los inputs */
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  background-color: #ff8c00;
+  transition: 0.2s;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  justify-content: center;
+}
+
+.buscar-precio-btn:hover {
+  background-color: #e67300;
 }
