@@ -53,7 +53,7 @@
 /* Wrapper del formulario */
 .form-wrapper {
   max-width: 600px;
-  margin: 0 auto;
+  margin: 50px auto;
   background-color: #FFFFFF;
   padding: 2rem;
   border-radius: 8px;

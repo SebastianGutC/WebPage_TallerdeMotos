@@ -1,10 +1,5 @@
-// ✅ Importamos los servicios ya creados
+
 import servicios from "./DataServicios";
-
-// ========================
-// CLASES BASE
-// ========================
-
 class Repuesto {
   static idRepuesto = 0;
 
@@ -45,7 +40,7 @@ class ServicioEnCurso {
     fechaIngreso,
     fechaEntrega,
     empleado,
-    repuestosUsados = []
+    repuestosUsados = [], 
   ) {
     this.id = id;
     this.cliente = cliente;
@@ -56,6 +51,7 @@ class ServicioEnCurso {
     this.fechaEntrega = fechaEntrega;
     this.empleado = empleado;
     this.repuestosUsados = repuestosUsados;
+    this.descripcion = this.getDescripcion();
   }
   calcularTotalRepuestos(){
     const totalRepuestos = this.repuestosUsados.reduce(
@@ -79,11 +75,39 @@ class ServicioEnCurso {
   getTotal() {
     return this.calcularTotal();
   }
+
+getDescripcion() {
+  switch (this.estado) {
+
+    case "En proceso":
+      this.descripcion = "Estamos trabajando en tu moto con el mayor cuidado. ¡Pronto estará lista!";
+      break;
+
+    case "Pendiente de entrega":
+      this.descripcion = "Tu moto ya está lista. Puedes pasar a recogerla cuando gustes.";
+      break;
+
+    case "Finalizado":
+      this.descripcion = "Tu servicio fue completado y la moto entregada. ¡Gracias por confiar en MotorFix!";
+      break;
+
+    case "Cancelado":
+      this.descripcion = "Este servicio fue cancelado. Si deseas reprogramarlo, contáctanos.";
+      break;
+
+    default:
+      this.descripcion = "Estado no disponible.";
+      break;
+  }
+
+  return this.descripcion;
 }
 
-// ========================
+}
+
+
 // INSTANCIAS DE REPUESTOS
-// ========================
+
 
 const repuesto1 = new Repuesto("Aceite para motor 4T", 38000, 20);
 const repuesto2 = new Repuesto("Filtro de aceite", 25000, 15);
@@ -93,9 +117,8 @@ const repuesto5 = new Repuesto("Pastillas de freno delanteras", 45000, 10);
 const repuesto6 = new Repuesto("Pastillas de freno traseras", 40000, 12);
 const repuesto7 = new Repuesto("Bombillo delantero", 10000, 20);
 
-// ========================
+
 // SERVICIOS EN CURSO
-// ========================
 
 const serviciosEnCurso = [
   new ServicioEnCurso(
@@ -104,14 +127,14 @@ const serviciosEnCurso = [
     "Yamaha FZ 2.0",
     servicios[0], // Cambio de aceite y revisión general
     "En proceso",
-    "2025-10-08",
-    "2025-10-10",
+    "08-10-2025",
+    "10-10-2025",
     "Andrés Gómez",
     [
       new RepuestoUsado(repuesto1, 1),
       new RepuestoUsado(repuesto2, 1),
       new RepuestoUsado(repuesto3, 1),
-    ]
+    ], 
   ),
 
   new ServicioEnCurso(
@@ -120,8 +143,8 @@ const serviciosEnCurso = [
     "Honda CB 125",
     servicios[2], // Cambio de kit de arrastre (por ejemplo)
     "Pendiente de entrega",
-    "2025-10-05",
-    "2025-10-09",
+    "05-10-2025",
+    "09-10-2025",
     "Laura Rodríguez",
     [
       new RepuestoUsado(repuesto4, 1),
@@ -135,8 +158,8 @@ const serviciosEnCurso = [
     "Bajaj Pulsar NS 200",
     servicios[4], // Cambio de frenos o revisión eléctrica
     "Finalizado",
-    "2025-10-01",
-    "2025-10-07",
+    "01-10-2025",
+    "07-10-2025",
     "Camilo Torres",
     [
       new RepuestoUsado(repuesto5, 1),
