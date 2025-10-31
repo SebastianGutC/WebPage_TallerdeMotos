@@ -1,9 +1,9 @@
 /* ====== Card principal ====== */
 .card-servicio-curso {
-  background-color: #ffeaae;
   border-radius: 18px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  box-shadow: 10px 20px 6px rgba(0,0,0,0.12) !important;
   padding: 1rem;
+  min-height: 100%;
   margin-bottom: 1.25rem;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -13,11 +13,15 @@
   box-shadow: 0 10px 22px rgba(0,0,0,0.18);
 }
 
+.descripcion{
+  border: 1px rgba(0, 0, 0, 0.332) solid;
+  border-radius: 15px;
+}
+
 .card-header-curso {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ff8200;
   color: #fff;
   padding: 0.5rem 0.8rem;
   border-radius: 12px;
@@ -29,27 +33,30 @@
   margin: 0;
   font-size: 1rem;
 }
-
+.card-header-curso span{
+    background-color: #FF8200;
+    padding: 8px;
+    border-radius: 10px;
+}
 .estado {
   font-size: 0.85rem;
   padding: 0.25rem 0.6rem;
   border-radius: 10px;
-  background-color: rgba(255,255,255,0.12);
+;
 }
 
 
 .estado.en-proceso { 
-    background-color: #ffc100;
-    color: white;
+    border-top: green 8px solid !important;
 }
 
 .estado.finalizado { 
-  background-color: #0a0903 !important; 
+  border-top: #0a0903 8px solid !important; 
   color: #fff !important; }
 
 
   .estado.pendiente-de-entrega{
-  background-color: #ff0000 !important; 
+  border-top: 8px solid#ff0000 !important; 
   color: #fff !important;
   }
 
@@ -99,11 +106,12 @@ button {
 
 /* Ver detalles */
 .btn-ver {
+  background-color: transparent !important;
   color: black !important;
 }
 
 .btn-ver:hover {
-  background: #ffc100;
+  background: #FF8200 !important;
   color: #0a0903;
 }
 

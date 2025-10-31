@@ -1,7 +1,7 @@
 import servicios from "../../assets/js/DataServicios";
 import CardServicio from "../../components/CardServicio/CardServicio";
 import serviciosEnCurso from "../../assets/js/DataServiciosEnCurso";
-import CardServicioEnCurso from "../../components/CardServicioEnCurso/CardServicioEnCurso";
+import CardServicioEnCurso from "../../components/CardServicioEnCurso/cardServicioEnCurso";
 import CardPasos from "../../components/CardPasos/CardPasos";
 import "./servicios.css";
 
@@ -12,6 +12,10 @@ function Servicios() {
       <section className="banner-servicios">
         <h3 className="banner-titulo">
           Servicios profesionales <br /> <span>para tu moto</span>
+          <br /><button className="link-catalogo" onClick={() => {
+    document.getElementById("servicios").scrollIntoView({ behavior: "smooth" });
+  }}>Conoce nuestro catálogo</button>
+
         </h3>
       </section>
 
@@ -40,12 +44,12 @@ function Servicios() {
         </div>
       </section>
 
-      <div style={{ width: "100%", backgroundColor:"rgb(128, 128, 128, 0.1)", borderTop:"black 1px solid", boxShadow:"0px 2px 10px black"}}>
+      <div className="contenedor-pasos">
         <CardPasos></CardPasos>
       </div>
 
       {/* Catálogo de servicios */}
-      <section className="grid-container contenedor-servicios">
+      <section id ="servicios" className="grid-container contenedor-servicios">
         <div className="grid-x grid-padding-x align-center text-center margin-bottom-2">
           <div className="cell small-12 medium-10 large-8 contenedor-catalogo">
             <h2 className="text-primary titulo-catalogo">

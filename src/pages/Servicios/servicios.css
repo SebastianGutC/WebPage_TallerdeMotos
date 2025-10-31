@@ -17,6 +17,22 @@ h2{
   height: 400px;
   box-shadow: 0px 10px 20px black;
 }
+.link-catalogo{
+  color: white;
+  float: right;
+  z-index: 999;
+  font-size: 20px;
+  margin-top: 50px;
+  text-align: center;
+  width: 100%;
+  
+}
+
+.link-catalogo:hover{
+  color: #ff8200;
+  text-decoration: underline;
+  cursor: pointer;
+}
 
 .banner-servicios::after {
   content: "";
@@ -78,14 +94,12 @@ h2{
 
 /* === Cards uniformes === */
 .card-servicio-curso {
-  background: #fff;
   border-radius: 1.2rem;
   padding: 1.5rem;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   text-align: center;
   position: relative;
-  border-top: 4px solid #ff8200;
 }
 
 .card-servicio-curso:hover {
@@ -158,6 +172,11 @@ h2{
   color: #ff0000;
 }
 
+.contenedor-pasos{
+  width: 100%;
+  background-color: rgb(128, 128, 128, 0.1); 
+  box-shadow: 0px 1px 20px rgba(0, 0, 0, 0.3)
+}
 
 
 

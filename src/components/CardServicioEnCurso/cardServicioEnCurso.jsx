@@ -9,10 +9,10 @@ function CardServicioEnCurso({ servicio }) {
 
   return (
     <>
-      <article className="card-servicio-curso" aria-labelledby={`svc-${servicio.id}-title`}>
+      <article  className={`estado ${servicio.estado.replace(/\s+/g, "-").toLowerCase()} card-servicio-curso`}aria-labelledby={`svc-${servicio.id}-title`}>
         <header className="card-header-curso">
           <h4 id={`svc-${servicio.id}-title`} className="cliente-nombre">{servicio.moto}</h4>
-          <span className={`estado ${servicio.estado.replace(/\s+/g, "-").toLowerCase()}`}>
+          <span>
             {servicio.estado}
           </span>
         </header>
