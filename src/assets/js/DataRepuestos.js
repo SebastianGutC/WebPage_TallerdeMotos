@@ -4,8 +4,14 @@ import PastillaFrenoBrembo from "../RepuestosImg/PastillasFrenoBrembo.png"
 import TapasLateralesNKD125 from "../RepuestosImg/TapasLateralesNKD125.png"
 import TapasTanqueFz150 from "../RepuestosImg/TapasTanqueFz150.png"
 import AceiteMotorMobil from "../RepuestosImg/aceite_motor_mobil.png"
+import FiltroAireFz150 from "../RepuestosImg/FiltroAireFZ150.png"
+import CadenaDID428Reforzada from "../RepuestosImg/CadenaDID428ReforzadaDorada.png"
+import KitArrastreGn125 from "../RepuestosImg/KitArrastreGn125.png"
+import BateriaYuasa from "../RepuestosImg/BateriaYuasa.png"
+import AmortiguadoresTraseros from "../RepuestosImg/AmortiguadoresTraseros.png"
+import EspejosNaked from "../RepuestosImg/EspejosNaked.png"
 
-
+const ImagenTemporal = AceiteMotul;
 const repuestos = [
   {
     imagen: AceiteMotul,
@@ -69,6 +75,73 @@ const repuestos = [
     precio: 34400,
     disponible: true,
     descripcion: "Aceite de motor Mobil Super 4T Ultra 20W-50 de 1 litro, diseñado para motores de motocicletas de 4 tiempos. Ofrece excelente protección contra el desgaste, mantiene el motor limpio y garantiza un óptimo rendimiento incluso en condiciones de alta temperatura. Ideal para uso diario y trayectos prolongados."
+  },
+    // 🔹 Nuevos productos
+  {
+    imagen: CadenaDID428Reforzada,
+    nombre: "Cadena DID 428HD 130L Refuerzo Dorado",
+    tipo: "Transmisión",
+    marca: "DID",
+    modelo: "AKT 150, Yamaha FZ, Pulsar 180",
+    precio: 95000,
+    disponible: true,
+    descripcion:
+      "Cadena reforzada DID 428HD de 130 eslabones, ideal para motos de 125cc a 200cc. Fabricada en acero tratado térmicamente, ofrece excelente resistencia al desgaste y estiramiento.",
+  },
+  {
+    imagen: FiltroAireFz150,
+    nombre: "Filtro de Aire Yamaha FZ16 Original",
+    tipo: "Filtro",
+    marca: "Yamaha",
+    modelo: "FZ16, FZ 2.0",
+    precio: 48000,
+    disponible: true,
+    descripcion:
+      "Filtro de aire original Yamaha FZ16. Mantiene el flujo de aire limpio al motor, mejorando la eficiencia de combustible y el rendimiento del motor. Producto 100% original.",
+  },
+  {
+    imagen: KitArrastreGn125,
+    nombre: "Kit de Arrastre Suzuki GN125 DID",
+    tipo: "Transmisión",
+    marca: "DID",
+    modelo: "Suzuki GN125",
+    precio: 210000,
+    disponible: true,
+    descripcion:
+      "Kit completo de arrastre DID para Suzuki GN125, incluye piñón, corona y cadena reforzada. Diseñado para alto rendimiento y durabilidad en condiciones urbanas y de carretera.",
+  },
+  {
+    imagen: BateriaYuasa,
+    nombre: "Batería Yuasa YTX7A-BS Libre de Mantenimiento",
+    tipo: "Batería",
+    marca: "Yuasa",
+    modelo: "AKT 125, Honda CB125, Yamaha FZ",
+    precio: 165000,
+    disponible: true,
+    descripcion:
+      "Batería sellada Yuasa YTX7A-BS de 12V libre de mantenimiento. Ofrece excelente capacidad de arranque, resistencia a vibraciones y larga vida útil. Ideal para motos de hasta 200cc.",
+  },
+  {
+    imagen: AmortiguadoresTraseros,
+    nombre: "Amortiguadores Traseros Cromados Universal 320mm",
+    tipo: "Suspensión",
+    marca: "RCB",
+    modelo: "Universal 150-200cc",
+    precio: 195000,
+    disponible: false,
+    descripcion:
+      "Amortiguadores traseros universales de 320mm con resortes cromados. Mejoran la estabilidad y el confort en conducción urbana. Compatibles con varias referencias AKT, Yamaha y Honda.",
+  },
+  {
+    imagen: EspejosNaked,
+    nombre: "Espejos Laterales Rizoma Universal Tipo Naked",
+    tipo: "Accesorios",
+    marca: "Rizoma",
+    modelo: "Universal",
+    precio: 120000,
+    disponible: true,
+    descripcion:
+      "Par de espejos laterales Rizoma tipo Naked, fabricados en aluminio anodizado de alta calidad. Diseño deportivo y aerodinámico, ajustables y compatibles con la mayoría de manillares estándar.",
   },
 ];
 

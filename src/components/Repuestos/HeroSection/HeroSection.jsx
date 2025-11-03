@@ -1,5 +1,5 @@
 import React from "react";
-import ImgHeroSectionRepuestos from "../../../assets/RepuestosImg/imgHSRepuestos.jpg";
+import ImgHeroSectionRepuestos from "../../../assets/RepuestosImg/ImagenTallerMotos.png";
 import "./HeroSection.css";
 
 const HeroSection = () => {
@@ -23,9 +23,11 @@ const HeroSection = () => {
             Encuentra los mejores <span>repuestos</span> para tu moto
           </h1>
           <p>Calidad, rendimiento y confianza en cada pieza.</p>
-          <button className="btn-ver-catalogo" onClick={scrollToCatalogo}>
-            Ver catálogo
-          </button>
+
+          {/* 👇 Texto que actúa como enlace */}
+          <p className="link-ver-catalogo" onClick={scrollToCatalogo}>
+            Ver catálogo →
+          </p>
         </div>
       </div>
     </section>

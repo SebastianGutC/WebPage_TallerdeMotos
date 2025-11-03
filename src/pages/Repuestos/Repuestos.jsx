@@ -13,6 +13,14 @@ const RepuestosSection = styled.section`
   margin-bottom: 4rem; /* espacio entre el contenido y el footer */
 `;
 
+const TituloRepuestos = styled.section`
+  margin-bottom: 2.5rem;
+
+  h2 {
+    font-weight: 700; 
+  }
+`;
+
 
 const Repuestos = () => {
   const [repuestoSeleccionado, setRepuestoSeleccionado] = useState(null);
@@ -63,6 +71,9 @@ const repuestosFiltrados = repuestos
     <HeroSection />  {/* Hero fuera del grid-container */}
 
     <div className="grid-container">
+      <TituloRepuestos id="catalogo-repuestos" className="text-center">
+        <h2>Catálogo de Repuestos</h2>
+      </TituloRepuestos>
       <div className="grid-x grid-margin-x">
         <div className="cell small-12 medium-4 large-3">
           <MenuFiltrar filtros={filtros} onFiltroChange={setFiltros} />

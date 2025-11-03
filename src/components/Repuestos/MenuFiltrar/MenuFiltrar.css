@@ -1,10 +1,13 @@
 .menu-filtrar {
   padding: 1.4rem;
   border-radius: 10px;
-  width: 260px;
-  height: fit-content;
+  width: 100%;
+  max-width: 260px;
   background: #fff;
   border: 1px solid #d1d1d1;
+  box-sizing: border-box;
+  height: fit-content;
+  transition: all 0.3s ease;
 }
 
 .menu-filtrar-titulo {
@@ -30,7 +33,6 @@
   border-color: #9a9a9a;
 }
 
-/* --- Bloque de Precio --- */
 .precio-filtro {
   margin-top: 1rem;
   padding: 0.8rem;
@@ -47,6 +49,12 @@
 .precio-inputs {
   display: flex;
   gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.precio-inputs input {
+  flex: 1;
+  min-width: 100px;
 }
 
 .buscar-precio-btn {
@@ -66,7 +74,6 @@
   background: #bdbdbd;
 }
 
-
 .sliders-container {
   position: relative;
   margin-top: 0.6rem;
@@ -82,11 +89,88 @@
   margin-top: 0.2rem;
 }
 
-
 .checkbox-label {
   display: flex;
   align-items: center;
   gap: 0.4rem;
   margin-top: 1rem;
   font-size: 0.9rem;
+}
+
+.rango-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #FFC100;
+  border: 2px solid white;
+  margin-top: -6px;
+  cursor: pointer;
+}
+
+.rango-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #FFC100;
+  border: 2px solid white;
+  cursor: pointer;
+}
+
+/* ===========================
+   📱 RESPONSIVE DESIGN
+   =========================== */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .menu-filtrar {
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  .precio-inputs {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* Smartphones grandes */
+@media (max-width: 768px) {
+  .menu-filtrar {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .menu-filtrar-titulo {
+    font-size: 1rem;
+  }
+
+  .precio-inputs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .buscar-precio-btn {
+    width: 100%;
+    height: 38px;
+  }
+}
+
+/* Smartphones pequeños */
+@media (max-width: 480px) {
+  .menu-filtrar {
+    padding: 0.8rem;
+    max-width: 100%;
+  }
+
+  .precio-filtro {
+    padding: 0.6rem;
+  }
+
+  .precio-filtro h4 {
+    font-size: 0.9rem;
+  }
+
+  .checkbox-label {
+    font-size: 0.85rem;
+  }
 }

@@ -5,19 +5,15 @@ import "./MenuFiltrar.css";
 const MenuFiltrar = ({ filtros, onFiltroChange }) => {
   const [localFiltros, setLocalFiltros] = useState(filtros);
 
-  // 🔹 Tipos (siempre disponibles)
   const tipos = useMemo(() => [...new Set(repuestos.map(r => r.tipo))], []);
 
-  // 🔹 Marcas dinámicas: dependen del tipo seleccionado
   const marcas = useMemo(() => {
     const repuestosFiltradosPorTipo = filtros.tipo
       ? repuestos.filter(r => r.tipo === filtros.tipo)
       : repuestos;
-
     return [...new Set(repuestosFiltradosPorTipo.map(r => r.marca))];
   }, [filtros.tipo]);
 
-  // 🔹 Modelos dinámicos: dependen de la marca seleccionada
   const modelos = useMemo(() => {
     const repuestosFiltradosPorMarca = filtros.marca
       ? repuestos.filter(r => r.marca === filtros.marca)
@@ -30,31 +26,27 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
     return [...new Set(modelosSeparados)];
   }, [filtros.marca]);
 
-  // 🔹 Manejo de cambios
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newFilters = { ...localFiltros, [name]: type === "checkbox" ? checked : value };
 
-    // Dependencias entre filtros
     if (name === "tipo") {
       newFilters.marca = "";
       newFilters.modelo = "";
+      newFilters.precioMin = 0;
+      newFilters.precioMax = 0;
     }
     if (name === "marca") {
       newFilters.modelo = "";
+      newFilters.precioMin = 0;
+      newFilters.precioMax = 0;
     }
 
     setLocalFiltros(newFilters);
-
-    if (name !== "precioMin" && name !== "precioMax") {
-      onFiltroChange(newFilters);
-    }
+    if (name !== "precioMin" && name !== "precioMax") onFiltroChange(newFilters);
   };
 
-  // 🔹 Filtro de precio
-  const aplicarFiltroPrecio = () => {
-    onFiltroChange(localFiltros);
-  };
+  const aplicarFiltroPrecio = () => onFiltroChange(localFiltros);
 
   const handleSliderChange = (e, target) => {
     const value = Number(e.target.value);
@@ -62,25 +54,41 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
 
     if (target === "min") {
       nuevosFiltros.precioMin = value;
-      if (value > Number(nuevosFiltros.precioMax)) {
-        nuevosFiltros.precioMax = value;
-      }
+      if (value > Number(nuevosFiltros.precioMax)) nuevosFiltros.precioMax = value;
     } else {
       nuevosFiltros.precioMax = value;
-      if (value < Number(nuevosFiltros.precioMin)) {
-        nuevosFiltros.precioMin = value;
-      }
+      if (value < Number(nuevosFiltros.precioMin)) nuevosFiltros.precioMin = value;
     }
 
     setLocalFiltros(nuevosFiltros);
     onFiltroChange(nuevosFiltros);
   };
 
+  const repuestosFiltradosBase = useMemo(() => {
+    return repuestos.filter(r => {
+      const coincideTipo = !localFiltros.tipo || r.tipo === localFiltros.tipo;
+      const coincideMarca = !localFiltros.marca || r.marca === localFiltros.marca;
+      const coincideModelo =
+        !localFiltros.modelo ||
+        r.modelo.split(",").map(m => m.trim()).includes(localFiltros.modelo);
+      return coincideTipo && coincideMarca && coincideModelo;
+    });
+  }, [localFiltros.tipo, localFiltros.marca, localFiltros.modelo]);
+
+  const precioMinDisponible = useMemo(() => {
+    if (repuestosFiltradosBase.length === 0) return 0;
+    return Math.min(...repuestosFiltradosBase.map(r => r.precio));
+  }, [repuestosFiltradosBase]);
+
+  const precioMaxDisponible = useMemo(() => {
+    if (repuestosFiltradosBase.length === 0) return 0;
+    return Math.max(...repuestosFiltradosBase.map(r => r.precio));
+  }, [repuestosFiltradosBase]);
+
   return (
     <aside className="menu-filtrar">
       <h3 className="menu-filtrar-titulo">Filtrar repuestos</h3>
 
-      {/* Tipo */}
       <label>Tipo</label>
       <select name="tipo" value={localFiltros.tipo} onChange={handleChange}>
         <option value="">Todos</option>
@@ -89,7 +97,6 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
         ))}
       </select>
 
-      {/* Marca dependiente del tipo */}
       <label>Marca</label>
       <select
         name="marca"
@@ -103,7 +110,6 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
         ))}
       </select>
 
-      {/* Modelo dependiente de la marca */}
       <label>Modelo</label>
       <select
         name="modelo"
@@ -117,7 +123,6 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
         ))}
       </select>
 
-      {/* Rango de precios */}
       <div className="precio-filtro">
         <h4>Rango de Precio</h4>
 
@@ -154,24 +159,29 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
         <div className="sliders-container">
           <input
             type="range"
-            min="0"
-            max="1500000"
-            value={localFiltros.precioMin || 0}
+            min={precioMinDisponible}
+            max={precioMaxDisponible}
+            value={Math.min(
+              Math.max(localFiltros.precioMin || precioMinDisponible, precioMinDisponible),
+              precioMaxDisponible
+            )}
             className="rango-slider"
             onChange={(e) => handleSliderChange(e, "min")}
           />
           <input
             type="range"
-            min="0"
-            max="1500000"
-            value={localFiltros.precioMax || 0}
+            min={precioMinDisponible}
+            max={precioMaxDisponible}
+            value={Math.min(
+              Math.max(localFiltros.precioMax || precioMaxDisponible, precioMinDisponible),
+              precioMaxDisponible
+            )}
             className="rango-slider"
             onChange={(e) => handleSliderChange(e, "max")}
           />
         </div>
       </div>
 
-      {/* Solo disponibles */}
       <label className="checkbox-label">
         <input
           type="checkbox"

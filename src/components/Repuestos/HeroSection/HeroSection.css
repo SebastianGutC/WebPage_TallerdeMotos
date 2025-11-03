@@ -7,8 +7,8 @@
   align-items: center;
   justify-content: center;
   background-color: #000;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
-  margin-bottom: 3rem;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+  margin-bottom: 4rem;
 }
 
 .hero-image {
@@ -19,7 +19,7 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  filter: brightness(0.45);
+  filter: brightness(0.70);
 }
 
 .hero-overlay {
@@ -61,6 +61,22 @@
 .btn-ver-catalogo:hover {
   background-color: #FFC100;
 }
+
+.link-ver-catalogo {
+  margin-top: 1.8rem;
+  font-weight: 600;
+  color: #ffff;
+  cursor: pointer;
+  display: inline-block;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.link-ver-catalogo:hover {
+  color: #ffc100;
+  text-decoration: underline;
+}
+
 
 /* 📱 Responsividad */
 @media (max-width: 1024px) {
