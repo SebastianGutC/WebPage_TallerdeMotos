@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import LoginModal from "../../../pages/Login/LoginModal";
 import RegisterModal from "../../../pages/Register/RegisterModal";
 
+
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   

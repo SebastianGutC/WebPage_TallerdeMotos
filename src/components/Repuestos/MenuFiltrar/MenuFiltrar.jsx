@@ -5,27 +5,57 @@ import "./MenuFiltrar.css";
 const MenuFiltrar = ({ filtros, onFiltroChange }) => {
   const [localFiltros, setLocalFiltros] = useState(filtros);
 
-  const marcas = useMemo(() => [...new Set(repuestos.map(r => r.marca))], []);
+  // 🔹 Tipos (siempre disponibles)
   const tipos = useMemo(() => [...new Set(repuestos.map(r => r.tipo))], []);
-  const modelos = useMemo(() => [...new Set(repuestos.map(r => r.modelo))], []);
 
+  // 🔹 Marcas dinámicas: dependen del tipo seleccionado
+  const marcas = useMemo(() => {
+    const repuestosFiltradosPorTipo = filtros.tipo
+      ? repuestos.filter(r => r.tipo === filtros.tipo)
+      : repuestos;
+
+    return [...new Set(repuestosFiltradosPorTipo.map(r => r.marca))];
+  }, [filtros.tipo]);
+
+  // 🔹 Modelos dinámicos: dependen de la marca seleccionada
+  const modelos = useMemo(() => {
+    const repuestosFiltradosPorMarca = filtros.marca
+      ? repuestos.filter(r => r.marca === filtros.marca)
+      : repuestos;
+
+    const modelosSeparados = repuestosFiltradosPorMarca.flatMap(r =>
+      r.modelo.split(",").map(m => m.trim())
+    );
+
+    return [...new Set(modelosSeparados)];
+  }, [filtros.marca]);
+
+  // 🔹 Manejo de cambios
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newFilters = { ...localFiltros, [name]: type === "checkbox" ? checked : value };
+
+    // Dependencias entre filtros
+    if (name === "tipo") {
+      newFilters.marca = "";
+      newFilters.modelo = "";
+    }
+    if (name === "marca") {
+      newFilters.modelo = "";
+    }
+
     setLocalFiltros(newFilters);
 
-    // Solo aplican filtros inmediatos para: marca, modelo, tipo y disponibilidad
     if (name !== "precioMin" && name !== "precioMax") {
       onFiltroChange(newFilters);
     }
   };
 
-  // ✅ Aplica filtros de precio cuando se presiona el botón
+  // 🔹 Filtro de precio
   const aplicarFiltroPrecio = () => {
     onFiltroChange(localFiltros);
   };
 
-  // ✅ Slider doble (Min–Max)
   const handleSliderChange = (e, target) => {
     const value = Number(e.target.value);
     let nuevosFiltros = { ...localFiltros };
@@ -50,22 +80,7 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
     <aside className="menu-filtrar">
       <h3 className="menu-filtrar-titulo">Filtrar repuestos</h3>
 
-      <label>Marca</label>
-      <select name="marca" value={localFiltros.marca} onChange={handleChange}>
-        <option value="">Todas</option>
-        {marcas.map((marca, i) => (
-          <option key={i} value={marca}>{marca}</option>
-        ))}
-      </select>
-
-      <label>Modelo</label>
-      <select name="modelo" value={localFiltros.modelo} onChange={handleChange}>
-        <option value="">Todos</option>
-        {modelos.map((modelo, i) => (
-          <option key={i} value={modelo}>{modelo}</option>
-        ))}
-      </select>
-
+      {/* Tipo */}
       <label>Tipo</label>
       <select name="tipo" value={localFiltros.tipo} onChange={handleChange}>
         <option value="">Todos</option>
@@ -74,7 +89,35 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
         ))}
       </select>
 
-      {/* Rango de Precios */}
+      {/* Marca dependiente del tipo */}
+      <label>Marca</label>
+      <select
+        name="marca"
+        value={localFiltros.marca}
+        onChange={handleChange}
+        disabled={marcas.length === 0}
+      >
+        <option value="">Todas</option>
+        {marcas.map((marca, i) => (
+          <option key={i} value={marca}>{marca}</option>
+        ))}
+      </select>
+
+      {/* Modelo dependiente de la marca */}
+      <label>Modelo</label>
+      <select
+        name="modelo"
+        value={localFiltros.modelo}
+        onChange={handleChange}
+        disabled={modelos.length === 0}
+      >
+        <option value="">Todos</option>
+        {modelos.map((modelo, i) => (
+          <option key={i} value={modelo}>{modelo}</option>
+        ))}
+      </select>
+
+      {/* Rango de precios */}
       <div className="precio-filtro">
         <h4>Rango de Precio</h4>
 
@@ -91,7 +134,6 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
               })
             }
           />
-
           <input
             type="text"
             name="precioMax"
@@ -104,13 +146,11 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
               })
             }
           />
-
           <button className="buscar-precio-btn" onClick={aplicarFiltroPrecio}>
             <i className="fi-magnifying-glass"></i>
           </button>
         </div>
 
-        {/* Slider doble */}
         <div className="sliders-container">
           <input
             type="range"
@@ -131,7 +171,7 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
         </div>
       </div>
 
-      {/* Checkbox Solo Disponibles */}
+      {/* Solo disponibles */}
       <label className="checkbox-label">
         <input
           type="checkbox"
