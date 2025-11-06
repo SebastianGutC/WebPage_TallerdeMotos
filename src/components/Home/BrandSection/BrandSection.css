@@ -1,0 +1,37 @@
+.brands-section {
+  width: 100%;
+  background-color: #f9f9f9;
+  padding: 4px 0;
+  text-align: center;
+}
+
+.brands-title {
+  font-weight: bolder;
+  font-size: 24px;
+  color: #0A0903;
+  margin-top: 25px;
+}
+
+.brands-container {
+  display: flex;
+  margin-top: 3px;
+  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.brand-item img {
+  width: 120px;
+  height: auto;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  filter: grayscale(100%);
+}
+
+.brand-item img:hover {
+  opacity: 1;
+  color: #0A0903;
+  transform: scale(1.15);
+}
