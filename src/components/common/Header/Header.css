@@ -333,6 +333,41 @@ body{
     color: #FFC100;
   }
 
+  
+.cart-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.cart-btn:hover {
+  transform: scale(1.1);
+}
+
+.cart-icon {
+  width: 28px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 680px) {
+  .cart-icon {
+    width: 22px;
+  }
+}
+
+@media (min-width: 681px) and (max-width: 1270px) {
+  .cart-icon {
+    width: 25px;
+  }
+}
+
   @keyframes slideDown {
     from {
       opacity: 0;

@@ -1,0 +1,125 @@
+.hero-repuestos {
+  position: relative;
+  width: 100vw;
+  height: 75vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+  margin-bottom: 4rem;
+}
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.70);
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  padding: 2rem;
+}
+
+.hero-content h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hero-content span {
+  color: #FFEAAE;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  color: #ccc;
+}
+
+.btn-ver-catalogo {
+  margin-top: 1.8rem;
+  background-color: #FFEAAE;
+  color: #000;
+  border: none;
+  padding: 0.9rem 2.2rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-ver-catalogo:hover {
+  background-color: #FFC100;
+}
+
+.link-ver-catalogo {
+  margin-top: 1.8rem;
+  font-weight: 600;
+  color: #ffff;
+  cursor: pointer;
+  display: inline-block;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.link-ver-catalogo:hover {
+  color: #ffc100;
+  text-decoration: underline;
+}
+
+
+/* 📱 Responsividad */
+@media (max-width: 1024px) {
+  .hero-repuestos {
+    height: 65vh;
+  }
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+  .hero-content p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-repuestos {
+    height: 55vh;
+  }
+  .hero-content h1 {
+    font-size: 1.8rem;
+  }
+  .hero-content p {
+    font-size: 0.95rem;
+  }
+  .btn-ver-catalogo {
+    padding: 0.8rem 1.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-repuestos {
+    height: 50vh;
+    margin-bottom: 2rem;
+  }
+  .hero-content h1 {
+    font-size: 1.5rem;
+  }
+  .hero-content p {
+    font-size: 0.85rem;
+  }
+  .btn-ver-catalogo {
+    padding: 0.7rem 1.6rem;
+    font-size: 0.85rem;
+  }
+}
