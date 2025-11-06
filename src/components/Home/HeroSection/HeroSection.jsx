@@ -8,8 +8,8 @@ const HeroSection = () => {
       className="herosec"
       style={{ backgroundImage: `url(${heroImage})` }}
     >
-      <div className="overlay-section">
-        <div className="hero-content">
+      <div className="overlay-sec">
+        <div className="h-content">
           <h1>
             Expertos en: <br /> <span>Reparación y Mantenimiento</span>
           </h1>

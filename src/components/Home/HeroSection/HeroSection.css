@@ -11,7 +11,7 @@
   justify-content: flex-start;
 }
 
-.overlay-section {
+.overlay-sec {
   position: absolute;
   top: 0;
   left: 0;
@@ -31,7 +31,7 @@
 }
 
 
-.hero-content {
+.h-content {
   position: relative;
   z-index: 2;
   color: white;
@@ -39,20 +39,20 @@
   text-align: left;
 }
 
-.hero-content h1 {
+.h-content h1 {
   font-size: 40px;
   font-weight: 800;
   line-height: 1;
   margin-bottom: 0.5px;
 }
 
-.hero-content h1 span {
+.h-content h1 span {
   color: #f5f5f5;
   font-style: italic;
 }
 
 
-.hero-content p {
+.h-content p {
   font-size: 15px;
   line-height: 1.6;
   margin-top: 15px;
