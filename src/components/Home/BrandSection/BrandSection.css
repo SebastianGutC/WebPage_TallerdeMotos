@@ -1,7 +1,7 @@
 .brands-section {
   width: 100%;
   background-color: #f9f9f9;
-  padding: 4px 0;
+  padding: 10px 0;
   text-align: center;
 }
 
@@ -9,17 +9,16 @@
   font-weight: bolder;
   font-size: 24px;
   color: #0A0903;
-  margin-top: 25px;
+  margin: 12px 0 0.5px 0;
 }
 
 .brands-container {
   display: flex;
-  margin-top: 3px;
-  margin-bottom: 10px;
   justify-content: center;
   align-items: center;
-  gap: 60px;
+  gap: 58px;
   flex-wrap: wrap;
+  margin-top: 0;
 }
 
 .brand-item img {
