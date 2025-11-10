@@ -5,9 +5,11 @@ import tallerCertificadoImg from "../../assets/taller-certificado.jpg";
 import mecanicosExpertosImg from "../../assets/mecanicos-expertos.jpg";
 import personalizacionRealImg from "../../assets/personalizacion-real.jpg";
 import comunidadBikerImg from "../../assets/comunidad-biker.png";
+import servicioRapidoImg from "../../assets/servicio-rapido.jpg"; // Nueva imagen
+import garantiaImg from "../../assets/garantia.jpg"; // Nueva imagen
 
 const Nosotros = () => {
-  // Datos de la timeline adaptados a MotorFix
+  // Datos de la timeline adaptados a MotorFix, con cinco años
   const timelineData = [
     {
       date: '2019',
@@ -20,28 +22,57 @@ const Nosotros = () => {
     {
       date: '2023',
       description: 'Ampliación del equipo y mayor alcance regional, fortaleciendo nuestra comunidad biker.'
+    },
+    {
+      date: '2024',
+      description: 'Lanzamos servicios de mantenimiento preventivo avanzado.'
+    },
+    {
+      date: '2025',
+      description: 'Expandimos a nivel nacional, abriendo talleres en nuevas ciudades.'
     }
   ];
 
-  // Estado para el item expandido/activo
+  // Estado para el item expandido/activo en timeline
   const [expandedItem, setExpandedItem] = useState(0); // Inicialmente, el primero expandido
 
   const toggleItem = (index) => {
     setExpandedItem(expandedItem === index ? null : index);
   };
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', text: '', image: '' });
-
-  const openModal = (title, text, image) => {
-    setModalContent({ title, text, image });
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-    setModalContent({ title: '', text: '', image: '' });
-  };
+  // Datos para las features de "¿Por Qué Elegirnos?" - Ahora con seis apartados
+  const featuresData = [
+    {
+      title: 'Taller Certificado',
+      description: 'Nuestro taller está certificado por estándares internacionales, garantizando reparaciones de alta calidad y seguridad. Utilizamos equipos de última generación para diagnósticos precisos.',
+      image: tallerCertificadoImg
+    },
+    {
+      title: 'Mecánicos Expertos',
+      description: 'Contamos con un equipo de mecánicos certificados con años de experiencia en motocicletas de todas las marcas. Siempre capacitados en las últimas tecnologías.',
+      image: mecanicosExpertosImg
+    },
+    {
+      title: 'Personalización Real',
+      description: 'Ofrecemos personalizaciones únicas y a medida, desde cambios estéticos hasta mejoras de rendimiento. Tu moto, tu estilo, nuestra pasión.',
+      image: personalizacionRealImg
+    },
+    {
+      title: 'Comunidad Biker',
+      description: 'Formamos parte de una comunidad apasionada por las motos. Organizamos eventos y compartimos consejos para que vivas la experiencia biker al máximo.',
+      image: comunidadBikerImg
+    },
+    {
+      title: 'Servicio Rápido y Eficiente',
+      description: 'Entendemos la importancia de tu tiempo. Nuestros procesos optimizados garantizan reparaciones y mantenimientos en el menor tiempo posible, sin comprometer la calidad.',
+      image: servicioRapidoImg
+    },
+    {
+      title: 'Garantía en Todas las Reparaciones',
+      description: 'Ofrecemos garantía completa en todos nuestros servicios. Si algo no queda perfecto, lo arreglamos gratis. Tu confianza es nuestra prioridad.',
+      image: garantiaImg
+    }
+  ];
 
   return (
     <div className="nosotros-page">
@@ -64,54 +95,29 @@ const Nosotros = () => {
         </div>
       </section>
 
-      {/* POR QUÉ ELEGIRNOS (SIN CAMBIOS) */}
+      {/* POR QUÉ ELEGIRNOS (TODOS LOS APARTADOS DESPLEJADOS, AHORA EN DOS FILAS DE TRES) */}
       <section className="nosotros-por-que">
         <h2>¿Por Qué Elegirnos?</h2>
         <div className="nosotros-feature-grid">
-          <div 
-            className="nosotros-feature-box" 
-            onClick={() => openModal(
-              ' Taller Certificado', 
-              'Nuestro taller está certificado por estándares internacionales, garantizando reparaciones de alta calidad y seguridad. Utilizamos equipos de última generación para diagnósticos precisos.',
-              tallerCertificadoImg 
-            )}
-          >
-             Taller Certificado
-          </div>
-          <div 
-            className="nosotros-feature-box" 
-            onClick={() => openModal(
-              ' Mecánicos Expertos', 
-              'Contamos con un equipo de mecánicos certificados con años de experiencia en motocicletas de todas las marcas. Siempre capacitados en las últimas tecnologías.',
-              mecanicosExpertosImg 
-            )}
-          >
-             Mecánicos Expertos
-          </div>
-          <div 
-            className="nosotros-feature-box" 
-            onClick={() => openModal(
-              ' Personalización Real', 
-              'Ofrecemos personalizaciones únicas y a medida, desde cambios estéticos hasta mejoras de rendimiento. Tu moto, tu estilo, nuestra pasión.',
-              personalizacionRealImg 
-            )}
-          >
-             Personalización Real
-          </div>
-          <div 
-            className="nosotros-feature-box" 
-            onClick={() => openModal(
-              ' Comunidad Biker', 
-              'Formamos parte de una comunidad apasionada por las motos. Organizamos eventos y compartimos consejos para que vivas la experiencia biker al máximo.',
-              comunidadBikerImg 
-            )}
-          >
-             Comunidad Biker
-          </div>
+          {featuresData.map((feature, index) => (
+            <div key={index} className="nosotros-feature-box">
+              <h3>{feature.title}</h3>
+              <img src={feature.image} alt={feature.title} className="nosotros-feature-image" />
+              <p>{feature.description}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* LÍNEA DEL TIEMPO (NUEVA, INTERACTIVA) */}
+      {/* STATS (SIN CAMBIOS) */}
+      <section className="nosotros-stats">
+        <div className="nosotros-stat"><span>+300</span>Motos Reparadas</div>
+        <div className="nosotros-stat"><span>+120</span>Personalizaciones</div>
+        <div className="nosotros-stat"><span>5 Años</span>Experiencia</div>
+        <div className="nosotros-stat"><span>6 Ciudades</span>Clientes</div>
+      </section>
+
+      {/* NUESTRA HISTORIA (MOVIDA AL FINAL) */}
       <section className="nosotros-timeline-section">
         <div className="nosotros-container">
           <h2 className="nosotros-timeline-title">Nuestra Historia</h2>
@@ -139,26 +145,6 @@ const Nosotros = () => {
           </div>
         </div>
       </section>
-
-      {/* STATS (SIN CAMBIOS) */}
-      <section className="nosotros-stats">
-        <div className="nosotros-stat"><span>+300</span>Motos Reparadas</div>
-        <div className="nosotros-stat"><span>+120</span>Personalizaciones</div>
-        <div className="nosotros-stat"><span>5 Años</span>Experiencia</div>
-        <div className="nosotros-stat"><span>6 Ciudades</span>Clientes</div>
-      </section>
-
-      {/* MODAL (SIN CAMBIOS) */}
-      {modalOpen && (
-        <div className="nosotros-modal-overlay" onClick={closeModal}>
-          <div className="nosotros-modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="nosotros-modal-close" onClick={closeModal}>×</button>
-            <img src={modalContent.image} alt={modalContent.title} className="nosotros-modal-image" />
-            <h3>{modalContent.title}</h3>
-            <p>{modalContent.text}</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
