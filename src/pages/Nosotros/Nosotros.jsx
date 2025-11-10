@@ -1,69 +1,135 @@
-import React, { useState } from 'react';
-import './nosotros.css';
-import f_nosotros from '../../assets/fnoso.png';
+import React, { useState } from "react";
+import "./Nosotros.css";
+import nosotrosImg from "../../assets/fnoso.png"; 
+import tallerCertificadoImg from "../../assets/taller-certificado.jpg";
+import mecanicosExpertosImg from "../../assets/mecanicos-expertos.jpg";
+import personalizacionRealImg from "../../assets/personalizacion-real.jpg";
+import comunidadBikerImg from "../../assets/comunidad-biker.png";
 
 const Nosotros = () => {
-  const heroStyle = {
-    backgroundImage: `linear-gradient(rgba(10,9,3,0.66), rgba(10,9,3,0.66)), url(${f_nosotros})`
-  };
-
-  // Datos de la timeline 
+  // Datos de la timeline adaptados a MotorFix
   const timelineData = [
     {
-      date: 'Enero 2021',
-      description: 'Fundamos la empresa con la visión de crear soluciones digitales innovadoras y accesibles para todos.'
+      date: '2019',
+      description: 'Iniciamos operaciones en un pequeño taller familiar, con la pasión por las motos como motor.'
     },
     {
-      date: 'Junio 2022',
-      description: 'Lanzamos nuestro primer producto web, una plataforma enfocada en la optimización de procesos empresariales.'
+      date: '2021',
+      description: 'Nos consolidamos como referente local en personalización, expandiendo nuestros servicios.'
     },
     {
-      date: 'Abril 2023',
-      description: 'Ampliamos nuestro equipo con nuevos desarrolladores y diseñadores para mejorar la experiencia de usuario.'
-    },
-    {
-      date: 'Septiembre 2024',
-      description: 'Iniciamos proyectos internacionales y fortalecimos nuestras alianzas tecnológicas.'
+      date: '2023',
+      description: 'Ampliación del equipo y mayor alcance regional, fortaleciendo nuestra comunidad biker.'
     }
   ];
 
-  // Estado para el item expandido/activo (null = ninguno, o índice 0-3)
+  // Estado para el item expandido/activo
   const [expandedItem, setExpandedItem] = useState(0); // Inicialmente, el primero expandido
 
   const toggleItem = (index) => {
     setExpandedItem(expandedItem === index ? null : index);
   };
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({ title: '', text: '', image: '' });
+
+  const openModal = (title, text, image) => {
+    setModalContent({ title, text, image });
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalContent({ title: '', text: '', image: '' });
+  };
+
   return (
     <div className="nosotros-page">
-      <section className="hero-section" style={heroStyle}>
-        <div className="overlay">
-          <h1 className="nosotros-title">Nuestro camino al éxito</h1>
-          <p className="description">
-            Desde nuestros primeros pasos en el desarrollo de software, hemos crecido y evolucionado hasta convertirnos en un equipo comprometido con la innovación y la excelencia tecnológica. Nuestro objetivo es ofrecer soluciones inteligentes que impulsen el crecimiento y la transformación digital de las empresas.
-          </p>
+      {/* HERO SECTION (SIN CAMBIOS) */}
+      <section
+        className="nosotros-hero"
+        style={{ backgroundImage: `url(${nosotrosImg})` }}
+      >
+        <div className="nosotros-overlay">
+          <div className="nosotros-hero-content">
+            <h1>
+              Nuestra Historia & <br /> <span>Pasion por las Motos</span>
+            </h1>
+            <p>
+              En MotorFix SAS somos especialistas en mantenimiento, diagnóstico y
+              personalización de motocicletas. <span>Nuestra comunidad biker</span> nos
+              respalda por la calidad, dedicación y compromiso que ofrecemos en cada servicio.
+            </p>
+          </div>
         </div>
       </section>
 
-      <section className="timeline-section">
-        <div className="container">
-          <h2 className="timeline-title">Nuestra historia</h2>
+      {/* POR QUÉ ELEGIRNOS (SIN CAMBIOS) */}
+      <section className="nosotros-por-que">
+        <h2>¿Por Qué Elegirnos?</h2>
+        <div className="nosotros-feature-grid">
+          <div 
+            className="nosotros-feature-box" 
+            onClick={() => openModal(
+              ' Taller Certificado', 
+              'Nuestro taller está certificado por estándares internacionales, garantizando reparaciones de alta calidad y seguridad. Utilizamos equipos de última generación para diagnósticos precisos.',
+              tallerCertificadoImg 
+            )}
+          >
+             Taller Certificado
+          </div>
+          <div 
+            className="nosotros-feature-box" 
+            onClick={() => openModal(
+              ' Mecánicos Expertos', 
+              'Contamos con un equipo de mecánicos certificados con años de experiencia en motocicletas de todas las marcas. Siempre capacitados en las últimas tecnologías.',
+              mecanicosExpertosImg 
+            )}
+          >
+             Mecánicos Expertos
+          </div>
+          <div 
+            className="nosotros-feature-box" 
+            onClick={() => openModal(
+              ' Personalización Real', 
+              'Ofrecemos personalizaciones únicas y a medida, desde cambios estéticos hasta mejoras de rendimiento. Tu moto, tu estilo, nuestra pasión.',
+              personalizacionRealImg 
+            )}
+          >
+             Personalización Real
+          </div>
+          <div 
+            className="nosotros-feature-box" 
+            onClick={() => openModal(
+              ' Comunidad Biker', 
+              'Formamos parte de una comunidad apasionada por las motos. Organizamos eventos y compartimos consejos para que vivas la experiencia biker al máximo.',
+              comunidadBikerImg 
+            )}
+          >
+             Comunidad Biker
+          </div>
+        </div>
+      </section>
 
-          <div className="timeline">
-            <div className="timeline-items">
+      {/* LÍNEA DEL TIEMPO (NUEVA, INTERACTIVA) */}
+      <section className="nosotros-timeline-section">
+        <div className="nosotros-container">
+          <h2 className="nosotros-timeline-title">Nuestra Historia</h2>
+          <div className="nosotros-timeline">
+            <div className="nosotros-timeline-items">
               {timelineData.map((item, index) => {
                 const isActive = expandedItem === index;
                 return (
                   <div
                     key={index}
-                    className={`timeline-item ${isActive ? 'active' : ''}`}
+                    className={`nosotros-timeline-item ${isActive ? 'active' : ''}`}
                     onClick={() => toggleItem(index)}
                   >
-                    <div className="dot" aria-hidden="true" />
-                    <div className="content">
+                    <div className="nosotros-dot" aria-hidden="true" />
+                    <div className="nosotros-content">
                       <h3>{item.date}</h3>
                       {isActive && (
-                        <p className="timeline-description">{item.description}</p>
+                        <p className="nosotros-timeline-description">{item.description}</p>
                       )}
                     </div>
                   </div>
@@ -73,6 +139,26 @@ const Nosotros = () => {
           </div>
         </div>
       </section>
+
+      {/* STATS (SIN CAMBIOS) */}
+      <section className="nosotros-stats">
+        <div className="nosotros-stat"><span>+300</span>Motos Reparadas</div>
+        <div className="nosotros-stat"><span>+120</span>Personalizaciones</div>
+        <div className="nosotros-stat"><span>5 Años</span>Experiencia</div>
+        <div className="nosotros-stat"><span>6 Ciudades</span>Clientes</div>
+      </section>
+
+      {/* MODAL (SIN CAMBIOS) */}
+      {modalOpen && (
+        <div className="nosotros-modal-overlay" onClick={closeModal}>
+          <div className="nosotros-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="nosotros-modal-close" onClick={closeModal}>×</button>
+            <img src={modalContent.image} alt={modalContent.title} className="nosotros-modal-image" />
+            <h3>{modalContent.title}</h3>
+            <p>{modalContent.text}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
