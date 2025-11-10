@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "./Nosotros.css";
-import nosotrosImg from "../../assets/fnoso.png"; 
-import tallerCertificadoImg from "../../assets/taller-certificado.jpg";
-import mecanicosExpertosImg from "../../assets/mecanicos-expertos.jpg";
-import personalizacionRealImg from "../../assets/personalizacion-real.jpg";
-import comunidadBikerImg from "../../assets/comunidad-biker.png";
-import servicioRapidoImg from "../../assets/servicio-rapido.jpg"; // Nueva imagen
-import garantiaImg from "../../assets/garantia.jpg"; // Nueva imagen
+import nosotrosImg from "../../assets/Nosotrosimg/fnoso.png"; 
+import tallerCertificadoImg from "../../assets/Nosotrosimg/taller-certificado.jpg";
+import mecanicosExpertosImg from "../../assets/Nosotrosimg/mecanicos-expertos.jpg";
+import personalizacionRealImg from "../../assets/Nosotrosimg/personalizacion-real.jpg";
+import comunidadBikerImg from "../../assets/Nosotrosimg/comunidad-biker.png";
+import servicioRapidoImg from "../../assets/Nosotrosimg/servicio-rapido.jpg"; // Nueva imagen
+import garantiaImg from "../../assets/Nosotrosimg/garantia.jpg"; // Nueva imagen
 
 const Nosotros = () => {
   // Datos de la timeline adaptados a MotorFix, con cinco años
