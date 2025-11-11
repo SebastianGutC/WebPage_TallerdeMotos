@@ -1,0 +1,27 @@
+/* Botón flotante del chat */
+df-messenger::part(chat-icon-button) {
+  background-color: #cc0000; /* rojo del taller */
+  border-radius: 12px;
+}
+
+/* Barra de título */
+df-messenger::part(chat-title-bar) {
+  background: #111;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Mensajes del usuario */
+df-messenger::part(user-message) {
+  background: #fff3e0;
+}
+
+/* Mensajes del bot */
+df-messenger::part(bot-message) {
+  background: #f0f0f0;
+}
+
+/* Contenedor, opcional para espaciar respecto al footer si tienes uno fijo */
+df-messenger {
+  margin-bottom: 12px;
+}
