@@ -5,6 +5,10 @@ import './styles/global.css'
 // Foundation
 import $ from 'jquery'
 import 'foundation-sites'
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+config.autoAddCss = false;
+
 
 $(document).foundation();
 
