@@ -3,8 +3,6 @@ import Header from "./components/common/Header/Header";
 import AppRouter from "./router/AppRouter"
 import Footer from "./components/common/Footer/Footer";
 
-
-
 function App() {
   return (
     <BrowserRouter>
