@@ -1,25 +1,27 @@
-import DialogflowWidget from "../../components/Api/DialogFlow.jsx";
-import "../../pages/Api/Dudas.css";
+import DialogflowWidget from "../../components/ChatBot/ChatBot.jsx";
 
 export default function Dudas() {
   return (
-    <>
-      <div className="grid-container">
-        <div className="grid-x grid-margin-x align-center">
-          <div className="cell small-12 medium-10 large-8">
-            <h2>¿Tienes dudas? 👇</h2>
-            <p>
-              Chatea con nuestro asistente sobre servicios, precios, horarios, repuestos y más.
-            </p>
-            <div className="callout">
-              <p>Haz tus preguntas y recibe respuesta al instante.</p>
-            </div>
+    <div className="grid-container dudas-container">
+      <div className="grid-x grid-margin-x grid-padding-y">
+
+        <div className="cell small-12 medium-3">
+          <h2>¿Tienes dudas?</h2>
+          <p>
+            Chatea con nuestro asistente sobre servicios, precios, horarios,
+            repuestos y más.
+          </p>
+          <div className="callout">
+            <p>Haz tus preguntas y recibe respuesta al instante.</p>
           </div>
         </div>
-      </div>
 
-      {/* El widget flotante */}
-      <DialogflowWidget />
-    </>
+        <div className="cell small-12 medium-9 chatbot-right">
+          <DialogflowWidget />
+        </div>
+
+      </div>
+    </div>
   );
 }
+

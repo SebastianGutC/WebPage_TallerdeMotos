@@ -1,27 +1,38 @@
-/* Botón flotante del chat */
-df-messenger::part(chat-icon-button) {
-  background-color: #cc0000; /* rojo del taller */
-  border-radius: 12px;
+.dudas-container {
+  margin-top: 40px;
 }
 
-/* Barra de título */
-df-messenger::part(chat-title-bar) {
-  background: #111;
-  color: #fff;
-  font-weight: 600;
+.dudas-container .cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
-/* Mensajes del usuario */
-df-messenger::part(user-message) {
-  background: #fff3e0;
+/* Contenedor del chatbot (lado derecho) */
+.chatbot-right {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 70%;
 }
 
-/* Mensajes del bot */
-df-messenger::part(bot-message) {
-  background: #f0f0f0;
+/* Ajusta el widget del bot */
+#motorfix-chat, 
+.chatbot-right > div {
+  width: 100%;
+  max-width: 420px; /* como una tarjeta */
 }
 
-/* Contenedor, opcional para espaciar respecto al footer si tienes uno fijo */
-df-messenger {
-  margin-bottom: 12px;
+/* Para que no se desborde */
+.chat-card {
+  width: 100% !important;
+}
+
+/* ====== Responsividad ====== */
+
+@media (max-width: 640px) {
+  .chatbot-right {
+    margin-top: 20px;
+    justify-content: center;
+  }
 }
