@@ -22,7 +22,7 @@ const RepuestoModal = ({ repuesto, onClose }) => {
         <p className="modal-tipo">{repuesto.tipo}</p>
         <p className="modal-marca">Marca: {repuesto.marca}</p>
         <p className="modal-modelo">Modelo: {repuesto.modelo}</p>
-        <p className="modal-precio">${repuesto.precio.toLocaleString("es-CO")}</p>
+        <h4 className="modal-precio">${repuesto.precio.toLocaleString("es-CO")}</h4>
         <p className="modal-descripcion">{repuesto.descripcion}</p>
       </div>
     </div>

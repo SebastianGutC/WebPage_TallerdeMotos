@@ -16,18 +16,19 @@
 
 /* Contenedor del modal */
 .modal-content {
-  background-color: #1a1a1a;
+  background-color: #ffff;
   padding: 2rem;
   border-radius: 16px;
   max-width: 500px;
   width: 90%;
   text-align: center;
-  color: #fff;
+  color: #111;
   position: relative;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
   animation: slideIn 0.3s ease;
   max-height: 85vh; /* no ocupa toda la pantalla */
   overflow-y: auto;
+  border: 2px solid #FF8200;
 }
 
 /* Imagen */
@@ -57,7 +58,7 @@
   right: 15px;
   background: transparent;
   border: none;
-  color: #FFC100;
+  color: #FF8200;
   font-size: 1.5rem;
   cursor: pointer;
 }
@@ -68,7 +69,7 @@
 
 /* Texto */
 .modal-precio {
-  color: #FFEAAE;
+  color: #FF8200;
   font-weight: bold;
   margin: 0.5rem 0;
 }
@@ -78,11 +79,11 @@
   text-align: justify!important;
   margin-top: 1rem;
   line-height: 1.4;
-  color: #ccc;
+  color: #111;
 }
 
 .modal-nombre {
-    color: #FFEAAE;
+    color: #111;
 }
 
 /* Animaciones */
@@ -94,4 +95,23 @@
 @keyframes slideIn {
   from { transform: translateY(-15px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+/* Oculta scrollbar en navegadores basados en WebKit (Chrome, Edge, Safari) */
+.modal-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Oculta scrollbar en Firefox */
+.modal-content {
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Si quieres ocultarla también en el overlay */
+.modal-overlay::-webkit-scrollbar {
+  display: none;
+}
+
+.modal-overlay {
+  scrollbar-width: none;
 }

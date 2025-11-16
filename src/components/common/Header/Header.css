@@ -43,7 +43,7 @@ body{
   transform: translateY(-2px);
 }
 
-.nav-link.active {
+.menu a.active {
   color: #fff;
   background-color: rgba(255, 255, 255, 0.25);
   border-radius: 60px;
@@ -379,3 +379,132 @@ body{
     }
   }
 }
+
+/* === Estilo del carrito === */
+.cart-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.cart-btn:hover {
+  transform: scale(1.1);
+  opacity: 0.85;
+}
+
+.cart-icon {
+  font-size: 28px;
+  color: #0A0903; /* negro */
+}
+
+/* Ajustes responsivos */
+@media (max-width: 680px) {
+  .cart-icon {
+    font-size: 20px;
+    color: #fff;
+  }
+}
+
+@media (min-width: 681px) and (max-width: 1270px) {
+  .cart-icon {
+    font-size: 24px;
+    color: #0A0903;
+  }
+}
+
+/* --- Organización del lado derecho del header --- */
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+/* Agrupación del carrito y los botones de sesión */
+.cart-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* --- Estilo del carrito --- */
+.cart-btn {
+  position: relative; 
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  transition: transform 0.2s ease, opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-btn:hover {
+  transform: scale(1.1);
+  opacity: 0.85;
+}
+
+.cart-icon {
+  font-size: 28px;
+  color: #0A0903; /* negro */
+}
+
+/* --- Responsivo --- */
+@media (max-width: 680px) {
+  .top-bar-right {
+    gap: 8px;
+  }
+
+  .cart-container {
+    order: 1;
+  }
+
+  .user-actions {
+    order: 2;
+    gap: 4px;
+  }
+
+  .cart-icon {
+    font-size: 20px;
+    color: #0A0903;
+  }
+}
+
+@media (min-width: 681px) and (max-width: 1270px) {
+  .cart-icon {
+    font-size: 24px;
+    color: #0A0903;
+  }
+}
+
+.cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: red;
+  color: black;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+

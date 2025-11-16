@@ -1,14 +1,18 @@
 import React from "react";
 import "./RepuestoCard.css";
+import { useCart } from "../../../context/CartContext";
 
 const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
+  const { addToCart } = useCart();
+
+  const handleAdd = (e) => {
+    e.stopPropagation();
+    addToCart({ imagen, nombre, precio });
+  };
+
   return (
     <div className="cell small-12 medium-6 large-4">
-      <div
-        className="card repuesto-card equal-card"
-        onClick={onClick}
-        style={{ cursor: "pointer" }}
-      >
+      <div className="card repuesto-card equal-card" onClick={onClick} style={{ cursor: "pointer" }}>
         <div className="repuesto-imagen-container">
           <img src={imagen} alt={nombre} className="repuesto-imagen" loading="lazy" />
         </div>
@@ -16,23 +20,18 @@ const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
         <div className="card-section repuesto-info">
           <div className="repuesto-textos">
             <h6 className="repuesto-nombre">{nombre}</h6>
-            <h4 className="repuesto-precio">
-              ${precio.toLocaleString("es-CO")}
-            </h4>
+            <h4 className="repuesto-precio">${precio.toLocaleString("es-CO")}</h4>
           </div>
 
-
           <div className="repuesto-footer">
-            <span
-              className={`repuesto-disponible ${disponible ? "en-stock" : "agotado"}`}
-            >
+            <span className={`repuesto-disponible ${disponible ? "en-stock" : "agotado"}`}>
               {disponible ? "Disponible" : "Agotado"}
             </span>
 
             <button
               className={`repuesto-btn ${!disponible ? "disabled" : ""}`}
               disabled={!disponible}
-              onClick={(e) => e.stopPropagation()}
+              onClick={handleAdd}
             >
               {disponible ? "Agregar al carrito" : "No disponible"}
             </button>
@@ -44,4 +43,5 @@ const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
 };
 
 export default RepuestoCard;
+
 
