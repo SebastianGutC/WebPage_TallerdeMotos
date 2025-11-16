@@ -43,7 +43,7 @@ body{
   transform: translateY(-2px);
 }
 
-.nav-link.active {
+.menu a.active {
   color: #fff;
   background-color: rgba(255, 255, 255, 0.25);
   border-radius: 60px;
@@ -442,6 +442,7 @@ body{
 
 /* --- Estilo del carrito --- */
 .cart-btn {
+  position: relative; 
   background: none;
   border: none;
   cursor: pointer;

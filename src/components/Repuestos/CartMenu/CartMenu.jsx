@@ -30,27 +30,35 @@ const CartMenu = () => {
         ) : (
           cartItems.map((item, index) => (
             <div className="cart-item" key={index}>
-              <img src={item.imagen} alt={item.nombre} className="cart-img" />
-              <div className="cart-info">
-                <h6>{item.nombre}</h6>
-                <p>${item.precio.toLocaleString("es-CO")}</p>
-                <div className="cart-controls">
-                  <button onClick={() => decreaseQty(item.nombre)}>
-                    <i className="fi-minus"></i>
-                  </button>
-                  <span>{item.cantidad}</span>
-                  <button onClick={() => increaseQty(item.nombre)}>
-                    <i className="fi-plus"></i>
-                  </button>
-                  <button
-                    className="remove-btn"
-                    onClick={() => removeFromCart(item.nombre)}
-                  >
-                    <i className="fi-x"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
+  <img src={item.imagen} alt={item.nombre} className="cart-img" />
+
+  <div className="cart-info">
+    <h6 className="cart-nombre">{item.nombre}</h6>
+
+    <div className="cart-precios">
+      {item.precioAntes && (
+        <p className="precio-antes">${item.precioAntes.toLocaleString("es-CO")}</p>
+      )}
+      <p className="precio-ahora">${item.precio.toLocaleString("es-CO")}</p>
+    </div>
+
+    <div className="cart-bottom-row">
+      <div className="cart-controls">
+        <button onClick={() => decreaseQty(item.nombre)} className="qty-btn">–</button>
+        <span className="qty-number">{item.cantidad}</span>
+        <button onClick={() => increaseQty(item.nombre)} className="qty-btn">+</button>
+      </div>
+
+      <button
+        className="remove-btn"
+        onClick={() => removeFromCart(item.nombre)}
+      >
+        <i className="fi-trash"></i>
+      </button>
+        </div>
+      </div>
+    </div>
+
           ))
         )}
       </div>
