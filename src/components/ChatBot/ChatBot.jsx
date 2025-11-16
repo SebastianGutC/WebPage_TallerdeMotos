@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import ReactMarkdown from "react-markdown"; 
 import "./chatBot.css";
 import { SYSTEM_PROMPT } from "../../assets/js/InfoEmpresa";
@@ -32,9 +32,6 @@ function limpiarSaludo(text, isFirstMessage) {
   return t.trim();
 }
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
 
   const handleSend = async () => {
     if (!input.trim()) return;
