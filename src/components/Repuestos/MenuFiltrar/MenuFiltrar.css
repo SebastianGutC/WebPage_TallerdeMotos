@@ -177,3 +177,32 @@
     font-size: 0.85rem;
   }
 }
+
+/* 🔘 Botón visible SOLO en móviles */
+.btn-toggle-filtros {
+  display: none;
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #d1d1d1;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+/* Modo móvil */
+@media (max-width: 500px) {
+  .btn-toggle-filtros {
+    display: block;
+  }
+
+  /* El menú está oculto por defecto */
+  .menu-filtrar.closed {
+    display: none;
+  }
+
+  /* Cuando está abierto */
+  .menu-filtrar.open {
+    display: block;
+  }
+}
