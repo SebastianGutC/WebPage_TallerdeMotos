@@ -87,15 +87,15 @@
 }
 
 .repuesto-btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  margin-top: 0.4rem !important; 
 
-  padding: 0.75rem 1.5rem;   /* Tamaño similar a Foundation */
-  min-height: 2.5rem;
-  width: auto;
+  flex-grow: 1;               /* OCUPA TODO EL ESPACIO RESTANTE */
+  width: 100%;                /* Para que funcione también en pantallas pequeñas */
+
+  height: 42px;               /* Igual que el botón pequeño */
+  min-height: 42px;
 
   background-color: #FFC100;
   color: black;
@@ -107,6 +107,7 @@
 
   cursor: pointer;
   transition: background-color 0.2s ease;
+  padding: 0 1rem;  
 }
 
 .repuesto-btn:hover {
@@ -144,6 +145,68 @@
 .repuesto-textos {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem !important; /* 🔥 Compacta nombre + precio */
+  gap: 0.2rem !important; /* Compacta nombre + precio */
 }
+
+/* Fila de botones */
+.repuesto-botones-fila {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  gap: 0.6rem; /*Pequeño espacio entre botones */
+}
+
+
+/* Botón pequeño solo para el ícono */
+.repuesto-btn-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 52px;
+  height: 42px;              /* Misma altura que los 2.5rem del botón grande */
+  min-height: 42px;          /* Evita descuadres */
+  padding: 0 !important;     /* Para que no crezca accidentalmente */
+
+  background-color: #FFEAAE;
+  border: 2px solid black;
+  border-radius: 20px;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+
+/* Hover */
+.repuesto-btn-icon:hover {
+  background-color: #FFC100;
+}
+
+/* Disabled */
+.repuesto-btn-icon.disabled,
+.repuesto-btn-icon:disabled {
+  background-color: #ccc !important;
+  cursor: not-allowed;
+}
+
+/*Tarjetas NO disponibles: menos brillo pero siguen siendo clickeables */
+.repuesto-card.no-disponible {
+  opacity: 0.55;            /* Hace ver apagado */
+  filter: grayscale(0.3);   /* Le quita un poco el color */
+  pointer-events: auto !important; /* Sigue permitiendo clics */
+}
+
+/* Evita que el hover las "reviva" */
+.repuesto-card.no-disponible:hover {
+  transform: none !important;
+}
+
+.repuesto-card.no-disponible:hover .repuesto-imagen {
+  transform: none !important;
+}
+
 
