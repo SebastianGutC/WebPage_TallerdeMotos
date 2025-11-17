@@ -24,9 +24,9 @@ const HeroSection = () => {
           </h1>
           <p>Calidad, rendimiento y confianza en cada pieza.</p>
 
-          {/* 👇 Texto que actúa como enlace */}
+          {/*Texto que actúa como enlace */}
           <p className="link-ver-catalogo" onClick={scrollToCatalogo}>
-            Ver catálogo →
+            Ver catálogo
           </p>
         </div>
       </div>

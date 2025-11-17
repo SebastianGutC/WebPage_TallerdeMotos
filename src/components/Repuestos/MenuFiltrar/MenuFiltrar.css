@@ -10,6 +10,8 @@
   transition: all 0.3s ease;
 }
 
+
+
 .menu-filtrar-titulo {
   font-weight: 700;
   color: #111;
@@ -48,13 +50,19 @@
 
 .precio-inputs {
   display: flex;
-  gap: 0.4rem;
-  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
 }
 
 .precio-inputs input {
   flex: 1;
-  min-width: 100px;
+  min-width: 0;
+}
+
+.precio-inputs .buscar-precio-btn {
+  flex: 0 0 40px;
 }
 
 .buscar-precio-btn {
@@ -63,7 +71,7 @@
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  background: #d1d1d1;
+  background: #FFEAAE;
   transition: 0.2s;
   display: flex;
   align-items: center;
@@ -71,7 +79,7 @@
 }
 
 .buscar-precio-btn:hover {
-  background: #bdbdbd;
+  background: #FFC100;
 }
 
 .sliders-container {
@@ -142,11 +150,6 @@
 
   .menu-filtrar-titulo {
     font-size: 1rem;
-  }
-
-  .precio-inputs {
-    flex-direction: column;
-    gap: 0.5rem;
   }
 
   .buscar-precio-btn {

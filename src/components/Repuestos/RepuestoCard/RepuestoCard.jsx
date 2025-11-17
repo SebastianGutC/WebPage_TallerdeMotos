@@ -24,9 +24,6 @@ const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
           </div>
 
           <div className="repuesto-footer">
-            <span className={`repuesto-disponible ${disponible ? "en-stock" : "agotado"}`}>
-              {disponible ? "Disponible" : "Agotado"}
-            </span>
 
             <button
               className={`repuesto-btn ${!disponible ? "disabled" : ""}`}

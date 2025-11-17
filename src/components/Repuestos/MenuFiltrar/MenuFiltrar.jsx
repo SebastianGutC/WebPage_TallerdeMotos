@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import repuestos from "../../../assets/js/DataRepuestos";
 import "./MenuFiltrar.css";
+import CustomSelect from "./CustomSelect"; // ⬅ IMPORTANTE
 
 const MenuFiltrar = ({ filtros, onFiltroChange }) => {
   const [localFiltros, setLocalFiltros] = useState(filtros);
@@ -50,14 +51,16 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
 
   const handleSliderChange = (e, target) => {
     const value = Number(e.target.value);
+
+    const precioMinActual = localFiltros.precioMin ?? precioMinDisponible;
+    const precioMaxActual = localFiltros.precioMax ?? precioMaxDisponible;
+
     let nuevosFiltros = { ...localFiltros };
 
     if (target === "min") {
-      nuevosFiltros.precioMin = value;
-      if (value > Number(nuevosFiltros.precioMax)) nuevosFiltros.precioMax = value;
+      nuevosFiltros.precioMin = Math.min(value, precioMaxActual);
     } else {
-      nuevosFiltros.precioMax = value;
-      if (value < Number(nuevosFiltros.precioMin)) nuevosFiltros.precioMin = value;
+      nuevosFiltros.precioMax = Math.max(value, precioMinActual);
     }
 
     setLocalFiltros(nuevosFiltros);
@@ -89,40 +92,46 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
     <aside className="menu-filtrar">
       <h3 className="menu-filtrar-titulo">Filtrar repuestos</h3>
 
+      {/* ------------------ TIPO ------------------ */}
       <label>Tipo</label>
-      <select name="tipo" value={localFiltros.tipo} onChange={handleChange}>
-        <option value="">Todos</option>
-        {tipos.map((tipo, i) => (
-          <option key={i} value={tipo}>{tipo}</option>
-        ))}
-      </select>
+      <CustomSelect
+        placeholder="Todos"
+        options={[
+          { value: "", label: "Todos" },
+          ...tipos.map(t => ({ value: t, label: t }))
+        ]}
+        onChange={(opt) =>
+          handleChange({ target: { name: "tipo", value: opt.value } })
+        }
+      />
 
+      {/* ------------------ MARCA ------------------ */}
       <label>Marca</label>
-      <select
-        name="marca"
-        value={localFiltros.marca}
-        onChange={handleChange}
-        disabled={marcas.length === 0}
-      >
-        <option value="">Todas</option>
-        {marcas.map((marca, i) => (
-          <option key={i} value={marca}>{marca}</option>
-        ))}
-      </select>
+      <CustomSelect
+        placeholder="Todas"
+        options={[
+          { value: "", label: "Todas" },
+          ...marcas.map(m => ({ value: m, label: m }))
+        ]}
+        onChange={(opt) =>
+          handleChange({ target: { name: "marca", value: opt.value } })
+        }
+      />
 
+      {/* ------------------ MODELO ------------------ */}
       <label>Modelo</label>
-      <select
-        name="modelo"
-        value={localFiltros.modelo}
-        onChange={handleChange}
-        disabled={modelos.length === 0}
-      >
-        <option value="">Todos</option>
-        {modelos.map((modelo, i) => (
-          <option key={i} value={modelo}>{modelo}</option>
-        ))}
-      </select>
+      <CustomSelect
+        placeholder="Todos"
+        options={[
+          { value: "", label: "Todos" },
+          ...modelos.map(m => ({ value: m, label: m }))
+        ]}
+        onChange={(opt) =>
+          handleChange({ target: { name: "modelo", value: opt.value } })
+        }
+      />
 
+      {/* ------------------ PRECIO ------------------ */}
       <div className="precio-filtro">
         <h4>Rango de Precio</h4>
 

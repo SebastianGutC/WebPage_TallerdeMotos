@@ -28,8 +28,8 @@ const Repuestos = () => {
     marca: "",
     modelo: "",
     tipo: "",
-    precioMin: "",
-    precioMax: "",
+    precioMin: null,
+    precioMax: null,
     soloDisponibles: false,
   });
 
