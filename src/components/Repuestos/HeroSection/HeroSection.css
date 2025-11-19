@@ -54,7 +54,17 @@
 }
 
 .hero-content span {
-  color: #FFC100;
+  font-size: clamp(2rem, 6vw, 3rem);;
+  color: #ffc100;
+  transition: color 0.3s ease; 
+}
+
+
+.hero-content:hover span {
+  background: linear-gradient(90deg, #ff0000, #ff8200, #ffc100);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .hero-content p {
@@ -75,9 +85,6 @@
   transition: all 0.3s ease;
 }
 
-.btn-ver-catalogo:hover {
-  background-color: #FFC100;
-}
 
 .link-ver-catalogo {
   margin-top: 1.8rem;
@@ -90,7 +97,7 @@
 }
 
 .link-ver-catalogo:hover {
-  color: #ffc100;
+  color: #ff8200;
   text-decoration: underline;
 }
 

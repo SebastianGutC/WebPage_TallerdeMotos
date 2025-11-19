@@ -10,8 +10,10 @@ import KitArrastreGn125 from "../RepuestosImg/KitArrastreGn125.png"
 import BateriaYuasa from "../RepuestosImg/BateriaYuasa.png"
 import AmortiguadoresTraseros from "../RepuestosImg/AmortiguadoresTraseros.png"
 import EspejosNaked from "../RepuestosImg/EspejosNaked.png"
+import DireccionalIzquierdaGz from "../RepuestosImg/direccional_trasera_izquierda.png"
+import KitLuces6000k from "../RepuestosImg/kit_luces_6000k.png"
+import Guardabarro from "../RepuestosImg/guardabarro.png"
 
-const ImagenTemporal = AceiteMotul;
 const repuestos = [
   {
     imagen: AceiteMotul,
@@ -32,7 +34,7 @@ const repuestos = [
     marca: "Michelin",
     modelo: "Yamaha FZ, Pulsar NS",
     precio: 220000,
-    disponible: false,
+    disponible: true,
     descripcion: "Encuentra la seguridad y estabilidad que necesitas para recorrer aquellos caminos que tanto anhelas. Siéntete confiado al conducir, garantizando la firmeza precisa en tu andar. Las llantas Michelin te garantizan la seguridad y eficiencia que necesitas, cuidando de una manera destacada el medio ambiente. Su calidad se ve reflejada en cada frenada, ya que son resistentes al desgaste"
         + "La seguridad que buscas con excelente capacidad para evacuar el agua con el fin de evitar el aquaplaning."
   },
@@ -143,6 +145,40 @@ const repuestos = [
     descripcion:
       "Par de espejos laterales Rizoma tipo Naked, fabricados en aluminio anodizado de alta calidad. Diseño deportivo y aerodinámico, ajustables y compatibles con la mayoría de manillares estándar.",
   },
+    {
+    imagen: DireccionalIzquierdaGz,
+    nombre: "Direccional Trasera Izquierda Para Suzuki Gz 150",
+    tipo: "Accesorios",
+    marca: "Suzuki",
+    modelo: "Gz 150",
+    precio: 71300,
+    disponible: true,
+    descripcion:
+      "Las direccionales de la Suzuki GZ 150 son componentes de seguridad y visibilidad, diseñados para indicar las maniobras de la moto. Son piezas resistentes y duraderas, fáciles de ver tanto de día como de noche, lo que mejora la comunicación con otros conductores y reduce el riesgo de accidentes. ",
+  },
+{
+  imagen: KitLuces6000k,
+  nombre: "Kit de Luces LED Alta Intensidad H4 6000K",
+  tipo: "Iluminación",
+  marca: "TechLight",
+  modelo: "Universal H4",
+  precio: 68000,
+  disponible: false,
+  descripcion:
+    "Kit de luces LED H4 de alta intensidad con temperatura de color 6000K. Ofrece mayor visibilidad nocturna, bajo consumo energético y una vida útil superior a la de los bombillos halógenos tradicionales. Compatible con la mayoría de motos que usan bombilla H4.",
+},
+{
+  imagen: Guardabarro,
+  nombre: "Guardabarro Delantero Universal Para Moto",
+  tipo: "Accesorios",
+  marca: "StormParts",
+  modelo: "Universal 125-200cc",
+  precio: 45000,
+  disponible: true,
+  descripcion:
+    "Guardabarro delantero universal fabricado en ABS reforzado. Diseño deportivo y adaptable a la mayoría de motos entre 125cc y 200cc. Ideal para reemplazos o personalización, resistente al agua, barro y vibraciones.",
+},
+
 ];
 
 export default repuestos;
