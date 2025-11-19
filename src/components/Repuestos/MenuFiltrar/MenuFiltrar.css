@@ -126,7 +126,7 @@
 }
 
 /* ===========================
-   📱 RESPONSIVE DESIGN
+   RESPONSIVE DESIGN
    =========================== */
 
 /* Tablets */
@@ -178,7 +178,7 @@
   }
 }
 
-/* 🔘 Botón visible SOLO en móviles */
+/* Botón visible SOLO en móviles */
 .btn-toggle-filtros {
   display: none;
   width: 100%;
@@ -206,3 +206,126 @@
     display: block;
   }
 }
+
+.menu-filtrar {
+  padding: 1.4rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 260px;
+  background: #fff;
+  border: 1px solid #d1d1d1;
+  box-sizing: border-box;
+  height: fit-content;
+  transition: all 0.3s ease;
+
+  /* HACE QUE EL MENÚ SIGA EL SCROLL */
+  position: sticky;
+  top: 100px; /* Ajustable: separación desde la parte superior */
+  z-index: 10; /* Para que no quede detrás de otros elementos */
+}
+
+/* Sticky SOLO EN ESCRITORIO */
+@media (min-width: 501px) {
+  .menu-filtrar {
+    position: sticky;
+    top: 100px;
+    z-index: 10;
+  }
+}
+
+/* 📱 ESTILO MEJORADO PARA CELULARES */
+@media (max-width: 500px) {
+
+  /* Contenedor centrado */
+  .menu-filtrar {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 1.2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  }
+
+  /* Estados open/closed se mantienen */
+  .menu-filtrar.open {
+    display: block;
+  }
+
+  .menu-filtrar.closed {
+    display: none;
+  }
+}
+
+
+/* ===========================
+   CHECKBOX PERSONALIZADO
+   =========================== */
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+/* contenedor */
+.custom-checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Ocultar checkbox original */
+.custom-checkbox input[type="checkbox"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+/* Cuadro personalizado */
+.custom-checkbox .checkmark {
+  width: 22px;        /* tamaño más grande */
+  height: 22px;
+  border-radius: 4px;
+  border: 2px solid #999;
+  background: white;
+  display: inline-block;
+  transition: 0.2s ease;
+}
+
+/* Cuando está checkeado */
+.custom-checkbox input[type="checkbox"]:checked + .checkmark {
+  background: #FFC100;             /* color pedido */
+  border-color: #FFC100;
+
+}
+
+/* Checkmark interno (✓) */
+.custom-checkbox .checkmark::after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* cuando está marcado → mostrar palomita */
+.custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
+  display: block;
+}
+
+/* Estilo del ✓ */
+.custom-checkbox .checkmark::after {
+  left: 7px;
+  top: 3px;
+  width: 6px;
+  height: 12px;
+  border: solid #111;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+
+
+
+
