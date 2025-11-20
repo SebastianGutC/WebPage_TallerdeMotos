@@ -8,15 +8,6 @@
   --text: #ffffff;
 }
 
-/* Estilos exclusivos para la página Nosotros con prefijos "nosotros-" */
-
-/* Página general */
-.nosotros-page {
-  background: #fafafa;
-  color: #111;
-  font-family: 'Lato', 'Outfit', 'Source Sans 3', sans-serif; /* Fuente aplicada */
-}
-
 /* HERO */
 .nosotros-hero {
   position: relative;
@@ -64,8 +55,16 @@
 }
 
 .nosotros-hero-content h1 span {
-  color: #f5f5f5;
+  color: #FFEAAE;
   font-style: italic;
+}
+
+.light:hover {
+  background: linear-gradient(to right, #FF0000, #FF8200, #FFC100);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }
 
 .nosotros-hero-content p {
@@ -76,17 +75,16 @@
   color: #f5f5f5;
 }
 
-/* POR QUÉ ELEGIRNOS */
 .nosotros-por-que {
   text-align: center;
-  margin: 70px auto;
-  max-width: 1200px; /* Ajustado para más items */
+  margin: 2rem 1rem;
+  max-width: 1200px;
 }
 .nosotros-por-que h2 {
   font-family: 'Outfit', sans-serif;
   font-weight: 700;
   font-size: clamp(1.8rem, 4vw, 2.6rem);
-  color: #ff8200;
+  color: #0A0903;
 }
 
 .nosotros-feature-grid {
@@ -94,6 +92,7 @@
   grid-template-columns: repeat(3, 1fr); /* Tres columnas para forzar dos filas */
   gap: 25px;
   margin-top: 35px;
+  margin-left: 15px;
 }
 
 .nosotros-feature-box {
@@ -128,7 +127,8 @@
 
 .nosotros-feature-box p {
   color: #0A0903;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 390;
   line-height: 1.6;
   margin: 0;
 }
@@ -136,13 +136,12 @@
 /* TIMELINE (NUESTRA HISTORIA) - AHORA CON FONDO BLANCO Y COLORES AJUSTADOS */
 .nosotros-timeline-section {
   background: #ffffff; /* Fondo blanco para armonía */
-  padding: 3rem 1rem 4rem;
+  margin: 2rem 0;
 }
 
 .nosotros-timeline-title {
   margin: 0 0 1.75rem;
-  color: #ff8200;
-  font-family: 'Outfit', sans-serif;
+  color: #0A0903;
   font-weight: 700;
   font-size: clamp(1.6rem, 4vw, 2.4rem);
   text-align: center;
@@ -289,12 +288,13 @@
 .nosotros-stat {
   text-align: center;
   font-size: 18px;
+  font-weight: 500;
 }
 
 .nosotros-stat span {
   display: block;
   font-size: 34px;
-  color: #d35400;
+  color: #FF8200;
   font-weight: 700;
 }
 

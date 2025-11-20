@@ -78,40 +78,40 @@
 /* --- Footer con botón --- */
 .repuesto-footer {
   display: flex;
-  flex-direction: column; /* apila el texto y el botón verticalmente */
+  justify-content: center; /* centra todo el contenido */
   align-items: center;
-  justify-content: center;
-  padding: 0.4rem 0.5rem !important;
-  gap: 0.4rem; /* espacio entre “Disponible” y el botón */
+  padding: 0.5rem 0;
   background: #fff;
+}
+
+.repuesto-botones-fila {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 .repuesto-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  flex-grow: 1;               /* OCUPA TODO EL ESPACIO RESTANTE */
-  width: 100%;                /* Para que funcione también en pantallas pequeñas */
-
-  height: 42px;               /* Igual que el botón pequeño */
+  padding: 2px 14px;
+  height: 34px;            
   min-height: 42px;
-
-  background-color: #FFC100;
-  color: black;
+  background-color: rgba(0, 0, 0, 0.795) ;
+  color: #f5f5f5;
   font-weight: bold;
-  font-size: 15px;
-
-  border-radius: 20px;
-  border: 2px solid black;
-
+  font-size: 16px;
+  border-radius: 30px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  padding: 0 1rem;  
 }
 
 .repuesto-btn:hover {
-  background: #FFEAAE;
+  background: #FFC100 !important;
+  color: #0A0903;
 }
 
 .repuesto-btn.disabled,
@@ -164,12 +164,12 @@
   justify-content: center;
   align-items: center;
 
-  width: 52px;
+  width: 55px;
   height: 42px;              /* Misma altura que los 2.5rem del botón grande */
   min-height: 42px;          /* Evita descuadres */
   padding: 0 !important;     /* Para que no crezca accidentalmente */
 
-  background-color: #FFEAAE;
+  background-color: transparent;
   border: 2px solid black;
   border-radius: 20px;
 
@@ -184,6 +184,7 @@
 /* Hover */
 .repuesto-btn-icon:hover {
   background-color: #FFC100;
+  border: none;
 }
 
 /* Disabled */

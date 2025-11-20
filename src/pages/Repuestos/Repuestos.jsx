@@ -12,9 +12,11 @@ const RepuestosSection = styled.section`
 `;
 
 const TituloRepuestos = styled.section`
-  margin-bottom: 2.5rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
   h2 {
     font-weight: 700;
+    margin-top: 0;
   }
 `;
 
@@ -60,11 +62,12 @@ const BarraBusquedaWrapper = styled.div`
 `;
 
 const BotonVerMas = styled.button`
-  background-color: #FF8200;
+  background-color: #c0c0c0ff;
   color: #f5f5f5;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-weight: 700;
   border-radius: 30px;
-  padding: 8px 22px;
+  padding: 8px 16px;
   cursor: pointer;
   transition: all 0.3s ease;
   border: none;
