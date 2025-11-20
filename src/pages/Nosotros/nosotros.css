@@ -76,8 +76,10 @@
 }
 
 .nosotros-por-que {
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  margin: 2rem 1rem;
+  margin: 32px auto 0 auto;
   max-width: 1200px;
 }
 .nosotros-por-que h2 {
@@ -91,8 +93,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* Tres columnas para forzar dos filas */
   gap: 25px;
-  margin-top: 35px;
-  margin-left: 15px;
+  margin: 35px auto 0 auto;
+  max-width: 1100px;
 }
 
 .nosotros-feature-box {
