@@ -1,14 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import './styles/global.css'
 // Foundation
+import 'foundation-sites/dist/css/foundation.min.css';
+
 import $ from 'jquery'
 import 'foundation-sites'
+
+import './styles/global.css'
+
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import './styles/global.css'
 config.autoAddCss = false;
-
 
 $(document).foundation();
 

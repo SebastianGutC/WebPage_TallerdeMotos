@@ -1,27 +1,110 @@
-/* Botón flotante del chat */
-df-messenger::part(chat-icon-button) {
-  background-color: #cc0000; /* rojo del taller */
-  border-radius: 12px;
+.dudas-container {
+  margin-top: 8px;
 }
 
-/* Barra de título */
-df-messenger::part(chat-title-bar) {
-  background: #111;
+.dudas-text-left {
+  padding-right: 20px;
+}
+
+.dudas-title {
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #0A0903;
+  margin-bottom: 25px;
+}
+
+.dudas-icon img {
+  width: 130px;
+  margin-right: 10px;
+  transform: translateY(5px);
+}
+
+.dudas-subtext {
+  font-size: 19px;
+  min-width: 600px;
+  font-weight: 650;
+  color: #0A0903;
+  margin-bottom: -2px;
+  line-height: 1.6;
+}
+
+.lightapi-bg {
+    font-style: italic;
+    background: linear-gradient(to right, #FF0000, #FF8200, #eeac13, #FF0000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+.dudas-button {
+  margin-top: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #0A0903;
   color: #fff;
+  padding: 10px 12px;
+  border-radius: 65px;
+  font-size: 16px;
   font-weight: 600;
+  transition: background 0.3s ease;
 }
 
-/* Mensajes del usuario */
-df-messenger::part(user-message) {
-  background: #fff3e0;
+.dudas-button:hover {
+  background: #D7263D;
 }
 
-/* Mensajes del bot */
-df-messenger::part(bot-message) {
-  background: #f0f0f0;
+.dudas-button-text {
+  padding-left: 6px;
+  color: #f5f5f5; 
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
-/* Contenedor, opcional para espaciar respecto al footer si tienes uno fijo */
-df-messenger {
-  margin-bottom: 12px;
+.dudas-button-icon {
+  font-size: 26px;
+  color: #f5f5f5; 
+  transition: transform 0.2s ease;
+}
+
+/* Animación del ícono al hover */
+.dudas-button:hover .dudas-button-icon {
+  transform: translateX(4px);
+}
+
+/* ===== CHATBOT A LA DERECHA ===== */
+
+.chatbot-right {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.chatbot-right > div,
+#motorfix-chat {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* ===== RESPONSIVO ===== */
+
+@media (max-width: 640px) {
+  .dudas-title {
+    font-size: 32px;
+  }
+
+  .dudas-icon img {
+    width: 45px;
+  }
+
+  .dudas-text-left {
+    text-align: center;
+    padding-right: 0;
+  }
+
+  .chatbot-right {
+    margin-top: 30px;
+  }
 }
