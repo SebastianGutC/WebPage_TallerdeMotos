@@ -196,12 +196,15 @@ const MenuFiltrar = ({ filtros, onFiltroChange }) => {
         </div>
 
         <label className="checkbox-label">
-          <input
-            type="checkbox"
-            name="soloDisponibles"
-            checked={localFiltros.soloDisponibles}
-            onChange={handleChange}
-          />
+          <span className="custom-checkbox">
+            <input
+              type="checkbox"
+              name="soloDisponibles"
+              checked={localFiltros.soloDisponibles}
+              onChange={handleChange}
+            />
+            <span className="checkmark"></span>
+          </span>
           Solo disponibles
         </label>
       </aside>
