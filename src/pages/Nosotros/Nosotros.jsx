@@ -40,7 +40,6 @@ const Nosotros = () => {
     setExpandedItem(expandedItem === index ? null : index);
   };
 
-  // Datos para las features de "¿Por Qué Elegirnos?" - Ahora con seis apartados
   const featuresData = [
     {
       title: 'Taller Certificado',
@@ -76,7 +75,6 @@ const Nosotros = () => {
 
   return (
     <div className="nosotros-page">
-      {/* HERO SECTION (SIN CAMBIOS) */}
       <section
         className="nosotros-hero"
         style={{ backgroundImage: `url(${nosotrosImg})` }}
@@ -84,7 +82,7 @@ const Nosotros = () => {
         <div className="nosotros-overlay">
           <div className="nosotros-hero-content">
             <h1>
-              Nuestra Historia & <br /> <span>Pasion por las Motos</span>
+              Nuestra <span className="light">Historia</span> & <br /> <span className="light"> Pasión</span> por las Motos
             </h1>
             <p>
               En MotorFix SAS somos especialistas en mantenimiento, diagnóstico y
@@ -95,7 +93,6 @@ const Nosotros = () => {
         </div>
       </section>
 
-      {/* POR QUÉ ELEGIRNOS (TODOS LOS APARTADOS DESPLEJADOS, AHORA EN DOS FILAS DE TRES) */}
       <section className="nosotros-por-que">
         <h2>¿Por Qué Elegirnos?</h2>
         <div className="nosotros-feature-grid">
@@ -109,7 +106,6 @@ const Nosotros = () => {
         </div>
       </section>
 
-      {/* STATS (SIN CAMBIOS) */}
       <section className="nosotros-stats">
         <div className="nosotros-stat"><span>+300</span>Motos Reparadas</div>
         <div className="nosotros-stat"><span>+120</span>Personalizaciones</div>
@@ -117,7 +113,6 @@ const Nosotros = () => {
         <div className="nosotros-stat"><span>6 Ciudades</span>Clientes</div>
       </section>
 
-      {/* NUESTRA HISTORIA (MOVIDA AL FINAL) */}
       <section className="nosotros-timeline-section">
         <div className="nosotros-container">
           <h2 className="nosotros-timeline-title">Nuestra Historia</h2>

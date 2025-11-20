@@ -7,8 +7,9 @@
   right: 0;
   width: 340px;
   height: 100vh;
-  background-color: #fff;
+  background-color: #f5f5f5;
   border-left: 2px solid #ff8200;
+  border-top-left-radius: 26px;
   box-shadow: -3px 0 10px rgba(0,0,0,0.2);
   z-index: 2000;
   display: flex;
@@ -49,7 +50,12 @@
   align-items: center;
   padding: 12px;
   background: #ff8200;
-  color: #fff;
+  border-top-left-radius: 25px;
+  color: #f5f5ff;
+}
+
+.cart-header h5{
+  font-weight: bold;
 }
 
 .close-btn {
@@ -175,31 +181,37 @@
 
 .cart-buttons {
   display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  margin-left: 4px ;
 }
 
 .btn-finalizar {
-  background-color: #FF8200;
+  font-size: 15px;
+  background-color: #0A0903;
   color: #f5f5f5;
-  font-weight: 700;
+  font-weight: 620;
   border-radius: 30px;
-  padding: 8px 22px;
+  padding: 8px 10px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .btn-finalizar:hover {
-  background: linear-gradient(to right, #FF0000, #FF8200, #FFC100);
+  background: #ff8200;
   color: #fff;
   transform: scale(1.05);
 }
 
 .btn-seguir {
-  color: black;
+  background-color: #ebe7e7 ;
+  font-size: 15px;
+  color: #0A0903;
   font-weight: 700;
   border-radius: 30px;
-  padding: 8px 22px;
+  padding: 8px 12px;
+  margin-left: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
 }

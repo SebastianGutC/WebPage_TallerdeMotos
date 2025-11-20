@@ -15,32 +15,38 @@
 
 
 .card-servicio-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
   background-color: transparent !important;
   border: none;
-  text-align: center !important;
-  align-items: center;
+  padding: 1rem 0;
 }
 
 .icono-servicio {
-  background-color: rgba(255, 234, 174, 0.8);
+  position: absolute;
+  left: 8px;
+  background-color: transparent;
+  border: 2px solid #FF8200;
   border-radius: 18px;
-  width: 55px;
-  height: 55px;
+  width: 42px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 0.5rem;
 }
 
 .icono-servicio i {
-  font-size: 30px;
-  color: black;
+  align-items: center;
+  font-size: 25px;
+  color: #0A0903;
 }
 
 .titulo-servicio {
   font-weight: bold;
-  font-size: 20px;
-  margin: 0;
+  font-size: 20px;;
+  margin-left: 66px;
 }
 
 
@@ -61,14 +67,20 @@
 }
 
 .btn-servicio {
-  background-color: #ffc100 !important;
+  background-color: #e0e0e0cc !important;
   color: black !important;
+  padding: 7px 10px;
   margin-top: 1rem;
   font-weight: bolder;
-  border-radius: 20px !important;
-  border: 2px solid black !important;
+  border-radius: 40px !important;
   font-size: 15px !important;
   transition: all 0.3s ease;
+}
+
+.btn-servicio:hover {
+  background-color: #FFC100 !important;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* === MODAL PERSONALIZADO === */

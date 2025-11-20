@@ -8,6 +8,7 @@ import RegisterModal from "../../../pages/Register/RegisterModal";
 import { useCart } from "../../../context/CartContext";
 import CartMenu from "../../Repuestos/CartMenu/CartMenu";
 
+
 const Header = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [isLoginOpen, setIsLoginOpen] = React.useState(false);

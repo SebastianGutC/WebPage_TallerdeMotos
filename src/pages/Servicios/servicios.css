@@ -14,13 +14,14 @@ h2{
   color: #fff;
   padding: 5rem 1rem;
   position: relative;
-  height: 400px;
-  box-shadow: 0px 10px 20px black;
+  height: 60vh;
 }
+
 .link-catalogo{
   color: white;
   float: right;
   z-index: 999;
+  padding: 6px 2px;
   font-size: 20px;
   margin-top: 50px;
   text-align: center;
@@ -29,8 +30,9 @@ h2{
 }
 
 .link-catalogo:hover{
-  color: #ff8200;
-  text-decoration: underline;
+  color: #FFEAAE;
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.1);
   cursor: pointer;
 }
 
@@ -43,8 +45,8 @@ h2{
 
 .banner-titulo{
   position: relative;
-  font-size: clamp(2rem, 6vw, 4rem);
-  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
   z-index: 2;
   text-align: center;
   float: right;
@@ -55,7 +57,8 @@ h2{
 }
 
 .banner-titulo span {
-  font-size: clamp(2rem, 6vw, 3rem);;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-style: italic;
   color: #ffc100;
   transition: color 0.3s ease;
 }
@@ -69,7 +72,7 @@ h2{
 
 /* === Sección: Servicios en curso === */
 .servicios-en-curso {
-  padding: 4rem 1rem;
+  padding: 2.5rem 1rem;
 }
 
 .titulo-seccion {
@@ -87,7 +90,7 @@ h2{
 
 .subtitulo-seccion {
   font-size: 1rem;
-  color: #555;
+  color: #0A0903;
   margin-bottom: 2rem;
   text-align: center;
 }
