@@ -96,8 +96,17 @@
   }
 
   .dudas-icon img {
-    width: 45px;
+    width: 100px;
+    margin-right: 6px;
+    transform: translateY(5px);
   }
+
+  .dudas-subtext {
+  font-size: 12px;
+  min-width: 300px;
+  text-align: left;
+  margin-left: 10px;
+}
 
   .dudas-text-left {
     text-align: center;
@@ -107,4 +116,15 @@
   .chatbot-right {
     margin-top: 30px;
   }
+}
+
+
+@media (min-width: 681px) and (max-width: 1270px) {
+  .dudas-subtext {
+    font-size: 16px;
+    min-width: 370px;
+    text-align: left;
+    margin-left: 0;
+  } 
+
 }
