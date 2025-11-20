@@ -10,7 +10,7 @@
 
 .chat-card {
   width: 100%;
-  max-width: 450px;
+  max-width: 500px;
   background: #ffffff;
   border: 2px solid #11111110;
   border-radius: 20px;
@@ -30,12 +30,13 @@
 }
 
 .chat-header h1 {
+  font-weight: bold;
   font-size: 20px;
   margin: 0;
 }
 
 .chat-header small {
-  font-size: 12px;
+  font-size: 13px;
   opacity: 0.9;
 }
 
@@ -69,7 +70,8 @@
 
 /* Usuario */
 .message.user {
-  background: #FF7A00;
+  background: #D7263D;
+  font-size: 14px;
   color: white;
   margin-left: auto;
   border-bottom-right-radius: 4px;
@@ -77,15 +79,18 @@
 
 /* Bot */
 .message.bot {
-  background: #111111;
-  color: #FFD000;
-  margin-right: auto;
-  border-bottom-left-radius: 4px;
+  --r: 8px; /* radio */
+  border: 2px solid transparent;
+  border-radius: var(--r);
+  background: 
+    linear-gradient(white, white) padding-box,
+    linear-gradient(90deg, #FF7A00, #D7263D) border-box;
 }
 
 /* Animación “bot escribiendo…” */
 .message.typing {
-  background: #11111190;
+  background: transparent;
+  color: #0A0903;
   font-style: italic;
 }
 
@@ -105,14 +110,14 @@
   width: 100%;
   padding: 12px 14px;
   border-radius: 12px;
-  border: 2px solid #FF7A00;
+  border: 2px solid #D7263D;
   outline: none;
   font-size: 14px;
   transition: 0.2s;
 }
 
 .chat-input input:focus {
-  border-color: #D7263D;
+  border-color: #FF8200;
 }
 
 /* BOTÓN */
@@ -120,16 +125,17 @@
 .btn-send {
   background: #D7263D;
   color: white;
-  padding: 12px 18px;
-  border: none;
-  border-radius: 12px;
+  padding-right: 4px;
+  padding: 2px 14px;
+  border-radius: 50%;
   cursor: pointer;
+  font-size: 22px;
   font-weight: bold;
   transition: 0.25s;
 }
 
 .btn-send:hover {
-  background: #FF7A00;
+  background: #0A0903;
 }
 
 .btn-send:disabled {

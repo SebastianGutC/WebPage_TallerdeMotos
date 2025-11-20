@@ -1,15 +1,23 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useImperativeHandle, forwardRef } from "react";
 import ReactMarkdown from "react-markdown"; 
 import "./chatBot.css";
 import { SYSTEM_PROMPT } from "../../assets/js/InfoEmpresa";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMessage} from "@fortawesome/free-solid-svg-icons";
+
 const API_KEY = "AIzaSyDYneNSIgWNAJd_8X_CI0aYo5NOdP05gGM";
 
-export default function Chatbot() {
+const Chatbot = forwardRef((props, ref) => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useImperativeHandle(ref, () => ({
+    focusInput: () => inputRef.current?.focus(), // función que se puede llamar desde afuera
+  }));
 
 function limpiarSaludo(text, isFirstMessage) {
   if (isFirstMessage) return text;
@@ -129,6 +137,7 @@ function limpiarSaludo(text, isFirstMessage) {
           <div className="chat-footer">
             <div className="chat-input">
               <input
+                ref={inputRef}
                 type="text"
                 placeholder="Escribe tu mensaje..."
                 value={input}
@@ -137,12 +146,14 @@ function limpiarSaludo(text, isFirstMessage) {
               />
             </div>
             <button className="btn-send" onClick={handleSend} disabled={loading}>
-              Enviar
+              <FontAwesomeIcon icon={faMessage} />
             </button>
           </div>
         </div>
       </div>
     </div>
   );
-}
+  
+});
 
+export default Chatbot;
