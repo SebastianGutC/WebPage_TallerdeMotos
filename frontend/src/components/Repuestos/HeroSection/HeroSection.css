@@ -1,0 +1,144 @@
+.hero-repuestos {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  height: 60vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+  margin-bottom: 2rem;
+}
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.5);
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  padding: 2rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 35%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hero-content span {
+  font-size: 43px;
+  color: #ffc100;
+  font-style: italic;
+  transition: color 0.3s ease; 
+}
+
+
+.hero-content:hover span {
+  background: linear-gradient(90deg, #ff0000, #ff8200, #ffc100);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.hero-content p {
+  font-size: 17px;
+  margin-top: 1rem;
+  color: #f5f5f5;
+}
+
+.btn-ver-catalogo {
+  margin-top: 1.8rem;
+  background-color: #FFEAAE;
+  color: #000;
+  border: none;
+  padding: 0.9rem 2.2rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+
+.link-ver-catalogo {
+  margin-top: 1.8rem;
+  font-weight: 600;
+  color: #ffff;
+  cursor: pointer;
+  display: inline-block;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.link-ver-catalogo:hover {
+  color: #FFEAAE;
+  text-decoration: underline;
+}
+
+@media (max-width: 1024px) {
+  .hero-repuestos {
+    height: 65vh;
+  }
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+  .hero-content p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-repuestos {
+    height: 55vh;
+  }
+  .hero-content h1 {
+    font-size: 1.8rem;
+  }
+  .hero-content p {
+    font-size: 0.95rem;
+  }
+  .btn-ver-catalogo {
+    padding: 0.8rem 1.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-repuestos {
+    height: 50vh;
+    margin-bottom: 2rem;
+  }
+  .hero-content h1 {
+    font-size: 1.5rem;
+  }
+  .hero-content p {
+    font-size: 0.85rem;
+  }
+  .btn-ver-catalogo {
+    padding: 0.7rem 1.6rem;
+    font-size: 0.85rem;
+  }
+}

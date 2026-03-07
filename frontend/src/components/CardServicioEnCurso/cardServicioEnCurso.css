@@ -1,0 +1,281 @@
+/* ====== Card principal ====== */
+.card-servicio-curso {
+  border-radius: 18px;
+  box-shadow: 10px 20px 6px rgba(0,0,0,0.12) !important;
+  padding: 1rem;
+  min-height: 100%;
+  margin-bottom: 1.25rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-servicio-curso:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+}
+
+.descripcion{
+  border: 1px rgba(0, 0, 0, 0.332) solid;
+  border-radius: 15px;
+}
+
+.card-header-curso {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  padding: 0.5rem 0.8rem;
+  border-radius: 12px;
+  margin-bottom: 0.9rem;
+  font-weight: 700;
+}
+
+.cliente-nombre {
+  margin: 0;
+  font-size: 1rem;
+}
+.card-header-curso span{
+    background-color: transparent;
+    color: #0A0903;
+    border: 2px solid #0A0903;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+.estado {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 10px;
+;
+}
+
+
+.estado.en-proceso { 
+    border-top: green 8px solid !important;
+}
+
+.estado.finalizado { 
+  border-top: #0a0903 8px solid !important; 
+  color: #fff !important; }
+
+
+  .estado.pendiente-de-entrega{
+  border-top: 8px solid #ff0000 !important; 
+  color: #fff !important;
+  }
+
+/* ====== Body ====== */
+.card-body-curso p {
+  margin: 0.35rem 0;
+  font-size: 0.95rem;
+  color: #0a0903;
+}
+
+.descripcion{
+  margin: 15px !important;
+}
+.detalle {
+  font-weight: 600;
+  margin-left: 0.25rem;
+}
+
+
+.valor-pagar {
+  margin-top: 0.6rem;
+  font-weight: 700;
+  display: block;
+}
+
+.valor-total {
+  color: #ff0000;
+  margin-left: 0.25rem;
+}
+
+/* ====== Botones en la tarjeta ====== */
+.acciones-card {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 0.8rem;
+}
+
+button {
+  cursor: pointer;
+  font-weight: 700;
+  border-radius: 18px;
+  padding: 0.45rem 0.9rem;
+  border: 2px solid #0a0903 !;
+  transition: all 0.2s ease;
+}
+
+/* Ver detalles */
+.btn-ver {
+  background-color: #e0e0e0cc !important;
+  color: black !important;
+  border: none !important;
+}
+
+.btn-ver:hover {
+  background: transparent !important;
+  border: 2px solid #FF8200 !important;
+  color: #0a0903;
+  transition: all 0.1s ease;
+}
+
+/* Pagar (tarjeta) */
+.btn-pagar {
+  background-color: #FFC100 !important;
+  color: #0a0903;
+}
+
+.btn-pagar:hover {
+  border: 2px solid #0A0903 !important;  
+  color: #0a0903;
+  transition: all 0.1s ease;
+}
+
+/* ====== Modal overlay ====== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(10,9,3,0.6);
+  z-index: 1200;
+  animation: fadeIn 220ms ease;
+}
+
+/* ====== Modal box ====== */
+.modal-detalles {
+  background: #ffffff;
+  width: 92%;
+  max-width: 820px;
+  border-radius: 14px;
+  padding: 1.4rem;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.28);
+  position: relative;
+  animation: scaleIn 220ms ease;
+  color: #0a0903;
+}
+
+/* Close button */
+.cerrar-modal {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* Títulos en modal */
+.modal-titulo {
+  margin: 0 0 0.6rem 0;
+  color: #ff0000;
+  text-align: center;
+}
+
+.subtitulo {
+  margin: 0.6rem 0;
+  color: #ff8200;
+  font-weight: 700;
+}
+
+/* ====== Tablas ====== */
+.tabla-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+}
+
+.tabla-repuestos, .tabla-servicio {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  border-radius: 20px !important;
+}
+
+.tabla-repuestos thead th {
+  background: #ffc100;
+  color: #0a0903;
+  padding: 0.55rem 0.6rem;
+  text-align: center;
+}
+
+.tabla-repuestos td, .tabla-repuestos th {
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
+.fila-total {
+  background: #fff4cc;
+  font-weight: 700;
+}
+
+/* Tabla resumen de servicio (segunda tabla) */
+.tabla-servicio td {
+  padding: 0.6rem 0.8rem;
+}
+
+.tabla-servicio .label {
+  width: 60%;
+  text-align: left;
+  font-weight: 700;
+  background-color: transparent !important;
+  color: #0a0903;
+}
+
+.tabla-servicio .valor {
+  width: 40%;
+  text-align: right;
+  font-weight: 700;
+}
+
+.total-final {
+  color: #ff0000;
+  font-size: 1rem;
+}
+
+/* ====== Acciones del modal ====== */
+.modal-acciones {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.btn-pagar-modal {
+  background-color: #ffc100 !important;
+  color: #0a0903;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+}
+
+.btn-cerrar {
+  background: transparent;
+  border: 2px solid #0a0903;
+  padding: 0.5rem 0.9rem;
+  border-radius: 12px;
+}
+
+/* ====== Animations ====== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { transform: translateY(8px) scale(.98); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 720px) {
+  .card-body-curso { font-size: 0.92rem; }
+  .acciones-card { justify-content: center; margin-top: 0.6rem; }
+  .modal-detalles { padding: 1rem; max-width: 95%; }
+  .tabla-servicio .label { display:block; width:100%; text-align:left; }
+  .tabla-servicio .valor { display:block; width:100%; text-align:left; margin-top:0.35rem; }
+}
+
+

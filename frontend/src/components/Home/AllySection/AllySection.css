@@ -1,0 +1,168 @@
+.ally-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+}
+
+.ally-card {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.09);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  max-width: 1100px;
+  padding-right: 10px;
+  width: 100%;
+}
+
+.ally-card:hover {
+  box-shadow: 0 12px 35px rgba(19, 18, 18, 0.12);
+  transform: translateY(-3px);
+}
+
+.ally-image {
+  flex: 1;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.ally-image-inner img {
+  width: 380px;
+  height: 350px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.ally-content {
+  flex: 1.2;
+  padding: 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ally-content h3 {
+  color: #0A0903;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.light-bg {
+    font-style: italic;
+    background: linear-gradient(to right, #FF0000, #FF8200, #FFC100);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+.reasons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.reason-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.icon-rectangle {
+  background-color: transparent;
+  border: 2px solid #FF8200;
+  color: #0A0903;
+  font-size: 23px;
+  padding: 0.7rem 0.9rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 52px;
+  box-shadow: 0 4px 10px rgba(243, 53, 11, 0.24);
+}
+
+
+.icon-box {
+  background-color: #ffe7c2;
+  color: #ff7b00;
+  font-size: 1.3rem;
+  padding: 0.6rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reason-item h4 {
+  font-weight: 700;
+  font-size: 21px;
+  margin-bottom: 0.2rem;
+  color: #0A0903;
+}
+
+.reason-item p {
+  font-size: 14px;
+  color: #0A0903;
+  margin: 0;
+}
+
+.cta-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.cta-container p {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 0.5rem;
+}
+
+.cta-button {
+  background-color: #FF8200;
+  color: #f5f5f5;
+  font-weight: 700;
+  border-radius: 30px;
+  padding: 8px 22px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  background: linear-gradient(to right, #FF0000, #FF8200, #FFC100);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .ally-card {
+    flex-direction: column;
+  }
+
+  .ally-image {
+    height: 220px;
+  }
+
+  .ally-content {
+    padding: 1.5rem;
+  }
+
+  .reasons-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-container {
+    margin-top: 1.5rem;
+  }
+}
