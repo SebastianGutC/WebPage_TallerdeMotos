@@ -16,4 +16,4 @@ const MotocicletaSchema = new mongoose.Schema({
   }
 });
 
-export default mongoose.model("Motocicleta", Motocicleta)
+export default mongoose.model("Motocicleta", MotocicletaSchema)
