@@ -8,7 +8,7 @@ import {
 } from '../controllers/serviciosController.js';
 
 import { validateToken } from '../middlewares/validateToken.js';
-import { isAdminOrTecnico } from '../middlewares/roles.middleware.js';
+import { isAdmin } from '../middlewares/roles.middleware.js';
 
 const router = express.Router();
 
@@ -16,9 +16,9 @@ const router = express.Router();
 router.get('/', obtenerServicios);
 router.get('/:id', obtenerServicioPorId);
 
-//Rutas protegidas (ADMIN o TECNICO)
-router.post('/', validateToken, isAdminOrTecnico, crearServicio);
-router.put('/:id', validateToken, isAdminOrTecnico, actualizarServicio);
-router.delete('/:id', validateToken, isAdminOrTecnico, eliminarServicio);
+//Rutas protegidas (solo ADMIN)
+router.post('/', validateToken, isAdmin, crearServicio);
+router.put('/:id', validateToken, isAdmin, actualizarServicio);
+router.delete('/:id', validateToken, isAdmin, eliminarServicio);
 
 export default router;

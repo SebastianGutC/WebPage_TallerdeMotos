@@ -5,6 +5,6 @@ const servicioSchema = new mongoose.Schema({
     descripcion: { type: String, required: true },
     precio: { type: Number, required: true },
     icono: { type: String, required: true, trim:true },
-})
+}, { timestamps: true })
 
 export default mongoose.model("Servicio", servicioSchema)

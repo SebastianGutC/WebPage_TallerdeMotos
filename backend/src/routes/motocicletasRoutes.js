@@ -4,21 +4,23 @@ import {
   obtenerMotocicletaPorId,
   crearMotocicleta,
   actualizarMotocicleta,
-  eliminarMotocicleta
+  eliminarMotocicleta,
+  obtenerDetallesTecnicos
 } from '../controllers/motocicletasController.js';
 
 import { validateToken } from '../middlewares/validateToken.js';
-import { isAdminOrTecnico } from '../middlewares/roles.middleware.js';
+import { isAdmin, isTecnico } from '../middlewares/roles.middleware.js';
 
 const router = express.Router();
 
-//Rutas públicas
-router.get('/', obtenerMotocicletas);
-router.get('/:id', obtenerMotocicletaPorId);
+//Rutas protegidas (solo ADMIN)
+router.get('/', validateToken, isAdmin, obtenerMotocicletas);
+router.get('/:id', validateToken, isAdmin, obtenerMotocicletaPorId);
+router.post('/', validateToken, isAdmin, crearMotocicleta);
+router.put('/:id', validateToken, isAdmin, actualizarMotocicleta);
+router.delete('/:id', validateToken, isAdmin, eliminarMotocicleta);
 
-//Rutas protegidas (ADMIN o TECNICO)
-router.post('/', validateToken, isAdminOrTecnico, crearMotocicleta);
-router.put('/:id', validateToken, isAdminOrTecnico, actualizarMotocicleta);
-router.delete('/:id', validateToken, isAdminOrTecnico, eliminarMotocicleta);
+//Ruta protegida para TECNICO
+router.get('/:id/detalles-tecnicos', validateToken, isTecnico, obtenerDetallesTecnicos);
 
 export default router;

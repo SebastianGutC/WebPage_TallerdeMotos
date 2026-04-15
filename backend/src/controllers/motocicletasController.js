@@ -85,3 +85,25 @@ export const eliminarMotocicleta = async (req, res) => {
     res.status(500).json({ message: 'Error al eliminar motocicleta', error: error.message });
   }
 };
+
+// GET DETALLES TECNICOS (solo TECNICO)
+export const obtenerDetallesTecnicos = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const motocicleta = await Motocicleta.findById(id, 'marca nombre tipo modelo detalles');
+
+    if (!motocicleta) {
+      return res.status(404).json({ message: 'Motocicleta no encontrada' });
+    }
+
+    res.json({
+      marca: motocicleta.marca,
+      nombre: motocicleta.nombre,
+      tipo: motocicleta.tipo,
+      modelo: motocicleta.modelo,
+      detalles: motocicleta.detalles
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener detalles técnicos', error: error.message });
+  }
+};
