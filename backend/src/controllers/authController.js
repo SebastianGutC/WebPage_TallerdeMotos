@@ -7,16 +7,15 @@ export const registerUsuario = async (req, res) => {
   try {
     const { nombre, apellido, email, contraseña, telefono } = req.body;
 
-    // 🔥 validar si ya existe
+
     const userExists = await Usuario.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "El usuario ya existe" });
     }
 
-    // 🔥 hash contraseña
     const hashedPassword = await bcryptjs.hash(contraseña, 10);
 
-    // 🔥 crear usuario (rol automático)
+
     const newUser = new Usuario({
       nombre,
       apellido,
@@ -28,7 +27,6 @@ export const registerUsuario = async (req, res) => {
 
     await newUser.save();
 
-    // 🔥 generar JWT
     const token = jwt.sign(
       {
         id: newUser._id,
@@ -38,7 +36,6 @@ export const registerUsuario = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    // 🔥 respuesta segura
     res.status(201).json({
       message: "Usuario registrado correctamente",
       token,
@@ -53,5 +50,87 @@ export const registerUsuario = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error en register" });
+  }
+};
+
+export const loginUsuario = async (req, res) => {
+  try {
+    const { email, contraseña } = req.body;
+
+
+    if (!email || !contraseña) {
+      return res.status(400).json({ message: "Email y contraseña son obligatorios" });
+    }
+
+
+    const user = await Usuario.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: "Credenciales inválidas" });
+    }
+
+
+    if (!user.habilitado) {
+      return res.status(403).json({ message: "Usuario deshabilitado" });
+    }
+
+
+    const isMatch = await bcryptjs.compare(contraseña, user.contraseña);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Credenciales inválidas" });
+    }
+
+
+    const token = jwt.sign(
+      {
+        id: user._id,
+        rol: user.rol
+      },
+      config.jwtSecret,
+      { expiresIn: "1d" }
+    );
+
+
+    res.cookie("token", token, {
+      httpOnly: true,        // no accesible desde JS (más seguro)
+      secure: false,        // true en producción con HTTPS
+      sameSite: "lax",      // protege contra CSRF básico
+      maxAge: 24 * 60 * 60 * 1000 // 1 día
+    });
+
+    res.status(200).json({
+      message: "Login exitoso",
+      user: {
+        id: user._id,
+        nombre: user.nombre,
+        email: user.email,
+        rol: user.rol
+      }
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error en login" });
+  }
+};
+
+export const logoutUsuario = (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: false,   
+      sameSite: "lax"
+    });
+
+    return res.status(200).json({
+      message: "Logout exitoso"
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Error en logout"
+    });
   }
 };
