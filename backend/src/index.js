@@ -11,7 +11,6 @@ connectDB().then(() => seed());
 import authRoutes from './routes/authRoutes.js'
 import productosRoutes from './routes/productosRoutes.js'
 import serviciosRoutes from './routes/serviciosRoutes.js'
-import empleadosRoutes from './routes/empleadosRoutes.js'
 import citasRoutes from './routes/citasRoutes.js'
 import motocicletasRoutes from './routes/motocicletasRoutes.js'
 
@@ -29,7 +28,6 @@ connectDB();
 backend.use('/api/auth', authRoutes)
 backend.use('/api/productos', productosRoutes)
 backend.use('/api/servicios', serviciosRoutes)
-backend.use('/api/empleados', empleadosRoutes)
 backend.use('/api/citas', citasRoutes)
 backend.use('/api/motocicletas', motocicletasRoutes)
 

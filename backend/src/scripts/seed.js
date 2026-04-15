@@ -3,56 +3,55 @@ import bcryptjs from "bcryptjs";
 import { connectDB } from "../db.js";
 
 import Usuario from "../models/userModel.js";
-import Empleado from "../models/empleadoModel.js";
 import Cita from "../models/citaModel.js";
 import Servicio from "../models/servicioModel.js";
 import Producto from "../models/productoModel.js";
 
-
-    
 const seed = async () => {
   try {
     await connectDB();
 
-    // ✅ Solo corre si no hay datos
-    const hayUsuarios = await Usuario.countDocuments();
-    if (hayUsuarios > 0) {
-      console.log("ℹ️ La base de datos ya tiene datos, seed omitido.");
+    const usuariosCount = await Usuario.countDocuments();
+
+    if (usuariosCount > 0) {
+      console.log("ℹ️ La base de datos ya está inicializada. Seed omitido.");
       return;
     }
 
-    console.log("🌱 Base de datos vacía, insertando datos iniciales...");
-    // ... resto del seed igual
-    // Limpiar colecciones antes de insertar
-    await Promise.all([
-      Usuario.deleteMany(),
-      Empleado.deleteMany(),
-      Cita.deleteMany(),
-      Servicio.deleteMany(),
-      Producto.deleteMany(),
-    ]);
+    console.log("🌱 Insertando datos iniciales...");
 
-    // 👤 Usuario
-    const usuario = await Usuario.create({
-      nombre: "Michel",
-      apellido: "Cardona",
-      email: "michel@test.com",
-      contraseña: await bcryptjs.hash("456789", 10),  // ✅ hasheada
-      telefono: 3204478662,
+    // 👤 USUARIOS
+    const admin = await Usuario.create({
+      nombre: "Admin",
+      apellido: "Sistema",
+      email: "admin@test.com",
+      contraseña: await bcryptjs.hash("123456", 10),
+      telefono: "3000000001",
+      rol: "ADMIN",
+      habilitado: true
     });
 
-    // 👨‍🔧 Técnico
-    const tecnico = await Empleado.create({
+    const tecnico = await Usuario.create({
       nombre: "Carlos",
       apellido: "Gómez",
-      telefono: 3009876543,
-      email: "carlos@test.com",
-      contraseña: await bcryptjs.hash("123456", 10),  // ✅ hasheada
-      habilitado: true,
-      rol: "técnico",
+      email: "tecnico@test.com",
+      contraseña: await bcryptjs.hash("123456", 10),
+      telefono: "3000000002",
+      rol: "TECNICO",
+      habilitado: true
     });
 
-    // 🛠️ Servicios
+    const cliente = await Usuario.create({
+      nombre: "Michel",
+      apellido: "Cardona",
+      email: "cliente@test.com",
+      contraseña: await bcryptjs.hash("456789", 10),
+      telefono: "3204478662",
+      rol: "USUARIO",
+      habilitado: true
+    });
+
+    // 🛠️ SERVICIOS
     const servicios = await Servicio.insertMany([
       {
         nombre: "Cambio de aceite",
@@ -68,7 +67,7 @@ const seed = async () => {
       },
     ]);
 
-    // 📦 Productos
+    // 📦 PRODUCTOS
     const productos = await Producto.insertMany([
       {
         nombre: "Aceite 10W40",
@@ -90,20 +89,20 @@ const seed = async () => {
       },
     ]);
 
-    // 📅 Cita disponible (sin usuario aún)
+    // 📅 CITA disponible
     await Cita.create({
       fecha: new Date(),
-      hora: "10:00",           // ✅ String, como está en el modelo
+      hora: "10:00",
       tecnicoId: tecnico._id,
       estado: "disponible",
     });
 
-    // 🔧 Cita en proceso (con usuario asignado)
+    // 🔧 CITA en proceso
     await Cita.create({
       fecha: new Date(),
-      hora: "11:00",           // ✅ String
+      hora: "11:00",
       tecnicoId: tecnico._id,
-      usuarioId: usuario._id,
+      usuarioId: cliente._id,
       placaMoto: "ABC123",
       servicios: [
         { nombre: servicios[0].nombre, costo: servicios[0].precio },
@@ -123,5 +122,4 @@ const seed = async () => {
   }
 };
 
-// Al final del archivo, reemplaza seed(); por:
 export { seed };

@@ -6,14 +6,19 @@ import {
   actualizarProducto,
   eliminarProducto
 } from '../controllers/productosController.js';
-import { verificarToken, soloEmpleado } from '../middlewares/authMiddleware.js';
+
+import { validateToken } from '../middlewares/validateToken.js';
+import { isAdminOrTecnico } from '../middlewares/roles.middleware.js';
 
 const router = express.Router();
 
-router.get('/', obtenerProductos);                                          // público
-router.get('/:id', obtenerProductoPorId);                                   // público
-router.post('/', verificarToken, soloEmpleado, crearProducto);              // 🔒 empleados
-router.put('/:id', verificarToken, soloEmpleado, actualizarProducto);       // 🔒 empleados
-router.delete('/:id', verificarToken, soloEmpleado, eliminarProducto);      // 🔒 empleados
+//Rutas públicas
+router.get('/', obtenerProductos);
+router.get('/:id', obtenerProductoPorId);
+
+//Rutas protegidas (ADMIN o TECNICO)
+router.post('/', validateToken, isAdminOrTecnico, crearProducto);
+router.put('/:id', validateToken, isAdminOrTecnico, actualizarProducto);
+router.delete('/:id', validateToken, isAdminOrTecnico, eliminarProducto);
 
 export default router;

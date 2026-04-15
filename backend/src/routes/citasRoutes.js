@@ -6,14 +6,21 @@ import {
   actualizarCita,
   eliminarCita
 } from '../controllers/citasController.js';
-import { verificarToken, soloEmpleado } from '../middlewares/authMiddleware.js';
+
+import { validateToken } from '../middlewares/validateToken.js';
+import { isAdminOrTecnico } from '../middlewares/roles.middleware.js';
 
 const router = express.Router();
 
-router.get('/', verificarToken, soloEmpleado, obtenerCitas);         // 🔒 empleados ven todas
-router.get('/:id', verificarToken, obtenerCitaPorId);                // 🔒 cualquier logueado
-router.post('/', verificarToken, crearCita);                         // 🔒 cualquier logueado (usuario agenda)
-router.put('/:id', verificarToken, soloEmpleado, actualizarCita);    // 🔒 empleados
-router.delete('/:id', verificarToken, soloEmpleado, eliminarCita);   // 🔒 empleados
+
+router.get('/', validateToken, isAdminOrTecnico, obtenerCitas);
+
+
+router.get('/:id', validateToken, obtenerCitaPorId);
+
+router.post('/', validateToken, crearCita);
+
+router.put('/:id', validateToken, isAdminOrTecnico, actualizarCita);
+router.delete('/:id', validateToken, isAdminOrTecnico, eliminarCita);
 
 export default router;

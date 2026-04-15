@@ -6,14 +6,19 @@ import {
   actualizarServicio,
   eliminarServicio
 } from '../controllers/serviciosController.js';
-import { verificarToken, soloEmpleado } from '../middlewares/authMiddleware.js';
+
+import { validateToken } from '../middlewares/validateToken.js';
+import { isAdminOrTecnico } from '../middlewares/roles.middleware.js';
 
 const router = express.Router();
 
-router.get('/', obtenerServicios);                                          // público
-router.get('/:id', obtenerServicioPorId);                                   // público
-router.post('/', verificarToken, soloEmpleado, crearServicio);              // 🔒 empleados
-router.put('/:id', verificarToken, soloEmpleado, actualizarServicio);       // 🔒 empleados
-router.delete('/:id', verificarToken, soloEmpleado, eliminarServicio);      // 🔒 empleados
+
+router.get('/', obtenerServicios);
+router.get('/:id', obtenerServicioPorId);
+
+//Rutas protegidas (ADMIN o TECNICO)
+router.post('/', validateToken, isAdminOrTecnico, crearServicio);
+router.put('/:id', validateToken, isAdminOrTecnico, actualizarServicio);
+router.delete('/:id', validateToken, isAdminOrTecnico, eliminarServicio);
 
 export default router;

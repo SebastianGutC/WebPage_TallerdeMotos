@@ -6,14 +6,19 @@ import {
   actualizarMotocicleta,
   eliminarMotocicleta
 } from '../controllers/motocicletasController.js';
-import { verificarToken, soloEmpleado } from '../middlewares/authMiddleware.js';
+
+import { validateToken } from '../middlewares/validateToken.js';
+import { isAdminOrTecnico } from '../middlewares/roles.middleware.js';
 
 const router = express.Router();
 
-router.get('/', obtenerMotocicletas);                                       // público
-router.get('/:id', obtenerMotocicletaPorId);                                // público
-router.post('/', verificarToken, soloEmpleado, crearMotocicleta);           // 🔒 empleados
-router.put('/:id', verificarToken, soloEmpleado, actualizarMotocicleta);    // 🔒 empleados
-router.delete('/:id', verificarToken, soloEmpleado, eliminarMotocicleta);   // 🔒 empleados
+//Rutas públicas
+router.get('/', obtenerMotocicletas);
+router.get('/:id', obtenerMotocicletaPorId);
+
+//Rutas protegidas (ADMIN o TECNICO)
+router.post('/', validateToken, isAdminOrTecnico, crearMotocicleta);
+router.put('/:id', validateToken, isAdminOrTecnico, actualizarMotocicleta);
+router.delete('/:id', validateToken, isAdminOrTecnico, eliminarMotocicleta);
 
 export default router;
