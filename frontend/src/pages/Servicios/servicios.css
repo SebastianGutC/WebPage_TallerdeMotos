@@ -19,9 +19,11 @@ h2{
 
 .link-catalogo{
   color: white;
+  border: rgb(201, 201, 201) 1px solid;
   float: right;
   z-index: 999;
   padding: 6px 2px;
+  font-weight: 550;
   font-size: 20px;
   margin-top: 50px;
   text-align: center;
@@ -30,7 +32,6 @@ h2{
 }
 
 .link-catalogo:hover{
-  color: #FFEAAE;
   text-decoration: none;
   background-color: rgba(255, 255, 255, 0.1);
   cursor: pointer;

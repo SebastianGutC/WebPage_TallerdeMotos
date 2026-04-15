@@ -51,19 +51,17 @@ export default function ProductsCard() {
   }, []);
 
   const handleNext = () => {
-    gsap.to(sliderRef.current, {
-      x: "-=300", // distancia por click
-      duration: 0.6,
-      ease: "power2.out"
-    });
+    const tl = animationRef.current;
+    tl.pause();
+    tl.progress(tl.progress() + 0.1); // avanza en el loop
+    tl.resume();
   };
 
   const handlePrev = () => {
-    gsap.to(sliderRef.current, {
-      x: "+=300",
-      duration: 0.6,
-      ease: "power2.out"
-    });
+    const tl = animationRef.current;
+    tl.pause();
+    tl.progress(tl.progress() - 0.1); // retrocede
+    tl.resume();
   };
 
   return (

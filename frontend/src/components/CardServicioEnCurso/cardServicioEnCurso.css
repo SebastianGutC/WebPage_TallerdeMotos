@@ -122,12 +122,13 @@ button {
 
 /* Pagar (tarjeta) */
 .btn-pagar {
-  background-color: #FFC100 !important;
-  color: #0a0903;
+  background-color: #0a0903 !important;
+  color: #ffffff;
 }
 
 .btn-pagar:hover {
   border: 2px solid #0A0903 !important;  
+  background-color: #FFC100 !important;
   color: #0a0903;
   transition: all 0.1s ease;
 }
