@@ -1,24 +1,44 @@
-import express from 'express';
+import express from "express";
+
 import {
   obtenerProductos,
   obtenerProductoPorId,
+  obtenerProductoPorNombre,
+  obtenerProductosPorCategoria,
   crearProducto,
   actualizarProducto,
   eliminarProducto
-} from '../controllers/productosController.js';
+} from "../controllers/productosController.js";
 
-import { validateToken } from '../middlewares/validateToken.js';
-import { isAdminOrTecnico } from '../middlewares/roles.middleware.js';
+import { validateToken } from "../middlewares/validateToken.js";
+
+import {
+  isAdmin
+} from "../middlewares/roles.middleware.js";
 
 const router = express.Router();
 
-//Rutas públicas
-router.get('/', obtenerProductos);
-router.get('/:id', obtenerProductoPorId);
 
-//Rutas protegidas (ADMIN o TECNICO)
-router.post('/', validateToken, isAdminOrTecnico, crearProducto);
-router.put('/:id', validateToken, isAdminOrTecnico, actualizarProducto);
-router.delete('/:id', validateToken, isAdminOrTecnico, eliminarProducto);
+// getAllProductos()
+router.get("/", obtenerProductos);
+
+// getProductoByName()
+router.get("/buscar/nombre", obtenerProductoPorNombre);
+
+// getProductosByCategoria()
+router.get("/categoria/:categoria", obtenerProductosPorCategoria);
+
+
+// getProductoById() (admin)
+router.get("/:id", validateToken, isAdmin, obtenerProductoPorId);
+
+// crearProducto() (admin)
+router.post("/", validateToken, isAdmin, crearProducto);
+
+// actualizarProducto() (admin)
+router.put("/:id", validateToken, isAdmin, actualizarProducto);
+
+// eliminarProducto() (admin)
+router.delete("/:id", validateToken, isAdmin, eliminarProducto);
 
 export default router;

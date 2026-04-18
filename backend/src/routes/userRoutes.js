@@ -6,7 +6,6 @@ import {
   actualizarUsuario,
   eliminarUsuarios,
   obtenerHistorialCitasUsuario,
-  obtenerFacturasUsuario
 } from "../controllers/userController.js";
 
 import { validateToken } from "../middlewares/validateToken.js";
@@ -35,7 +34,5 @@ router.delete("/:id", isAdmin, eliminarUsuarios);
 // usuario dueño o admin
 router.get("/:id/citas", obtenerHistorialCitasUsuario);
 
-// usuario dueño o admin
-router.get("/:id/facturas", obtenerFacturasUsuario);
 
 export default router;
