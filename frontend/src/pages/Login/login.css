@@ -150,6 +150,7 @@
   padding: 1rem;
   margin-bottom: 1rem;
   position: relative;
+  max-height: 50px;
 }
 
 .alert-success {
@@ -160,6 +161,8 @@
   padding: 1rem;
   margin-bottom: 1rem;
   position: relative;
+  max-height: 50px;
+
 }
 
 /* Botón de cerrar para alertas */

@@ -23,7 +23,20 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   position: relative;
   width: 100%;
-  max-width: 450px;
+  max-width: 600px;
+  display: grid;
+}
+
+.register-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 2rem; 
+}
+
+.register-form-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
 }
 
 .register-modal-close {
@@ -119,6 +132,7 @@
   padding: 1rem;
   margin-bottom: 1rem;
   position: relative;
+  max-height: 50px;
 }
 
 .register-alert-success {
@@ -129,6 +143,8 @@
   padding: 1rem;
   margin-bottom: 1rem;
   position: relative;
+  max-height: 50px;
+
 }
 
 /* Botón para cerrar alerta */

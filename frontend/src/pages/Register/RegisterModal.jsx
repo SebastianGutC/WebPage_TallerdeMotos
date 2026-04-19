@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import "./register.css";
+import { registerUser } from "../../services/AuthService";
 
 const RegisterModal = ({ isOpen, onClose, openLoginModal }) => {
   const [formData, setFormData] = useState({
-    nombreCompleto: "",
+    nombre: "",
+    apellido: "",
     email: "",
-    password: "",
-    confirmarPassword: "",
+    contraseña: "",
+    confirmarContraseña: "",
     aceptaTerminos: false,
   });
 
@@ -23,56 +25,74 @@ const RegisterModal = ({ isOpen, onClose, openLoginModal }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
-    if (!formData.nombreCompleto.trim()) {
-      setError("El nombre completo es obligatorio.");
+    if (!formData.nombre.trim()) {
+      setError("El nombre es obligatorio.");
       return;
     }
+
+    if (!formData.apellido.trim()) {
+      setError("El apellido es obligatorio.");
+      return;
+    }
+
     if (!formData.email.trim()) {
       setError("El correo electrónico es obligatorio.");
       return;
     }
+
     if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      setError("Por favor, ingresa un correo electrónico válido.");
+      setError("Por favor, ingresa un correo válido.");
       return;
     }
-    if (formData.password.length < 6) {
+
+    if (formData.contraseña.length < 6) {
       setError("La contraseña debe tener al menos 6 caracteres.");
       return;
     }
-    if (formData.password !== formData.confirmarPassword) {
+
+    if (formData.contraseña.trim() !== formData.confirmarcontraseña.trim()) {
       setError("Las contraseñas no coinciden.");
       return;
     }
+
     if (!formData.aceptaTerminos) {
       setError("Debes aceptar los términos y condiciones.");
       return;
     }
 
-    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-    const usuarioExistente = usuarios.find((u) => u.email === formData.email);
-    if (usuarioExistente) {
-      setError("Este correo ya está registrado.");
-      return;
+    try {
+      const res = await registerUser({
+        nombre: formData.nombre,
+        apellido: formData.apellido,
+        email: formData.email,
+        contraseña: formData.contraseña,
+        telefono: formData.telefono,
+      });
+
+      setFormData({
+        nombreCompleto: "",
+        email: "",
+        password: "",
+        confirmarPassword: "",
+        aceptaTerminos: false,
+      });
+
+      console.log("Respuesta del backend:", res);
+
+      setSuccess("¡Registro exitoso! Ahora puedes iniciar sesión.");
+
+      setTimeout(() => {
+        onClose();
+        openLoginModal();
+      }, 2000);
+    } catch (error) {
+      setError(error.response?.data?.message || "Error al registrarse");
     }
-
-    usuarios.push({
-      nombreCompleto: formData.nombreCompleto,
-      email: formData.email,
-      password: formData.password,
-    });
-    localStorage.setItem("usuarios", JSON.stringify(usuarios));
-
-    setSuccess("¡Registro exitoso! Redirigiendo al inicio de sesión...");
-
-    setTimeout(() => {
-      onClose();
-      openLoginModal();
-    }, 2000);
   };
 
   const handleCloseAlert = () => {
@@ -102,6 +122,7 @@ const RegisterModal = ({ isOpen, onClose, openLoginModal }) => {
               </button>
             </div>
           )}
+
           {success && (
             <div className="register-alert-success">
               <p>{success}</p>
@@ -114,75 +135,80 @@ const RegisterModal = ({ isOpen, onClose, openLoginModal }) => {
               </button>
             </div>
           )}
+          <div className="register-form-grid">
+            <div>
+              <label className="register-form-label">Nombre</label>
+              <input
+                type="text"
+                name="nombre"
+                value={formData.nombre}
+                onChange={handleChange}
+                placeholder="Tu nombre"
+                className="register-input"
+              />
 
-          <label className="register-form-label">Nombre completo</label>
-          <input
-            type="text"
-            name="nombreCompleto"
-            value={formData.nombreCompleto}
-            onChange={handleChange}
-            placeholder="Tu nombre completo"
-            className="register-input"
-            required
-          />
+              <label className="register-form-label">Apellido</label>
+              <input
+                type="text"
+                name="apellido"
+                value={formData.apellido}
+                onChange={handleChange}
+                placeholder="Tu apellido"
+                className="register-input"
+              />
+              <label className="register-form-label">Contraseña</label>
+              <input
+                type="password"
+                name="contraseña"
+                value={formData.contraseña}
+                onChange={handleChange}
+                placeholder="Mínimo 6 caracteres"
+                className="register-input"
+              />
+            </div>
+            <div>
+              <label className="register-form-label">Telefono</label>
+              <input
+                type="telefono"
+                name="telefono"
+                value={formData.telefono}
+                onChange={handleChange}
+                placeholder="Tu número de teléfono"
+                className="register-input"
+              />
 
-          <label className="register-form-label">Correo electrónico</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="tu@email.com"
-            className="register-input"
-            required
-          />
+              <label className="register-form-label">Correo electrónico</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="tu@email.com"
+                className="register-input"
+              />
 
-          <label className="register-form-label">Contraseña</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Crea una contraseña (mínimo 6 caracteres)"
-            className="register-input"
-            minLength="6"
-            required
-          />
-
-          <label className="register-form-label">Confirmar contraseña</label>
-          <input
-            type="password"
-            name="confirmarPassword"
-            value={formData.confirmarPassword}
-            onChange={handleChange}
-            placeholder="Repite tu contraseña"
-            className="register-input"
-            required
-          />
+              <label className="register-form-label">
+                Confirmar contraseña
+              </label>
+              <input
+                type="password"
+                name="confirmarcontraseña"
+                value={formData.confirmarcontraseña}
+                onChange={handleChange}
+                placeholder="Repite tu contraseña"
+                className="register-input"
+              />
+            </div>
+          </div>
 
           <div className="register-terms-checkbox">
             <input
               type="checkbox"
-              id="aceptaTerminos"
               name="aceptaTerminos"
               checked={formData.aceptaTerminos}
               onChange={handleChange}
-              className="register-terms-input"
             />
-            <label
-              className="register-terms-label"
-              htmlFor="aceptaTerminos"
-            >
-              Acepto los{" "}
-              <a
-                href="/terminos"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="register-link"
-              >
-                términos y condiciones
-              </a>
-            </label>
+            <label>Acepto los términos y condiciones</label>
           </div>
 
           <button
@@ -198,7 +224,6 @@ const RegisterModal = ({ isOpen, onClose, openLoginModal }) => {
           ¿Ya tienes una cuenta?{" "}
           <a
             href="#"
-            className="register-link"
             onClick={(e) => {
               e.preventDefault();
               onClose();
@@ -214,7 +239,3 @@ const RegisterModal = ({ isOpen, onClose, openLoginModal }) => {
 };
 
 export default RegisterModal;
-
-
-
-

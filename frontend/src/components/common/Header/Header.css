@@ -21,6 +21,11 @@ body, html {
   max-width: 100%;
   overflow: visible;
 }
+.user-name {
+  color: #0A0903;
+  font-size: 17px;
+  margin-right: 30px;
+}
 
 .header-logo {
   height: 65px;

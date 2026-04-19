@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './login.css';
 
+import { loginUser } from "../../services/AuthService";
+
 const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
-  // hooks siempre arriba
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -20,7 +22,7 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
@@ -29,36 +31,33 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
       setError('El email es obligatorio.');
       return;
     }
-    if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      setError('Por favor, ingresa un email válido.');
-      return;
+
+    try {
+
+      const res = await loginUser(formData);
+
+      localStorage.setItem('token', res.data.token);
+
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      window.dispatchEvent(new Event("userChanged"));
+
+      const nombreDisplay =
+        res.data.user?.nombre ||
+        res.data.user?.email;
+
+      setSuccess(`¡Bienvenido, ${nombreDisplay}!`);
+
+      setTimeout(() => {
+        setFormData({ email: '', contraseña: '' });
+        setSuccess('');
+        onClose();
+      }, 2000);
+
+    } catch (error) {
+      setError(
+        error.response?.data?.message || 'Error al iniciar sesión'
+      );
     }
-    if (formData.password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres.');
-      return;
-    }
-
-    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-    const usuarioValido = usuarios.find(
-      (u) => u.email === formData.email && u.password === formData.password
-    );
-
-    if (!usuarioValido) {
-      setError('Email o contraseña incorrectos.');
-      return;
-    }
-
-    // El registro ahora guarda nombreCompleto (si usaste la última versión)
-    const nombreDisplay = usuarioValido.nombreCompleto ?? usuarioValido.nombre ?? usuarioValido.email;
-
-    localStorage.setItem('usuarioActivo', JSON.stringify(usuarioValido));
-    setSuccess(`¡Bienvenido, ${nombreDisplay}!`);
-
-    setTimeout(() => {
-      setFormData({ email: '', password: '' });
-      setSuccess('');
-      onClose();
-    }, 2000);
   };
 
   const handleCloseAlert = () => {
@@ -72,7 +71,9 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
         <button className="login-modal-close" onClick={onClose}>
           &times;
         </button>
+
         <h2 className="title">Iniciar Sesión</h2>
+
         <form onSubmit={handleSubmit}>
           {error && (
             <div className="alert-error">
@@ -86,6 +87,7 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
               </button>
             </div>
           )}
+
           {success && (
             <div className="alert-success">
               <p>{success}</p>
@@ -112,8 +114,8 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
           <label className="form-label">Contraseña</label>
           <input
             type="password"
-            name="password"
-            value={formData.password}
+            name="contraseña"
+            value={formData.contraseña}
             onChange={handleChange}
             placeholder="Mínimo 6 caracteres"
             className="login-input"
@@ -125,6 +127,7 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
         </form>
 
         <br />
+
         <div className="grid-x grid-padding-x">
           <div className="medium-12 cell text-center">
             <p className="register-text">
@@ -134,8 +137,8 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
                 className="link"
                 onClick={(e) => {
                   e.preventDefault();
-                  onClose();            // cierra login
-                  openRegisterModal();  // pide al padre abrir register
+                  onClose();
+                  openRegisterModal();
                 }}
               >
                 Regístrate aquí
