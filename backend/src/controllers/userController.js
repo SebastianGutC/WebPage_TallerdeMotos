@@ -2,6 +2,7 @@
 
 import Usuario from "../models/userModel.js";
 import Cita from "../models/citaModel.js";
+import bcryptjs from "bcryptjs";
 
 export const obtenerUsuarios = async (req, res) => {
   try {
@@ -134,3 +135,125 @@ export const obtenerHistorialCitasUsuario = async (req, res) => {
   }
 };
 
+export const cambiarRolUsuario = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rol } = req.body;
+
+    if (!["USUARIO", "TECNICO"].includes(rol)) {
+      return res.status(400).json({
+        message: "Solo se permite USUARIO o TECNICO"
+      });
+    }
+
+    const usuario = await Usuario.findById(id);
+
+    if (!usuario) {
+      return res.status(404).json({
+        message: "Usuario no encontrado"
+      });
+    }
+
+    usuario.rol = rol;
+    await usuario.save();
+
+    res.status(200).json({
+      message: "Rol actualizado correctamente"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al cambiar rol"
+    });
+  }
+};
+
+export const crearTecnico = async (req, res) => {
+  try {
+    const {
+      nombre,
+      apellido,
+      email,
+      contraseña,
+      telefono
+    } = req.body;
+
+    const existe = await Usuario.findOne({ email });
+
+    if (existe) {
+      return res.status(400).json({
+        message: "Ya existe un usuario con ese email"
+      });
+    }
+
+    const hashedPassword = await bcryptjs.hash(contraseña, 10);
+
+    const nuevoTecnico = new Usuario({
+      nombre,
+      apellido,
+      email,
+      contraseña: hashedPassword,
+      telefono,
+      rol: "TECNICO"
+    });
+
+    await nuevoTecnico.save();
+
+    res.status(201).json({
+      message: "Técnico creado correctamente"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al crear técnico"
+    });
+  }
+};
+
+export const cambiarPassword = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const {
+      contraseñaActual,
+      nuevaContraseña
+    } = req.body;
+
+    const usuario = await Usuario.findById(userId);
+
+    if (!usuario) {
+      return res.status(404).json({
+        message: "Usuario no encontrado"
+      });
+    }
+
+    const coincide = await bcryptjs.compare(
+      contraseñaActual,
+      usuario.contraseña
+    );
+
+    if (!coincide) {
+      return res.status(400).json({
+        message: "Contraseña actual incorrecta"
+      });
+    }
+
+    const nuevaHash = await bcryptjs.hash(
+      nuevaContraseña,
+      10
+    );
+
+    usuario.contraseña = nuevaHash;
+
+    await usuario.save();
+
+    res.status(200).json({
+      message: "Contraseña actualizada correctamente"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al cambiar contraseña"
+    });
+  }
+};

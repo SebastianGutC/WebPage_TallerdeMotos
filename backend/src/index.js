@@ -15,6 +15,9 @@ import citasRoutes from './routes/citasRoutes.js';
 import motocicletasRoutes from './routes/motocicletasRoutes.js';
 import userRoutes from './routes/userRoutes.js'; 
 
+// 🔥 AGREGADO: facturas
+import facturasRoutes from './routes/facturasRoutes.js';
+
 const backend = express();
 
 // Middleware base
@@ -41,6 +44,9 @@ backend.use('/api/citas', citasRoutes);
 backend.use('/api/motocicletas', motocicletasRoutes);
 backend.use('/api/usuarios', userRoutes); 
 
+// 🔥 AGREGADO: facturas routes
+backend.use('/api/facturas', facturasRoutes);
+
 backend.get('/api/health', (req, res) => {
   res.status(200).json({
     message: 'Servidor corriendo correctamente',
@@ -48,13 +54,11 @@ backend.get('/api/health', (req, res) => {
   });
 });
 
-
 backend.use((req, res) => {
   res.status(404).json({
     message: 'Ruta no encontrada'
   });
 });
-
 
 backend.listen(config.port, () => {
   console.log(
