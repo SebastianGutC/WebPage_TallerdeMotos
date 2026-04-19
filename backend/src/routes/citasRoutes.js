@@ -1,26 +1,72 @@
-import express from 'express';
+// src/routes/citasRoutes.js
+
+import express from "express";
+
 import {
   obtenerCitas,
   obtenerCitaPorId,
   crearCita,
   actualizarCita,
-  eliminarCita
-} from '../controllers/citasController.js';
+  eliminarCita,
+  getCitasByUsuario,
+  cancelarCita,
+  asignarTecnico,
+  cambiarEstadoCita,
+  getCitasPorEstado,
+  getCitasPorFecha,
+  getCitasAsignadas,
+  getDetalleCitaTecnico,
+  addServicioToCita,
+  removeServicioFromCita,
+  addProductoToCita,
+  removeProductoFromCita
+} from "../controllers/citasController.js";
 
-import { validateToken } from '../middlewares/validateToken.js';
-import { isAdminOrTecnico } from '../middlewares/roles.middleware.js';
+import { validateToken } from "../middlewares/validateToken.js";
+
+import {
+  isAdmin,
+  isTecnico,
+  isAdminOrTecnico
+} from "../middlewares/roles.middleware.js";
 
 const router = express.Router();
 
+router.use(validateToken);
 
-router.get('/', validateToken, isAdminOrTecnico, obtenerCitas);
+// ADMIN / TECNICO
+router.get("/", isAdminOrTecnico, obtenerCitas);
 
+// USUARIO / ADMIN
+router.get("/usuario/:usuarioId", getCitasByUsuario);
 
-router.get('/:id', validateToken, obtenerCitaPorId);
+// FILTROS ADMIN
+router.get("/estado/:estado", isAdmin, getCitasPorEstado);
+router.get("/fecha/buscar", isAdmin, getCitasPorFecha);
 
-router.post('/', validateToken, crearCita);
+// TECNICO
+router.get("/tecnico/asignadas", isTecnico, getCitasAsignadas);
+router.get("/tecnico/detalle/:id", isTecnico, getDetalleCitaTecnico);
 
-router.put('/:id', validateToken, isAdminOrTecnico, actualizarCita);
-router.delete('/:id', validateToken, isAdminOrTecnico, eliminarCita);
+// CRUD
+router.get("/:id", obtenerCitaPorId);
+router.post("/", crearCita);
+router.put("/:id", isAdminOrTecnico, actualizarCita);
+router.delete("/:id", isAdmin, eliminarCita);
+
+// USUARIO
+router.put("/:id/cancelar", cancelarCita);
+
+// ADMIN
+router.put("/:id/asignar-tecnico", isAdmin, asignarTecnico);
+router.put("/:id/estado", isAdmin, cambiarEstadoCita);
+
+// SERVICIOS
+router.post("/:id/servicios", isAdminOrTecnico, addServicioToCita);
+router.delete("/:id/servicios/:index", isAdminOrTecnico, removeServicioFromCita);
+
+// PRODUCTOS
+router.post("/:id/productos", isAdminOrTecnico, addProductoToCita);
+router.delete("/:id/productos/:index", isAdminOrTecnico, removeProductoFromCita);
 
 export default router;

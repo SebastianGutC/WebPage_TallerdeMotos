@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const CitaSchema = new mongoose.Schema({
+const CitaSchema = new mongoose.Schema(
+{
   fecha: {
     type: Date,
     required: true
@@ -8,15 +9,18 @@ const CitaSchema = new mongoose.Schema({
 
   hora: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
 
+  // Ahora los técnicos también son usuarios con rol TECNICO
   tecnicoId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Empleado",
+    ref: "Usuario",
     required: true
   },
 
+  // Cliente que agenda la cita
   usuarioId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Usuario",
@@ -24,26 +28,50 @@ const CitaSchema = new mongoose.Schema({
   },
 
   placaMoto: {
-    type: String
+    type: String,
+    trim: true,
+    uppercase: true
   },
 
-    motocicletaId: {
+  motocicletaId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Motocicleta"
-    },
+    ref: "Motocicleta",
+    default: null
+  },
 
   servicios: [
     {
-      nombre: String,
-      costo: Number
+      nombre: {
+        type: String,
+        trim: true
+      },
+
+      costo: {
+        type: Number,
+        min: 0,
+        default: 0
+      }
     }
   ],
 
   productos: [
     {
-      nombre: String,
-      cantidad: Number,
-      costo: Number
+      nombre: {
+        type: String,
+        trim: true
+      },
+
+      cantidad: {
+        type: Number,
+        min: 1,
+        default: 1
+      },
+
+      costo: {
+        type: Number,
+        min: 0,
+        default: 0
+      }
     }
   ],
 
@@ -66,8 +94,10 @@ const CitaSchema = new mongoose.Schema({
     default: "disponible"
   }
 
-}, {
-  timestamps: true
+},
+{
+  timestamps: true,
+  versionKey: false
 });
 
 export default mongoose.model("Cita", CitaSchema);
