@@ -1,9 +1,8 @@
-import React from "react";
 import "./AllySection.css";
 import allyImage from "../../../assets/Homeimg/ally_image.jpg";
 
-
 const AllySection = () => {
+
   const reasons = [
     { icon: "fi-wrench", title: "Mantenimiento", desc: "Servicio técnico profesional y confiable." },
     { icon: "fi-shield", title: "Calidad", desc: "Usamos repuestos originales y de alta durabilidad." },
@@ -17,18 +16,21 @@ const AllySection = () => {
       <div className="ally-card">
 
         <div className="ally-image">
-            <div className="ally-image-inner">
-                <img src={allyImage} alt="mantenimiento" />
-            </div>
+          <div className="ally-image-inner">
+            <img src={allyImage} alt="mantenimiento" />
+          </div>
         </div>
 
         <div className="ally-content">
-          <h3>Somos tú <span className="light-bg">mejor aliado</span> por las siguientes razones:</h3>
+          <h3>
+            Somos <span className="light-bg">tú mejor aliado</span> por las siguientes razones:
+          </h3>
+
           <div className="reasons-grid">
             {reasons.map((reason, index) => (
               <div className="reason-item" key={index}>
                 <div className="icon-rectangle">
-                    <div className={`fi ${reason.icon}`}></div>
+                  <div className={`fi ${reason.icon}`}></div>
                 </div>
                 <div>
                   <h4>{reason.title}</h4>
@@ -37,10 +39,12 @@ const AllySection = () => {
               </div>
             ))}
           </div>
+
           <div className="cta-container">
             <p>¿Quiéres conocer el estado de tu reparación?</p>
             <button className="cta-button">Ingresar</button>
           </div>
+
         </div>
       </div>
     </section>

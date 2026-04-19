@@ -15,8 +15,10 @@
 .brands-container {
   display: flex;
   justify-content: center;
+  grid-template-columns: repeat(5, 1fr);
   align-items: center;
-  gap: 58px;
+  column-gap: 55px;
+  row-gap: 2px;
   flex-wrap: wrap;
   margin-top: 0;
 }
@@ -33,4 +35,16 @@
   opacity: 1;
   color: #0A0903;
   transform: scale(1.15);
+}
+
+@media (max-width: 480px) {
+  .brands-container {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 30px;
+    row-gap: 15px;
+  }
+
+  .brand-item img {
+    width: 80px;
+  }
 }

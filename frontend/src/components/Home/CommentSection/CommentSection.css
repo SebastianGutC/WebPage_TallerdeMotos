@@ -1,0 +1,245 @@
+.comments-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 40px 40px 50px 40px;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.comments-title {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 24px;
+  font-weight: 650;
+  color: #fff;
+  margin-left: 30px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  align-self: flex-start;
+  background-color:#0A0903;
+  padding: 2px 22px;
+  border-radius: 20px;
+}
+
+.comments-add-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  padding-left: 40px;
+}
+
+.comments-add-label span {
+  font-size: 20px;
+  color: #0A0903;
+}
+
+.btn-add-comment {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #111;
+  margin-left: 8px;
+  background: #0A0903;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #fff;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-add-comment:hover {
+  background: #FFC100;
+  color: #0A0903;
+}
+
+.comments-layout {
+  display: flex;
+  gap: 80px;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+}
+
+.comment-form {
+  flex: 0 0 600px;
+  border-radius: 14px;
+  padding: 22px;
+  border: 2px solid #FF0000;
+  box-shadow: 2px 4px 18px rgba(0, 0, 0, 0.07);
+}
+
+.comment-form-author {
+  margin: 0 0 14px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+}
+
+.comment-textarea {
+  width: 100%;
+  border: 1px solid #d3d3d3;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 16px;
+  color: #535353;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  line-height: 1.6;
+  min-height: 130px;
+}
+
+.comment-textarea:focus {
+  border-color: #f5c800;
+}
+
+.comment-form-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.btn-share {
+  background: #0A0903;
+  border: none;
+  border-radius: 22px;
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 550;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 8px rgba(171, 171, 171, 0.35);
+}
+
+.btn-share:hover {
+  transform: scale(1.04);
+  box-shadow: 0 4px 14px rgba(159, 150, 90, 0.5);
+}
+
+.deck-column {
+  flex: 0 0 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.deck-container {
+  position: relative;
+  width: 360px;
+  height: 220px;
+}
+
+.comment-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 380px;
+
+  border-radius: 12px;
+  padding: 22px;
+
+  background: 
+    linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(to right, #ff9d00, #FFC100, #ff5900) border-box;
+
+  border: 2px solid transparent;
+
+  box-shadow: 3px 6px 20px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+
+.comment-card-author {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111;
+}
+
+.comment-card-text {
+  margin-left: 10px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #414040;
+  line-height: 1.65;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.comment-card-time {
+  margin: 0;
+  font-size: 13px;
+  color: #909090;
+}
+
+.deck-indicators {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.deck-dot {
+  height: 6px;
+  border-radius: 3px;
+  background: #ddd;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 6px;
+}
+
+.deck-dot.active {
+  width: 20px !important;
+  background: #f5c800;
+}
+
+.deck-hint {
+  font-size: 13px;
+  color: #bbb;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+@media (max-width: 960px) {
+  .comments-section {
+    padding: 32px 24px 40px 24px;
+  }
+
+  .comments-layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  }
+
+  .comment-form {
+    flex: unset;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .deck-column {
+    flex: unset;
+    align-items: center;
+    width: 100%;
+  }
+
+  .deck-container {
+    width: 320px;
+  }
+
+  .comment-card {
+    width: 300px;
+  }
+}
