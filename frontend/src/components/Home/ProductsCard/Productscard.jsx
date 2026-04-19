@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import "./ProductsCard.css";
 import gsap from "gsap";
+import { useCart } from "../../../context/CartContext";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
@@ -13,55 +14,67 @@ import BateriaYuasa from "../../../assets/RepuestosImg/BateriaYuasa.png";
 import FiltroAire from "../../../assets/RepuestosImg/FiltroAireFZ150.png";
 
 const products = [
-  { id: 1, name: "Aceite Motul 7100", price: "50.000", sale:"45.900", image: AceiteMotul },
-  { id: 2, name: "Aceite Motor Mobil", price: "34.400", sale:"30.900" ,image: AceiteMotor },
-  { id: 3, name: "Tapas Laterales NKD", price: "38.900", sale: "34.550", image: TapasLaterales },
-  { id: 4, name: "Espejos Rizoma", price: "120.000", sale: "115.550", image: EspejosNaked },
-  { id: 5, name: "Batería Yuasa", price: "165.000", sale: "155.900", image: BateriaYuasa },
-  { id: 6, name: "Filtro Aire Yamaha", price: "48.000", sale: "44.00", image: FiltroAire },
+  { id: 1, name: "Aceite Motul 7100", price: "45.900", image: AceiteMotul, precio: 45900 },
+  { id: 2, name: "Aceite Motor Mobil", price: "30.900", image: AceiteMotor, precio: 30900 },
+  { id: 3, name: "Tapas Laterales NKD", price: "34.550", image: TapasLaterales, precio: 34550 },
+  { id: 4, name: "Espejos Rizoma", price: "115.550", image: EspejosNaked, precio: 115550 },
+  { id: 5, name: "Batería Yuasa", price: "155.900", image: BateriaYuasa, precio: 155900 },
+  { id: 6, name: "Filtro Aire Yamaha", price: "44.000", image: FiltroAire, precio: 44000 },
 ];
 
 const loopProducts = [...products, ...products];
 
+const BASE_SPEED = 1.2;
+
 export default function ProductsCard() {
   const sliderRef = useRef(null);
-  const animationRef = useRef(null);
+  const xRef = useRef(0);
+  const widthRef = useRef(0);
+  const speedRef = useRef(BASE_SPEED);
+  const pausedRef = useRef(false);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const el = sliderRef.current;
-    const totalWidth = el.scrollWidth / 2;
+    widthRef.current = el.scrollWidth / 2;
 
-    const tl = gsap.to(el, {
-      x: `-=${totalWidth}`,
-      duration: 25,
-      ease: "none",
-      repeat: -1,
-      modifiers: {
-        x: gsap.utils.unitize(x => parseFloat(x) % totalWidth)
+    const tick = () => {
+      if (pausedRef.current) return;
+
+      xRef.current -= speedRef.current;
+
+      if (xRef.current <= -widthRef.current) {
+        xRef.current += widthRef.current;
       }
-    });
+      if (xRef.current > 0) {
+        xRef.current -= widthRef.current;
+      }
 
-    animationRef.current = tl;
+      gsap.set(el, { x: xRef.current });
+    };
 
-    // pausa hover
-    el.addEventListener("mouseenter", () => tl.pause());
-    el.addEventListener("mouseleave", () => tl.resume());
-
-    return () => tl.kill();
+    gsap.ticker.add(tick);
+    return () => gsap.ticker.remove(tick);
   }, []);
 
-  const handleNext = () => {
-    const tl = animationRef.current;
-    tl.pause();
-    tl.progress(tl.progress() + 0.1); // avanza en el loop
-    tl.resume();
+  const move = (direction) => {
+    const impulse = direction * 8;
+    speedRef.current = BASE_SPEED + impulse;
+
+    gsap.to(speedRef, {
+      current: BASE_SPEED,
+      duration: 0.8,
+      ease: "power2.out",
+    });
   };
 
-  const handlePrev = () => {
-    const tl = animationRef.current;
-    tl.pause();
-    tl.progress(tl.progress() - 0.1); // retrocede
-    tl.resume();
+  const handleAdd = (e, p) => {
+    e.stopPropagation();
+    addToCart({
+      imagen: p.image,
+      nombre: p.name,
+      precio: p.precio,
+    });
   };
 
   return (
@@ -69,14 +82,19 @@ export default function ProductsCard() {
       <h3 className="products-title">Productos Destacados</h3>
 
       <div className="slider-container">
-        
-        <button className="slider-btn prev" onClick={handlePrev}>
+
+        <button className="slider-btn prev" onClick={() => move(-4)}>
           <FontAwesomeIcon icon={faChevronLeft} />
         </button>
 
         <div className="cards-track" ref={sliderRef}>
           {loopProducts.map((p, i) => (
-            <article key={i} className="product-card">
+            <article
+              key={i}
+              className="product-card"
+              onMouseEnter={() => { pausedRef.current = true; }}
+              onMouseLeave={() => { pausedRef.current = false; }}
+            >
               <div className="media">
                 <img src={p.image} alt={p.name} className="product-image" />
               </div>
@@ -85,9 +103,8 @@ export default function ProductsCard() {
 
               <div className="product-details">
                 <p className="product-price">${p.price}</p>
-                <p className="product-sale">${p.sale}</p>
 
-                <button className="btn-add">
+                <button className="btn-add" onClick={(e) => handleAdd(e, p)}>
                   <FontAwesomeIcon icon={faCartPlus} />
                 </button>
               </div>
@@ -95,7 +112,7 @@ export default function ProductsCard() {
           ))}
         </div>
 
-        <button className="slider-btn next" onClick={handleNext}>
+        <button className="slider-btn next" onClick={() => move(4)}>
           <FontAwesomeIcon icon={faChevronRight} />
         </button>
 

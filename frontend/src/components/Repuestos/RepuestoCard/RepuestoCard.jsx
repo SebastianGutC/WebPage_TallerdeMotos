@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 
 const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
-  const { addToCart } = useCart();
+  const { addToCart, toggleCart } = useCart();
 
   const handleAdd = (e) => {
     e.stopPropagation();
@@ -15,7 +15,7 @@ const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
   const handleBuyNow = (e) => {
     e.stopPropagation();
     addToCart({ imagen, nombre, precio });
-    // Aquí podrías redirigir a checkout en el futuro
+    toggleCart();
   };
 
   return (
@@ -43,10 +43,8 @@ const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
           </div>
 
           <div className="repuesto-footer">
-
             <div className="repuesto-botones-fila">
 
-              {/* Agregar con icono (IZQUIERDA) */}
               <button
                 className={`repuesto-btn-icon ${!disponible ? "disabled" : ""}`}
                 disabled={!disponible}
@@ -55,7 +53,6 @@ const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
                 <FontAwesomeIcon icon={faCartPlus} />
               </button>
 
-              {/* Comprar ahora (DERECHA) */}
               <button
                 className={`repuesto-btn ${!disponible ? "disabled" : ""}`}
                 disabled={!disponible}
@@ -65,8 +62,6 @@ const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
               </button>
 
             </div>
-
-
           </div>
         </div>
       </div>
@@ -75,5 +70,4 @@ const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
 };
 
 export default RepuestoCard;
-
 
