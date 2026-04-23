@@ -73,7 +73,8 @@ export const crearCita = async (req, res) => {
       motocicletaId,
       servicios,
       productos,
-      fechaEntrega
+      fechaEntrega,
+      estado
     } = req.body;
 
     if (!fecha || !hora || !tecnicoId) {
@@ -92,7 +93,7 @@ export const crearCita = async (req, res) => {
       servicios: servicios || [],
       productos: productos || [],
       fechaEntrega,
-      estado: "pendiente"
+      estado: "disponible"
     });
 
     await nuevaCita.save();
