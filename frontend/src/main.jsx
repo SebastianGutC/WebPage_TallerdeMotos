@@ -12,13 +12,17 @@ import './styles/global.css'
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import './styles/global.css'
+import { AuthProvider } from './context/AuthProvider';
+
 config.autoAddCss = false;
 
 $(document).foundation();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </React.StrictMode>
 )
 

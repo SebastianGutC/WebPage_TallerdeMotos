@@ -3,6 +3,7 @@ import Header from "./components/common/Header/Header";
 import AppRouter from "./router/AppRouter";
 import Footer from "./components/common/Footer/Footer";
 import { CartProvider } from "./context/CartContext";
+import AuthModals from "./context/AuthModals";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Footer />
         </div>
       </CartProvider>
+      <AuthModals />
     </BrowserRouter>
   );
 }

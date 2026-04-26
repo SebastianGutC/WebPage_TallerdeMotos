@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import './login.css';
-
 import { loginUser } from "../../services/AuthService";
+import { useAuth } from "../../context/UseAuth";
+import { useNavigate } from 'react-router-dom';
 
 const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
+  const { login } = useAuth(); 
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    contraseña: ''
   });
-
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -16,10 +19,7 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -33,18 +33,18 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
     }
 
     try {
-
       const res = await loginUser(formData);
 
-      localStorage.setItem('token', res.data.token);
+      login({
+        usuario: res.data.user,
+        token: res.data.token,
+      });
 
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-      window.dispatchEvent(new Event("userChanged"));
+      if(res.data.user.rol === "USUARIO") {
+        navigate('/servicios');
+      }
 
-      const nombreDisplay =
-        res.data.user?.nombre ||
-        res.data.user?.email;
-
+      const nombreDisplay = res.data.user?.nombre || res.data.user?.email;
       setSuccess(`¡Bienvenido, ${nombreDisplay}!`);
 
       setTimeout(() => {
@@ -54,9 +54,7 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
       }, 2000);
 
     } catch (error) {
-      setError(
-        error.response?.data?.message || 'Error al iniciar sesión'
-      );
+      setError(error.response?.data?.message || 'Error al iniciar sesión');
     }
   };
 
@@ -68,9 +66,7 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
   return (
     <div className="login-modal-overlay">
       <div className="login-modal-container">
-        <button className="login-modal-close" onClick={onClose}>
-          &times;
-        </button>
+        <button className="login-modal-close" onClick={onClose}>&times;</button>
 
         <h2 className="title">Iniciar Sesión</h2>
 
@@ -78,26 +74,13 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
           {error && (
             <div className="alert-error">
               <p>{error}</p>
-              <button
-                className="close-button-custom"
-                type="button"
-                onClick={handleCloseAlert}
-              >
-                &times;
-              </button>
+              <button className="close-button-custom" type="button" onClick={handleCloseAlert}>&times;</button>
             </div>
           )}
-
           {success && (
             <div className="alert-success">
               <p>{success}</p>
-              <button
-                className="close-button-custom"
-                type="button"
-                onClick={handleCloseAlert}
-              >
-                &times;
-              </button>
+              <button className="close-button-custom" type="button" onClick={handleCloseAlert}>&times;</button>
             </div>
           )}
 
@@ -121,9 +104,7 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
             className="login-input"
           />
 
-          <button type="submit" className="login-button">
-            Iniciar Sesión
-          </button>
+          <button type="submit" className="login-button">Iniciar Sesión</button>
         </form>
 
         <br />
@@ -132,15 +113,11 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
           <div className="medium-12 cell text-center">
             <p className="register-text">
               ¿No tienes una cuenta?{' '}
-              <a
-                href="#"
-                className="link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onClose();
-                  openRegisterModal();
-                }}
-              >
+              <a href="#" className="link" onClick={(e) => {
+                e.preventDefault();
+                onClose();
+                openRegisterModal();
+              }}>
                 Regístrate aquí
               </a>
             </p>

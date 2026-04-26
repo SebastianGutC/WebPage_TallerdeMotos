@@ -1,55 +1,82 @@
-import servicios from "../../assets/js/DataServicios";
 import CardServicio from "../../components/CardServicio/CardServicio";
 import serviciosEnCurso from "../../assets/js/DataServiciosEnCurso";
 import CardServicioEnCurso from "../../components/CardServicioEnCurso/cardServicioEnCurso";
 import CardPasos from "../../components/CardPasos/CardPasos";
 import "./servicios.css";
+import { getServicios } from "../../services/ServiciosService";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../context/UseAuth";
 
 function Servicios() {
+  const [servicios, setServicios] = useState([]);
+  const { usuario } = useAuth();
+
+  useEffect(() => {
+    const fetchServicios = async () => {
+      try {
+        const res = await getServicios();
+        setServicios(res.data);
+      } catch (error) {
+        console.error("Error fetching servicios:", error);
+      }
+    };
+    fetchServicios();
+  }, []);
+  console.log("usuario context:", usuario);
   return (
     <>
       {/* Banner principal */}
       <section className="banner-servicios">
         <h3 className="banner-titulo">
           Servicios profesionales <br /> <span>para tu moto</span>
-          <br /><button className="link-catalogo" onClick={() => {
-    document.getElementById("servicios").scrollIntoView({ behavior: "smooth" });
-  }}>Conoce nuestro catálogo</button>
-
+          <br />
+          <button
+            className="link-catalogo"
+            onClick={() => {
+              document
+                .getElementById("servicios")
+                .scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            Conoce nuestro catálogo
+          </button>
         </h3>
       </section>
 
       {/* Servicios en curso */}
-      <section className="grid-container servicios-en-curso">
-        <div className="grid-x grid-padding-x align-center text-center">
-          <div className="cell small-12 medium-10 large-8">
-            <h2 className="titulo-seccion">
-              Hola <span className="text-gradient">Carlos Perez</span>
-            </h2>
-            <p className="subtitulo-seccion">
-              Aquí puedes ver todos tus servicios, en curso y finalizados.
-            </p>
-          </div>
-        </div>
+      {usuario && usuario.rol ==="USUARIO" && (
+        <section className="grid-container servicios-en-curso">
+          <div className="grid-x grid-padding-x align-center text-center">
+            <div className="cell small-12 medium-10 large-8">
+              <h2 className="titulo-seccion">
+                Hola <span className="text-gradient">{usuario.nombre}</span>
+              </h2>
 
-        <div className="grid-x grid-margin-x grid-margin-y align-center">
-          {serviciosEnCurso.map((servicioEnCurso) => (
-            <div
-              className="cell small-12 medium-6 large-4"
-              key={servicioEnCurso.id}
-            >
-              <CardServicioEnCurso servicio={servicioEnCurso} />
+              <p className="subtitulo-seccion">
+                Aquí puedes ver todos tus servicios, en curso y finalizados.
+              </p>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
+
+          <div className="grid-x grid-margin-x grid-margin-y align-center">
+            {serviciosEnCurso.map((servicioEnCurso) => (
+              <div
+                className="cell small-12 medium-6 large-4"
+                key={servicioEnCurso.id}
+              >
+                <CardServicioEnCurso servicio={servicioEnCurso} />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <div className="contenedor-pasos">
         <CardPasos></CardPasos>
       </div>
 
       {/* Catálogo de servicios */}
-      <section id ="servicios" className="grid-container contenedor-servicios">
+      <section id="servicios" className="grid-container contenedor-servicios">
         <div className="grid-x grid-padding-x align-center text-center margin-bottom-2">
           <div className="cell small-12 medium-10 large-8 contenedor-catalogo">
             <h2 className="text-primary titulo-catalogo">
@@ -65,9 +92,9 @@ function Servicios() {
 
         <div className="grid-x grid-margin-x grid-margin-y align-center">
           {servicios.map((servicio) => (
-            <div className="cell small-12 medium-6 large-4" key={servicio.id}>
+            <div className="cell small-12 medium-6 large-4" key={servicio._id}>
               <CardServicio
-                titulo={servicio.titulo}
+                titulo={servicio.nombre}
                 descripcion={servicio.descripcion}
                 icono={servicio.icono}
                 precio={servicio.precio}

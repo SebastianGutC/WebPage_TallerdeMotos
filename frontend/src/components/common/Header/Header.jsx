@@ -1,40 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Header.css";
 import "foundation-sites";
 import isologo from "../../../assets/isologo.png";
 import { NavLink } from "react-router-dom";
-import LoginModal from "../../../pages/Login/LoginModal";
-import RegisterModal from "../../../pages/Register/RegisterModal";
 import { useCart } from "../../../context/CartContext";
 import CartMenu from "../../Repuestos/CartMenu/CartMenu";
 import { logoutUser } from "../../../services/AuthService";
+import { useAuth } from "../../../context/UseAuth"; 
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const { cartItems, toggleCart } = useCart();
-  const [user, setUser] = useState(null);
 
-  const openLoginModal = () => setIsLoginOpen(true);
-  const closeLoginModal = () => setIsLoginOpen(false);
-  const openRegisterModal = () => setIsRegisterOpen(true);
-  const closeRegisterModal = () => setIsRegisterOpen(false);
-
-  useEffect(() => {
-    const loadUser = () => {
-      const userStorage = localStorage.getItem("user");
-      setUser(userStorage ? JSON.parse(userStorage) : null);
-    };
-
-    loadUser();
-
-    window.addEventListener("userChanged", loadUser);
-
-    return () => {
-      window.removeEventListener("userChanged", loadUser);
-    };
-  }, []);
+  const { usuario, isAuthenticated, logout, openLoginModal, openRegisterModal } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -42,12 +20,7 @@ const Header = () => {
     } catch (error) {
       console.log("Error cerrando sesión:", error);
     } finally {
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-
-      setUser(null);
-
-      window.dispatchEvent(new Event("userChanged"));
+      logout(); 
     }
   };
 
@@ -59,30 +32,19 @@ const Header = () => {
 
       <div className={`top-bar-center ${menuOpen ? "open" : ""}`}>
         <ul className="menu">
-          <li>
-            <NavLink to="/">Inicio</NavLink>
-          </li>
-          <li>
-            <NavLink to="/servicios">Servicios</NavLink>
-          </li>
-          <li>
-            <NavLink to="/repuestos">Repuestos</NavLink>
-          </li>
-          <li>
-            <NavLink to="/nosotros">Nosotros</NavLink>
-          </li>
-          <li>
-            <NavLink to="/api">API</NavLink>
-          </li>
+          <li><NavLink to="/">Inicio</NavLink></li>
+          <li><NavLink to="/servicios">Servicios</NavLink></li>
+          <li><NavLink to="/repuestos">Repuestos</NavLink></li>
+          <li><NavLink to="/nosotros">Nosotros</NavLink></li>
+          <li><NavLink to="/api">API</NavLink></li>
         </ul>
       </div>
 
       <div className="top-bar-right">
-        {user && (
+        {isAuthenticated && (
           <div className="cart-container">
             <button className="cart-btn" onClick={toggleCart}>
               <i className="fi-shopping-cart cart-icon"></i>
-
               {cartItems.length > 0 && (
                 <span className="cart-badge">{cartItems.length}</span>
               )}
@@ -90,10 +52,9 @@ const Header = () => {
           </div>
         )}
 
-        {user ? (
+        {isAuthenticated ? (
           <div className="user-section">
-            <span className="user-name">¡ Hola, {user.nombre} !</span>
-
+            <span className="user-name">¡ Hola, {usuario.nombre} !</span>
             <button className="btn-logout" onClick={handleLogout}>
               <i className="fi-x"></i>
             </button>
@@ -104,7 +65,6 @@ const Header = () => {
               <i className="fi-torso icon-btn"></i>
               <span className="btn-text">Iniciar Sesión</span>
             </button>
-
             <button className="btn btn-register" onClick={openRegisterModal}>
               <i className="fi-pencil icon-btn"></i>
               <span className="btn-text">Registrarme</span>
@@ -121,17 +81,8 @@ const Header = () => {
 
       <CartMenu />
 
-      <LoginModal
-        isOpen={isLoginOpen}
-        onClose={closeLoginModal}
-        openRegisterModal={openRegisterModal}
-      />
-
-      <RegisterModal
-        isOpen={isRegisterOpen}
-        onClose={closeRegisterModal}
-        openLoginModal={openLoginModal}
-      />
+      {/* ← Ya no necesitas LoginModal ni RegisterModal aquí,
+          el AuthProvider ya los renderiza globalmente */}
     </header>
   );
 };
