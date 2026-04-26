@@ -7,7 +7,7 @@ import API from "../../../services/Api";
 import { ESTADO_COLORS, ESTADO_LABEL } from "../citasConstants.jsx";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSquarePlus, faCaretDown, faAngleDown, faClock, faCalendarDay, faFileLines } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarPlus, faCaretDown, faAngleDown, faClock, faCalendarDay, faFileLines, faCheck, faXmark,  faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const ESTADOS_ASIGNADA  = ["pendiente", "en_proceso"];
 const ESTADOS_REALIZADA = ["lista", "entregada", "cancelada", "no_asistio"];
@@ -172,10 +172,17 @@ const CitasTab = () => {
 
   const SaveCancelBtns = ({ id }) => (
     <td className="actions-cell">
-      <button className="btn-save" onClick={() => saveEdit(id)} disabled={saving}>
-        {saving ? "..." : "Guardar"}
-      </button>
-      <button className="btn-secondary-sm" onClick={cancelEdit}>Cancelar</button>
+      <div className="actions-wrapper">
+
+        <button className="btn-icon save" onClick={() => saveEdit(id)} disabled={saving}>
+          <FontAwesomeIcon icon={faCheck} />
+        </button>
+
+        <button className="btn-icon cancel" onClick={cancelEdit}>
+          <FontAwesomeIcon icon={faXmark} />
+        </button>
+
+      </div>
     </td>
   );
 
@@ -186,7 +193,7 @@ const CitasTab = () => {
 
       {/* ══ 1. CREAR HORARIO ════════════════════════════════════════════════ */}
       <Section
-        icon={<FontAwesomeIcon icon={faSquarePlus} />}
+        icon={<FontAwesomeIcon icon={faCalendarPlus} />}
         title="Crear nuevo horario"
         open={showCrear}
         onToggle={() => setShowCrear(v => !v)}
@@ -414,9 +421,13 @@ const CitasTab = () => {
                       </td>
                       <td>{formatDate(c.fechaEntrega) || <span className="text-muted">—</span>}</td>
                       <td>
-                        <button className="btn-expand"
-                          onClick={() => setExpandedDetalle(expandedDetalle === c._id ? null : c._id)}>
-                          {expandedDetalle === c._id ? "▲ Cerrar" : "▼ Ver"}
+                        <button
+                          className="btn-expand"
+                          onClick={() => setExpandedDetalle(expandedDetalle === c._id ? null : c._id)}
+                        >
+                          <FontAwesomeIcon
+                            icon={expandedDetalle === c._id ? faEyeSlash : faEye}
+                          />
                         </button>
                       </td>
                     </tr>

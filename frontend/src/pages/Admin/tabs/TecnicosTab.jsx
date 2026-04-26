@@ -4,6 +4,9 @@ import { getAllUsers, toggleUserStatus } from "../../../services/AdminService";
 import API from "../../../services/Api";
 import { ESTADO_COLORS, ESTADO_LABEL } from "../citasConstants.jsx";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
+
 const TecnicosTab = () => {
   const [tecnicos, setTecnicos]         = useState([]);
   const [loading, setLoading]           = useState(false);
@@ -108,7 +111,7 @@ const TecnicosTab = () => {
                       </td>
                       <td>
                         <button className="btn-expand" onClick={() => handleExpand(t._id)}>
-                          {expandedId === t._id ? "▲ Ocultar" : "▼ Ver citas"}
+                          {expandedId === t._id ? "Ocultar" : "Ver citas"}
                         </button>
                       </td>
                     </tr>
@@ -160,7 +163,7 @@ const TecnicosTab = () => {
                       </td>
                       <td>
                         <button className="btn-expand" onClick={() => handleExpand(t._id)}>
-                          {expandedId === t._id ? "▲ Ocultar" : "▼ Ver citas"}
+                          {expandedId === t._id ? "Ocultar" : "Ver citas"}
                         </button>
                       </td>
                     </tr>
@@ -240,7 +243,10 @@ const CitasDelTecnico = ({ tecnico, citas, loading, expandedCita, setExpandedCit
                     className="btn-expand"
                     onClick={() => setExpandedCita(expandedCita === c._id ? null : c._id)}
                   >
-                    {expandedCita === c._id ? "▲" : "▼"}
+                    <FontAwesomeIcon
+                      icon={faChevronDown}
+                      className={expandedCita === c._id ? "rotate-icon" : ""}
+                    />
                   </button>
                 </td>
               </tr>
@@ -276,7 +282,8 @@ const CitasDelTecnico = ({ tecnico, citas, loading, expandedCita, setExpandedCit
                       </div>
                       {c.fechaEntrega && (
                         <p className="detail-entrega">
-                          📅 Entrega estimada: <strong>{new Date(c.fechaEntrega).toLocaleDateString("es-CO")}</strong>
+                          <FontAwesomeIcon icon={faCalendarCheck} style={{ marginRight: "6px" }} />
+                          Entrega estimada: <strong>{new Date(c.fechaEntrega).toLocaleDateString("es-CO")}</strong>
                         </p>
                       )}
                     </div>

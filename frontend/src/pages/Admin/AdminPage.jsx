@@ -8,14 +8,14 @@ import ProductosTab from "./tabs/ProductosTab";
 import "./AdminPage.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserGroup, faWrench, faCalendar, faGear, faBox } from "@fortawesome/free-solid-svg-icons";
+import { faUserGroup, faWrench, faCalendar, faGear, faBasketShopping } from "@fortawesome/free-solid-svg-icons";
 
 const TABS = [
   { id: "usuarios",  label: "Usuarios",  icon: <FontAwesomeIcon icon={faUserGroup} /> },
   { id: "tecnicos",  label: "Técnicos",  icon: <FontAwesomeIcon icon={faWrench} /> },
   { id: "citas",     label: "Citas",     icon: <FontAwesomeIcon icon={faCalendar} /> },
   { id: "servicios", label: "Servicios", icon: <FontAwesomeIcon icon={faGear} /> },
-  { id: "productos", label: "Productos", icon: <FontAwesomeIcon icon={faBox} /> },
+  { id: "productos", label: "Productos", icon: <FontAwesomeIcon icon={faBasketShopping} /> },
 ];
 
 const AdminPage = () => {

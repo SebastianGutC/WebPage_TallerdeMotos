@@ -5,6 +5,10 @@ import {
 } from "../../../services/AdminService";
 import { ESTADO_COLORS, ESTADO_LABEL } from "../citasConstants.jsx";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSortDown, faSortUp, faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+
+
 const UsuariosTab = () => {
   const [users, setUsers]             = useState([]);
   const [loading, setLoading]         = useState(false);
@@ -213,17 +217,17 @@ const UsuariosTab = () => {
                       </td>
                       <td className="actions-cell">
                         <button className="btn-expand" onClick={() => handleExpandCitas(u._id)}>
-                          {expandedCitas === u._id ? "▲ Citas" : "▼ Citas"}
-                        </button>
-                        <button className="btn-edit" onClick={() => handleStartEdit(u)}>
-                          Editar
+                          {expandedCitas === u._id ? "Ocultar" : "Ver Citas"}
                         </button>
                         <button
                           className="btn-convert"
                           onClick={() => handleConvertToTecnico(u._id, u.nombre)}
                           title="Convertir en técnico"
                         >
-                          🔧 Técnico
+                          Técnico
+                        </button>
+                        <button className="btn-edit" onClick={() => handleStartEdit(u)}>
+                          Editar
                         </button>
                         <button className="btn-delete" onClick={() => handleDelete(u._id, u.nombre)}>
                           Eliminar

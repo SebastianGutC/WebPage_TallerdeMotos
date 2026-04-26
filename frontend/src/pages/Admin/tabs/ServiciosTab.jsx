@@ -4,6 +4,10 @@ import { getAllServicios, createServicio, updateServicio, deleteServicio } from 
 
 const INITIAL = { nombre: "", descripcion: "", precio: "", icono: "" };
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileCirclePlus, faPenToSquare, faFileCircleCheck , faAngleDown } from "@fortawesome/free-solid-svg-icons";
+
+
 const ServiciosTab = () => {
   const [servicios, setServicios]     = useState([]);
   const [loading, setLoading]         = useState(false);
@@ -79,12 +83,23 @@ const ServiciosTab = () => {
       {/* ══ ACORDEÓN: Crear / Editar servicio ══ */}
       <div className="accordion-card">
         <button className="accordion-header" onClick={() => setShowForm(v => !v)}>
-          <span>
-            {editingId ? "✏️ Editar servicio" : "➕ Nuevo servicio"}
-          </span>
-          <span className="accordion-arrow">{showForm ? "▲" : "▼"}</span>
-        </button>
+          <span className="section-left">
+            
+            <span className="section-icon">
+              <FontAwesomeIcon icon={editingId ? faPenToSquare : faFileCirclePlus} />
+            </span>
 
+            <span className="section-title-text">
+              {editingId ? "Editar servicio" : "Nuevo servicio"}
+            </span>
+          </span>
+          <span className="accordion-arrow">
+            <FontAwesomeIcon 
+              icon={faAngleDown} 
+              className={showForm ? "rotate" : ""} 
+            />
+          </span>
+        </button>
         {showForm && (
           <div className="accordion-body">
             {error   && <p className="form-error">{error}</p>}
@@ -120,8 +135,26 @@ const ServiciosTab = () => {
       {/* ══ ACORDEÓN: Servicios registrados ══ */}
       <div className="accordion-card">
         <button className="accordion-header" onClick={() => setShowList(v => !v)}>
-          <span>📋 Servicios registrados <span className="count-badge-inline">{servicios.length}</span></span>
-          <span className="accordion-arrow">{showList ? "▲" : "▼"}</span>
+          <span className="section-left">
+            <span className="section-icon">
+              <FontAwesomeIcon icon={faFileCircleCheck} />
+            </span>
+
+            <span className="section-title-text">
+              Servicios registrados
+            </span>
+
+            <span className="count-badge-inline">
+              {servicios.length}
+            </span>
+          </span>
+
+          <span className="accordion-arrow">
+            <FontAwesomeIcon 
+              icon={faAngleDown} 
+              className={showList ? "rotate" : ""} 
+            />
+          </span>
         </button>
 
         {showList && (

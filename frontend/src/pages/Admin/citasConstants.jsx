@@ -17,13 +17,13 @@ export const ESTADO_LABEL = {
 };
 
 export const ESTADO_COLORS = {
-  disponible: "#69c1e7",
+  disponible: "#0ace90",
   pendiente:  "#fa931d",
-  en_proceso: "#6599ed",
-  lista:      "#16d93d",
+  en_proceso: "#0195d4",
+  lista:      "#05c32b",
   entregada:  "#1414a4",
   cancelada:  "#e01a1a",
-  no_asistio: "#9ca3af",
+  no_asistio: "#97989b",
 };
 
 /** Devuelve el badge de estado listo para usar en JSX */

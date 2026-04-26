@@ -1,22 +1,22 @@
 // src/pages/Admin/tabs/ProductosTab.jsx
 import React, { useEffect, useState } from "react";
 import { getAllProductos, createProducto, updateProducto, deleteProducto } from "../../../services/AdminService";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartPlus, faPenToSquare, faCartArrowDown, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 const INITIAL = { nombre: "", descripcion: "", precio: "", stock: "", marca: "", categoria: "", img64: "" };
 
 const ProductosTab = () => {
-  const [productos, setProductos]     = useState([]);
-  const [loading, setLoading]         = useState(false);
-  const [search, setSearch]           = useState("");
-  const [form, setForm]               = useState(INITIAL);
-  const [editingId, setEditingId]     = useState(null);  
-  const [editForm, setEditForm]       = useState({});
-  const [saving, setSaving]           = useState(false);
-  const [error, setError]             = useState("");
-  const [success, setSuccess]         = useState("");
-  const [submitting, setSubmitting]   = useState(false);
-  const [showForm, setShowForm]       = useState(false);
-  const [showList, setShowList]       = useState(true);
+  const [productos, setProductos]   = useState([]);
+  const [loading, setLoading]       = useState(false);
+  const [search, setSearch]         = useState("");
+  const [form, setForm]             = useState(INITIAL);
+  const [editingId, setEditingId]   = useState(null);   // null = crear, id = editar
+  const [error, setError]           = useState("");
+  const [success, setSuccess]       = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [showForm, setShowForm]     = useState(false);
+  const [showList, setShowList]     = useState(true);
 
   const fetchProductos = async () => {
     setLoading(true);
@@ -29,12 +29,14 @@ const ProductosTab = () => {
 
   const filtered = productos.filter(p =>
     `${p.nombre} ${p.marca || ""} ${p.categoria || ""}`
-      .toLowerCase()
-      .includes(search.toLowerCase())
+      .toLowerCase().includes(search.toLowerCase())
   );
 
-  /* ── Formulario crear ── */
-  const handleChange = (e) => { setForm({ ...form, [e.target.name]: e.target.value }); setError(""); };
+  // ── Cambios en el formulario ───────────────────────────────────────────────
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+    setError("");
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -44,6 +46,7 @@ const ProductosTab = () => {
     reader.readAsDataURL(file);
   };
 
+  // ── Guardar (crear o editar) ───────────────────────────────────────────────
   const handleSubmit = async () => {
     const { nombre, descripcion, precio, stock, marca, categoria } = form;
     if (!nombre || !descripcion || !precio || stock === "" || !marca || !categoria) {
@@ -52,49 +55,50 @@ const ProductosTab = () => {
     try {
       setSubmitting(true);
       const data = { ...form, precio: Number(form.precio), stock: Number(form.stock) };
-      await createProducto(data);
-      setSuccess("Producto creado correctamente.");
+
+      if (editingId) {
+        await updateProducto(editingId, data);
+        setSuccess("Producto actualizado correctamente.");
+      } else {
+        await createProducto(data);
+        setSuccess("Producto creado correctamente.");
+      }
+
       setForm(INITIAL);
+      setEditingId(null);
       fetchProductos();
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
-      setError(err.response?.data?.message || "Error al crear producto.");
+      setError(err.response?.data?.message || "Error al guardar producto.");
     } finally { setSubmitting(false); }
   };
 
-  /* ── Edición inline en tabla ── */
-  const handleStartEdit = (p) => {
-    setEditingId(p._id);
-    setEditForm({
-      nombre:      p.nombre,
-      descripcion: p.descripcion,
-      precio:      p.precio,
-      stock:       p.stock,
-      marca:       p.marca,
-      categoria:   p.categoria,
-      img64:       p.img64 || "",
+  // ── Abrir formulario en modo edición ──────────────────────────────────────
+  // Igual que ServiciosTab: rellena el form y abre el acordeón
+  const handleEdit = (p) => {
+    setForm({
+      nombre:      p.nombre      || "",
+      descripcion: p.descripcion || "",
+      precio:      p.precio      || "",
+      stock:       p.stock       || "",
+      marca:       p.marca       || "",
+      categoria:   p.categoria   || "",
+      img64:       p.img64       || "",   // ← imagen actual precargada
     });
+    setEditingId(p._id);
+    setShowForm(true);
+    setError("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleCancelEdit = () => { setEditingId(null); setEditForm({}); };
-
-  const handleSaveEdit = async (id) => {
-    const { nombre, descripcion, precio, stock, marca, categoria } = editForm;
-    if (!nombre || !descripcion || precio === "" || stock === "" || !marca || !categoria) {
-      alert("Todos los campos son obligatorios."); return;
-    }
-    setSaving(true);
-    try {
-      const data = { ...editForm, precio: Number(editForm.precio), stock: Number(editForm.stock) };
-      await updateProducto(id, data);
-      setProductos(prev => prev.map(p => p._id === id ? { ...p, ...data } : p));
-      setEditingId(null);
-      setEditForm({});
-    } catch { alert("Error al guardar cambios."); }
-    finally { setSaving(false); }
+  // ── Cancelar edición ───────────────────────────────────────────────────────
+  const handleCancel = () => {
+    setForm(INITIAL);
+    setEditingId(null);
+    setError("");
   };
 
-  /* ── Eliminar ── */
+  // ── Eliminar ───────────────────────────────────────────────────────────────
   const handleDelete = async (id, nombre) => {
     if (!window.confirm(`¿Eliminar el producto "${nombre}"?`)) return;
     try {
@@ -106,60 +110,109 @@ const ProductosTab = () => {
   return (
     <div className="tab-content">
 
-      {/* ══ ACORDEÓN: Crear producto ══ */}
+      {/* ══ ACORDEÓN: Crear / Editar producto ════════════════════════════════ */}
       <div className="accordion-card">
         <button className="accordion-header" onClick={() => setShowForm(v => !v)}>
-          <span>➕ Nuevo producto</span>
-          <span className="accordion-arrow">{showForm ? "▲" : "▼"}</span>
+          <span className="section-left">
+            <span className="section-icon">
+              <FontAwesomeIcon icon={editingId ? faPenToSquare : faCartPlus} />
+            </span>
+            <span className="section-title-text">
+              {editingId ? "Editar producto" : "Nuevo producto"}
+            </span>
+          </span>
+          <span className="accordion-arrow">
+            <FontAwesomeIcon icon={faAngleDown} className={showForm ? "rotate" : ""} />
+          </span>
         </button>
 
         {showForm && (
           <div className="accordion-body">
             {error   && <p className="form-error">{error}</p>}
             {success && <p className="form-success">{success}</p>}
+
             <div className="form-grid">
               <div className="form-group">
                 <label>Nombre *</label>
-                <input name="nombre" value={form.nombre} onChange={handleChange} />
+                <input name="nombre" value={form.nombre} onChange={handleChange} placeholder="Ej: Filtro de aire" />
               </div>
               <div className="form-group">
                 <label>Marca *</label>
-                <input name="marca" value={form.marca} onChange={handleChange} />
+                <input name="marca" value={form.marca} onChange={handleChange} placeholder="Ej: Honda" />
               </div>
               <div className="form-group">
                 <label>Categoría *</label>
-                <input name="categoria" value={form.categoria} onChange={handleChange} />
+                <input name="categoria" value={form.categoria} onChange={handleChange} placeholder="Ej: Filtros" />
               </div>
               <div className="form-group">
                 <label>Precio *</label>
-                <input name="precio" type="number" min="0" value={form.precio} onChange={handleChange} />
+                <input name="precio" type="number" min="0" value={form.precio} onChange={handleChange} placeholder="0" />
               </div>
               <div className="form-group">
                 <label>Stock *</label>
-                <input name="stock" type="number" min="0" value={form.stock} onChange={handleChange} />
+                <input name="stock" type="number" min="0" value={form.stock} onChange={handleChange} placeholder="0" />
               </div>
               <div className="form-group form-full">
                 <label>Descripción *</label>
-                <textarea name="descripcion" value={form.descripcion} onChange={handleChange} rows={3} />
+                <textarea name="descripcion" value={form.descripcion} onChange={handleChange} rows={3} placeholder="Describe el producto..." />
               </div>
-              <div className="form-group">
+
+              {/* ── Campo de imagen: muestra vista previa si ya tiene imagen ── */}
+              <div className="form-group form-full">
                 <label>Imagen del producto</label>
-                <input type="file" accept="image/*" onChange={handleImageChange} className="file-input" />
-                {form.img64 && <img src={form.img64} alt="Vista previa" className="img-preview" />}
+                <div className="image-upload-area">
+                  {form.img64 && (
+                    <div className="img-preview-wrapper">
+                      <img src={form.img64} alt="Vista previa" className="img-preview-large" />
+                      <button
+                        type="button"
+                        className="btn-remove-img"
+                        onClick={() => setForm(prev => ({ ...prev, img64: "" }))}
+                        title="Quitar imagen"
+                      >
+                        ✕ Quitar imagen
+                      </button>
+                    </div>
+                  )}
+                  <label className="file-upload-label">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="file-input-hidden"
+                    />
+                  </label>
+                </div>
               </div>
             </div>
-            <button className="btn-primary" onClick={handleSubmit} disabled={submitting}>
-              {submitting ? "Guardando..." : "Crear producto"}
-            </button>
+
+            <div className="form-actions">
+              <button className="btn-primary" onClick={handleSubmit} disabled={submitting}>
+                {submitting ? "Guardando..." : editingId ? "Guardar cambios" : "Crear producto"}
+              </button>
+              {editingId && (
+                <button className="btn-secondary" onClick={handleCancel}>
+                  Cancelar edición
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>
 
-      {/* ══ ACORDEÓN: Inventario ══ */}
+      {/* ══ ACORDEÓN: Inventario ══════════════════════════════════════════════ */}
       <div className="accordion-card">
         <button className="accordion-header" onClick={() => setShowList(v => !v)}>
-          <span>📦 Inventario <span className="count-badge-inline">{productos.length}</span></span>
-          <span className="accordion-arrow">{showList ? "▲" : "▼"}</span>
+          <span className="section-left">
+            <span className="section-icon">
+              <FontAwesomeIcon icon={faCartArrowDown} />
+            </span>
+            <span className="section-title-text">Inventario</span>
+            <span className="count-badge-inline">{productos.length}</span>
+          </span>
+          <span className="accordion-arrow">
+            <FontAwesomeIcon icon={faAngleDown} className={showList ? "rotate" : ""} />
+          </span>
         </button>
 
         {showList && (
@@ -170,6 +223,7 @@ const ProductosTab = () => {
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
+
             {loading ? (
               <p className="loading-text">Cargando productos...</p>
             ) : filtered.length === 0 ? (
@@ -190,53 +244,45 @@ const ProductosTab = () => {
                   </thead>
                   <tbody>
                     {filtered.map(p => (
-                      <React.Fragment key={p._id}>
-                        {editingId === p._id ? (
-                          /* ── Fila de edición ── */
-                          <tr className="row-editing">
-                            <td>
-                              {editForm.img64
-                                ? <img src={editForm.img64} alt="preview" className="table-img" />
-                                : <span className="no-img">—</span>}
-                            </td>
-                            <td><input className="inline-input" value={editForm.nombre}      onChange={e => setEditForm({...editForm, nombre: e.target.value})} /></td>
-                            <td><input className="inline-input" value={editForm.marca}       onChange={e => setEditForm({...editForm, marca: e.target.value})} /></td>
-                            <td><input className="inline-input" value={editForm.categoria}   onChange={e => setEditForm({...editForm, categoria: e.target.value})} /></td>
-                            <td><input className="inline-input" type="number" value={editForm.precio}    onChange={e => setEditForm({...editForm, precio: e.target.value})} /></td>
-                            <td><input className="inline-input" type="number" value={editForm.stock}     onChange={e => setEditForm({...editForm, stock: e.target.value})} /></td>
-                            <td className="actions-cell">
-                              <button className="btn-save" onClick={() => handleSaveEdit(p._id)} disabled={saving}>
-                                {saving ? "..." : "✓ Guardar"}
-                              </button>
-                              <button className="btn-secondary-sm" onClick={handleCancelEdit}>✕</button>
-                            </td>
-                          </tr>
-                        ) : (
-                          /* ── Fila de lectura ── */
-                          <tr className={p.stock === 0 ? "row-disabled" : ""}>
-                            <td>
-                              {p.img64
-                                ? <img src={p.img64} alt={p.nombre} className="table-img" />
-                                : <span className="no-img">—</span>}
-                            </td>
-                            <td><strong>{p.nombre}</strong></td>
-                            <td>{p.marca}</td>
-                            <td>{p.categoria}</td>
-                            <td>${Number(p.precio).toLocaleString()}</td>
-                            <td>
-                              <span className={`stock-badge ${
-                                p.stock === 0 ? "stock-empty" : p.stock < 5 ? "stock-low" : "stock-ok"
-                              }`}>
-                                {p.stock}
-                              </span>
-                            </td>
-                            <td className="actions-cell">
-                              <button className="btn-edit" onClick={() => handleStartEdit(p)}>Editar</button>
-                              <button className="btn-delete" onClick={() => handleDelete(p._id, p.nombre)}>Eliminar</button>
-                            </td>
-                          </tr>
-                        )}
-                      </React.Fragment>
+                      <tr
+                        key={p._id}
+                        className={[
+                          p.stock === 0 ? "row-disabled" : "",
+                          editingId === p._id ? "row-selected" : "",
+                        ].join(" ")}
+                      >
+                        <td>
+                          {p.img64
+                            ? <img src={p.img64} alt={p.nombre} className="table-img" />
+                            : <span className="no-img">—</span>}
+                        </td>
+                        <td><strong>{p.nombre}</strong></td>
+                        <td>{p.marca}</td>
+                        <td>{p.categoria}</td>
+                        <td>${Number(p.precio).toLocaleString()}</td>
+                        <td>
+                          <span className={`stock-badge ${
+                            p.stock === 0 ? "stock-empty" : p.stock < 5 ? "stock-low" : "stock-ok"
+                          }`}>
+                            {p.stock}
+                          </span>
+                        </td>
+                        <td className="actions-cell">
+                          <button
+                            className={`btn-edit ${editingId === p._id ? "btn-edit-active" : ""}`}
+                            onClick={() => handleEdit(p)}
+                          >
+                            {editingId === p._id ? "Editando..." : "Editar"}
+                          </button>
+                          <button
+                            className="btn-delete"
+                            onClick={() => handleDelete(p._id, p.nombre)}
+                            disabled={editingId === p._id}
+                          >
+                            Eliminar
+                          </button>
+                        </td>
+                      </tr>
                     ))}
                   </tbody>
                 </table>
