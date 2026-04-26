@@ -1,4 +1,5 @@
 import express from "express";
+import { upload } from "../middlewares/multer.js";
 
 import {
   obtenerProductos,
@@ -33,10 +34,10 @@ router.get("/categoria/:categoria", obtenerProductosPorCategoria);
 router.get("/:id", validateToken, isAdmin, obtenerProductoPorId);
 
 // crearProducto() (admin)
-router.post("/", validateToken, isAdmin, crearProducto);
+router.post("/", upload.single("imagen"), validateToken, isAdmin, crearProducto);
 
 // actualizarProducto() (admin)
-router.put("/:id", validateToken, isAdmin, actualizarProducto);
+router.put("/:id", upload.single("imagen"), validateToken, isAdmin, actualizarProducto);
 
 // eliminarProducto() (admin)
 router.delete("/:id", validateToken, isAdmin, eliminarProducto);

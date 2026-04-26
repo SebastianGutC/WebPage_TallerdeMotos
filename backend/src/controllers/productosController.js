@@ -1,4 +1,5 @@
 import Producto from "../models/productoModel.js";
+import { upload } from "../middlewares/multer.js";
 
 // GET ALL PRODUCTOS
 export const obtenerProductos = async (req, res) => {
@@ -6,10 +7,9 @@ export const obtenerProductos = async (req, res) => {
     const productos = await Producto.find().sort({ nombre: 1 });
 
     res.status(200).json(productos);
-
   } catch (error) {
     res.status(500).json({
-      message: "Error al obtener productos"
+      message: "Error al obtener productos",
     });
   }
 };
@@ -23,15 +23,14 @@ export const obtenerProductoPorId = async (req, res) => {
 
     if (!producto) {
       return res.status(404).json({
-        message: "Producto no encontrado"
+        message: "Producto no encontrado",
       });
     }
 
     res.status(200).json(producto);
-
   } catch (error) {
     res.status(500).json({
-      message: "Error al obtener producto"
+      message: "Error al obtener producto",
     });
   }
 };
@@ -43,19 +42,18 @@ export const obtenerProductoPorNombre = async (req, res) => {
 
     if (!nombre) {
       return res.status(400).json({
-        message: "Debe enviar el nombre del producto"
+        message: "Debe enviar el nombre del producto",
       });
     }
 
     const productos = await Producto.find({
-      nombre: { $regex: nombre, $options: "i" }
+      nombre: { $regex: nombre, $options: "i" },
     }).sort({ nombre: 1 });
 
     res.status(200).json(productos);
-
   } catch (error) {
     res.status(500).json({
-      message: "Error al buscar producto"
+      message: "Error al buscar producto",
     });
   }
 };
@@ -66,14 +64,13 @@ export const obtenerProductosPorCategoria = async (req, res) => {
     const { categoria } = req.params;
 
     const productos = await Producto.find({
-      categoria: { $regex: `^${categoria}$`, $options: "i" }
+      categoria: { $regex: `^${categoria}$`, $options: "i" },
     }).sort({ nombre: 1 });
 
     res.status(200).json(productos);
-
   } catch (error) {
     res.status(500).json({
-      message: "Error al obtener productos por categoría"
+      message: "Error al obtener productos por categoría",
     });
   }
 };
@@ -81,15 +78,7 @@ export const obtenerProductosPorCategoria = async (req, res) => {
 // CREATE PRODUCTO
 export const crearProducto = async (req, res) => {
   try {
-    const {
-      nombre,
-      descripcion,
-      precio,
-      stock,
-      img64,
-      marca,
-      categoria
-    } = req.body;
+    const { nombre, descripcion, precio, stock, marca, categoria, modelo } = req.body;
 
     if (
       !nombre ||
@@ -97,10 +86,11 @@ export const crearProducto = async (req, res) => {
       precio === undefined ||
       stock === undefined ||
       !marca ||
-      !categoria
+      !categoria ||
+      !modelo
     ) {
       return res.status(400).json({
-        message: "Todos los campos requeridos deben ser enviados"
+        message: "Todos los campos requeridos deben ser enviados",
       });
     }
 
@@ -108,7 +98,7 @@ export const crearProducto = async (req, res) => {
 
     if (productoExiste) {
       return res.status(400).json({
-        message: "Ya existe un producto con ese nombre"
+        message: "Ya existe un producto con ese nombre",
       });
     }
 
@@ -117,21 +107,21 @@ export const crearProducto = async (req, res) => {
       descripcion,
       precio,
       stock,
-      img64,
       marca,
-      categoria
+      categoria,
+      modelo,
+      imagen: req.file ? `/uploads/${req.file.filename}` : "",
     });
 
     await nuevoProducto.save();
 
     res.status(201).json({
       message: "Producto creado correctamente",
-      producto: nuevoProducto
+      producto: nuevoProducto,
     });
-
   } catch (error) {
     res.status(500).json({
-      message: "Error al crear producto"
+      message: "Error al crear producto",
     });
   }
 };
@@ -141,40 +131,36 @@ export const actualizarProducto = async (req, res) => {
   try {
     const { id } = req.params;
 
+    const { nombre, descripcion, precio, stock, marca, categoria, modelo } =
+      req.body;
+
     const producto = await Producto.findById(id);
 
     if (!producto) {
-      return res.status(404).json({
-        message: "Producto no encontrado"
-      });
+      return res.status(404).json({ message: "Producto no encontrado" });
     }
 
-    const camposPermitidos = [
-      "nombre",
-      "descripcion",
-      "precio",
-      "stock",
-      "img64",
-      "marca",
-      "categoria"
-    ];
-
-    camposPermitidos.forEach((campo) => {
-      if (req.body[campo] !== undefined) {
-        producto[campo] = req.body[campo];
-      }
-    });
+    producto.nombre = nombre ?? producto.nombre;
+    producto.descripcion = descripcion ?? producto.descripcion;
+    producto.precio = precio ?? producto.precio;
+    producto.stock = stock ?? producto.stock;
+    producto.marca = marca ?? producto.marca;
+    producto.categoria = categoria ?? producto.categoria;
+    producto.modelo = modelo ?? producto.modelo;
+    // 👇 SOLO si viene nueva imagen
+    if (req.file) {
+      producto.imagen = `/uploads/${req.file.filename}`;
+    }
 
     await producto.save();
 
-    res.status(200).json({
+    res.json({
       message: "Producto actualizado correctamente",
-      producto
+      producto,
     });
-
   } catch (error) {
     res.status(500).json({
-      message: "Error al actualizar producto"
+      message: "Error al actualizar producto",
     });
   }
 };
@@ -188,17 +174,16 @@ export const eliminarProducto = async (req, res) => {
 
     if (!producto) {
       return res.status(404).json({
-        message: "Producto no encontrado"
+        message: "Producto no encontrado",
       });
     }
 
     res.status(200).json({
-      message: "Producto eliminado correctamente"
+      message: "Producto eliminado correctamente",
     });
-
   } catch (error) {
     res.status(500).json({
-      message: "Error al eliminar producto"
+      message: "Error al eliminar producto",
     });
   }
 };

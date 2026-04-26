@@ -27,3 +27,8 @@ export const eliminarProducto = async (id) => {
   return API.delete(`/productos/${id}`);
 };
 
+export const getImagenUrl = (imagen) => {
+  if (!imagen) return null;
+  return `http://localhost:4001${imagen}`;
+};
+

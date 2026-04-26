@@ -7,6 +7,8 @@ import { connectDB } from './db.js';
 import { config } from './config.js';
 import { seed } from './scripts/seed.js';
 
+import path from 'path';
+import { fileURLToPath } from 'url';
 // Importar rutas
 import authRoutes from './routes/authRoutes.js';
 import productosRoutes from './routes/productosRoutes.js';
@@ -14,20 +16,20 @@ import serviciosRoutes from './routes/serviciosRoutes.js';
 import citasRoutes from './routes/citasRoutes.js';
 import motocicletasRoutes from './routes/motocicletasRoutes.js';
 import userRoutes from './routes/userRoutes.js'; 
-
-// 🔥 AGREGADO: facturas
 import facturasRoutes from './routes/facturasRoutes.js';
 
 const backend = express();
 
-// Middleware base
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 backend.use(morgan('dev'));
 
 backend.use(cors({
   origin: true,
   credentials: true
 }));
-
+backend.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 backend.use(express.json());
 backend.use(express.urlencoded({ extended: true })); 
 

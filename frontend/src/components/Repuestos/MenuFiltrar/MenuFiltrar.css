@@ -9,7 +9,24 @@
   height: fit-content;
   transition: all 0.3s ease;
 }
+.btn-limpiar-filtros {
+  width: 100%;
+  padding: 0.4rem 0.8rem;
+  margin-bottom: 0.8rem;
+  background: transparent;
+  border: 1.5px solid #d64545;
+  color: #d64545;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
+.btn-limpiar-filtros:hover {
+  background: #d64545;
+  color: #fff;
+}
 
 
 .menu-filtrar-titulo {

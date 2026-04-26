@@ -1,5 +1,6 @@
 import React from "react";
 import "./RepuestoModal.css";
+import { getImagenUrl } from "../../../services/ProductosService";
 
 const RepuestoModal = ({ repuesto, onClose }) => {
   if (!repuesto) return null;
@@ -15,11 +16,11 @@ const RepuestoModal = ({ repuesto, onClose }) => {
         </button>
 
         <div className="modal-imagen-container">
-          <img src={repuesto.imagen} alt={repuesto.nombre} className="modal-imagen" />
+          <img src={getImagenUrl(repuesto.imagen)} alt={repuesto.nombre} className="modal-imagen" />
         </div>
 
         <h3 className="modal-nombre">{repuesto.nombre}</h3>
-        <p className="modal-tipo">{repuesto.tipo}</p>
+        <p className="modal-tipo">{repuesto.categoria}</p>
         <p className="modal-marca">Marca: {repuesto.marca}</p>
         <p className="modal-modelo">Modelo: {repuesto.modelo}</p>
         <h4 className="modal-precio">${repuesto.precio.toLocaleString("es-CO")}</h4>

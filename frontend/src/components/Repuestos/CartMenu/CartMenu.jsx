@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import "./CartMenu.css";
 import { useCart } from "../../../context/CartContext";
+import { getImagenUrl } from "../../../services/ProductosService";
 
 const CartMenu = () => {
   const {
@@ -50,7 +51,7 @@ const CartMenu = () => {
           ) : (
             cartItems.map((item, index) => (
               <div className="cart-item" key={index}>
-                <img src={item.imagen} alt={item.nombre} className="cart-img" />
+                <img src={getImagenUrl(item.imagen)} alt={item.nombre} className="cart-img" />
 
                 <div className="cart-info">
                   <h6 className="cart-nombre">{item.nombre}</h6>

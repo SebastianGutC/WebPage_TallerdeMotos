@@ -3,17 +3,27 @@ import "./RepuestoCard.css";
 import { useCart } from "../../../context/CartContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
+import { getImagenUrl } from "../../../services/ProductosService";
 
-const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
+const RepuestoCard = ({ imagen, nombre, precio, stock, onClick, isAuthenticated, openLoginModal }) => {
   const { addToCart, toggleCart } = useCart();
+  const disponible = stock > 0;
 
   const handleAdd = (e) => {
     e.stopPropagation();
+    if (!isAuthenticated) {
+      openLoginModal();
+      return;
+    }
     addToCart({ imagen, nombre, precio });
   };
 
   const handleBuyNow = (e) => {
     e.stopPropagation();
+    if (!isAuthenticated) {
+      openLoginModal();
+      return;
+    }
     addToCart({ imagen, nombre, precio });
     toggleCart();
   };
@@ -27,7 +37,7 @@ const RepuestoCard = ({ imagen, nombre, precio, disponible, onClick }) => {
       >
         <div className="repuesto-imagen-container">
           <img
-            src={imagen}
+            src={getImagenUrl(imagen)}
             alt={nombre}
             className="repuesto-imagen"
             loading="lazy"

@@ -5,9 +5,10 @@ const productoSchema = new mongoose.Schema({
     descripcion: { type: String, required: true },
     precio: { type: Number, required: true },
     stock: { type: Number, required: true },
-    img64: { type: String},
+    imagen: { type: String, default: "" },
     marca: { type: String, required: true, trim:true },
     categoria: { type: String, required: true, trim:true },
+    modelo: { type: String, required: true, trim:true },
 })
 
 export default mongoose.model("Producto", productoSchema)

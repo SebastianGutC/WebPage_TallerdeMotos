@@ -1,6 +1,3 @@
-/* ---------- RepuestoCard.css (Versión tipo Éxito) ---------- */
-
-/* Contenedor principal */
 .repuesto-card {
   display: flex;
   flex-direction: column;
@@ -20,7 +17,6 @@
   transform: translateY(-3px);
 }
 
-/* --- Imagen --- */
 .repuesto-imagen-container {
   width: 100%;
   height: 150px;
@@ -43,7 +39,6 @@
   transform: scale(1.05);
 }
 
-/* --- Bloque central --- */
 .repuesto-info {
   flex: 1;
   display: flex;
@@ -53,12 +48,10 @@
   padding: 0.8rem;
 }
 
-/* --- Título principal --- */
 .repuesto-nombre {
   color: #111;
   margin-bottom: 0.3rem;
   display: -webkit-box;
-  -webkit-line-clamp: 2;  /* máximo 2 líneas */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -66,7 +59,6 @@
 }
 
 
-/* --- Precio --- */
 .repuesto-precio {
 
   margin: 0.2rem 0 0.2rem !important;
@@ -75,7 +67,6 @@
   color: #FF8200;
 }
 
-/* --- Footer con botón --- */
 .repuesto-footer {
   display: flex;
   justify-content: center; /* centra todo el contenido */
@@ -120,7 +111,6 @@
   cursor: not-allowed;
 }
 
-/* Estado de disponibilidad */
 .repuesto-disponible {
   font-size: 0.85rem;
   font-weight: 600;
@@ -132,7 +122,6 @@
     font-weight: bold;}
 
 
-/* --- Responsive --- */
 @media (max-width: 640px) {
   .repuesto-card {
     height: 340px;
@@ -148,7 +137,6 @@
   gap: 0.2rem !important; /* Compacta nombre + precio */
 }
 
-/* Fila de botones */
 .repuesto-botones-fila {
   display: flex;
   flex-direction: row;
@@ -158,7 +146,6 @@
 }
 
 
-/* Botón pequeño solo para el ícono */
 .repuesto-btn-icon {
   display: flex;
   justify-content: center;
@@ -181,27 +168,23 @@
 }
 
 
-/* Hover */
 .repuesto-btn-icon:hover {
   background-color: #FFC100;
   border: none;
 }
 
-/* Disabled */
 .repuesto-btn-icon.disabled,
 .repuesto-btn-icon:disabled {
   background-color: #ccc !important;
   cursor: not-allowed;
 }
 
-/*Tarjetas NO disponibles: menos brillo pero siguen siendo clickeables */
 .repuesto-card.no-disponible {
   opacity: 0.55;            /* Hace ver apagado */
   filter: grayscale(0.3);   /* Le quita un poco el color */
   pointer-events: auto !important; /* Sigue permitiendo clics */
 }
 
-/* Evita que el hover las "reviva" */
 .repuesto-card.no-disponible:hover {
   transform: none !important;
 }
