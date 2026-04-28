@@ -19,7 +19,8 @@ import {
   addServicioToCita,
   removeServicioFromCita,
   addProductoToCita,
-  removeProductoFromCita
+  removeProductoFromCita,
+  agendarCita
 } from "../controllers/citasController.js";
 
 import { validateToken } from "../middlewares/validateToken.js";
@@ -41,7 +42,7 @@ router.get("/", isAdminOrTecnico, obtenerCitas);
 router.get("/usuario/:usuarioId", getCitasByUsuario);
 
 // FILTROS ADMIN
-router.get("/estado/:estado", isAdmin, getCitasPorEstado);
+router.get("/estado/:estado", getCitasPorEstado);
 router.get("/fecha/buscar", isAdmin, getCitasPorFecha);
 
 // TECNICO
@@ -49,13 +50,14 @@ router.get("/tecnico/asignadas", isTecnico, getCitasAsignadas);
 router.get("/tecnico/detalle/:id", isTecnico, getDetalleCitaTecnico);
 
 // CRUD
-router.get("/:id", obtenerCitaPorId);
-router.post("/", crearCita);
+router.get("/:id", isAdmin, obtenerCitaPorId);
+router.post("/", isAdmin, crearCita);
 router.put("/:id", isAdminOrTecnico, actualizarCita);
 router.delete("/:id", isAdmin, eliminarCita);
 
 // USUARIO
 router.put("/:id/cancelar", cancelarCita);
+router.put("/:id/agendar", agendarCita)
 
 // ADMIN
 router.put("/:id/asignar-tecnico", isAdmin, asignarTecnico);

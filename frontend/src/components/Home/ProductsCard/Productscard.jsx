@@ -30,6 +30,13 @@ export default function ProductsCard() {
     fetchProductos();
   }, []);
 
+  useEffect(() => {
+  if (products.length > 0) {
+    console.log("primer producto:", products[0]);
+    console.log("imagen:", products[0].imagen);
+  }
+}, [products]);
+
   const loopProducts = [...products, ...products];
 
   useEffect(() => {
@@ -62,7 +69,7 @@ export default function ProductsCard() {
   const handleAdd = (e, p) => {
     e.stopPropagation();
     addToCart({
-      imagen: getImagenUrl(p.imagen),
+      imagen: p.imagen,
       nombre: p.nombre,
       precio: p.precio,
     });

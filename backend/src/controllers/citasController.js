@@ -425,3 +425,50 @@ export const removeProductoFromCita = async (req, res) => {
     res.status(500).json({ message: "Error al eliminar producto" });
   }
 };
+
+export const agendarCita = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { horaSeleccionada, usuarioId, servicios, estado } = req.body;
+
+    if (!usuarioId) {
+      return res.status(400).json({ message: "El id del usuario es obligatorio" });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(usuarioId)) {
+      return res.status(400).json({ message: "El id del usuario no es válido" });
+    }
+
+    const cita = await Cita.findById(id);
+    const horaCita = cita.hora;
+
+    if (horaSeleccionada !== horaCita) {
+      return res.status(400).json({ message: "La hora seleccionada no coincide con la hora de la cita" });
+    }
+
+    if (!cita) {
+      return res.status(404).json({ message: "Cita no encontrada" });
+    }
+
+    if (cita.estado !== "disponible") {
+      return res.status(400).json({ message: "Esta cita ya no está disponible" });
+    }
+
+    cita.usuarioId = usuarioId;
+    cita.estado = estado ?? "pendiente";
+    if (servicios) cita.servicios = servicios;
+
+    await cita.save();
+
+    const citaPopulada = await populateCita(Cita.findById(cita._id));
+
+    res.status(200).json({
+      message: "Cita agendada correctamente",
+      cita: citaPopulada
+    });
+
+  } catch (error) {
+    console.error("Error al agendar cita:", error);
+    res.status(500).json({ message: "Error al agendar la cita" });
+  }
+};
