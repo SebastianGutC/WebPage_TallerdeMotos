@@ -1,5 +1,4 @@
 /* src/pages/Admin/AdminPage.css */
-
 /* ─── Página base ────────────────────────────────────────────────────────────── */
 .admin-page {
   max-width: 1200px;
@@ -299,7 +298,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-wrap: wrap; 
 }
 
 /* ─── Fila expandida ─────────────────────────────────────────────────────────── */
@@ -601,6 +601,15 @@
 
 .inline-edit-group { display: flex; flex-direction: column; gap: 6px; }
 
+.btn-text {
+  display: inline;
+  margin-left: 4px;
+}
+
+.btn-icon-mobile {
+  display: none;
+}
+
 .btn-icon {
   width: 34px;
   height: 34px;
@@ -617,6 +626,7 @@
 .btn-icon svg {
   pointer-events: none;
 }
+
 
 /* Guardar */
 .btn-icon.save {
@@ -683,6 +693,53 @@
 }
 .btn-convert:hover { background: #ffc107; color: #0A0903; }
 
+/* ─── Motocicletas: grid de detalles técnicos expandidos ─────────────────────── */
+.moto-detalles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  padding: 16px 20px;
+  background: #fffdf7;
+}
+
+.moto-detalle-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.moto-detalle-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #FF8200;
+}
+
+.moto-detalle-valor {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0A0903;
+}
+
+/* ─── Separador de secciones dentro del formulario ───────────────────────────── */
+.form-section-label {
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #0A0903;
+  border-left: 3px solid #FF0000;
+  padding-left: 10px;
+  margin: 20px 0 12px;
+}
+.form-section-label:first-of-type { margin-top: 4px; }
+
+
 /* ─── Responsive ─────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .admin-page { padding: 0 12px; margin-top: 80px; }
@@ -693,6 +750,31 @@
   .tab-icon   { font-size: 20px; }
   .filters-bar { gap: 12px; }
   .actions-cell { flex-direction: column; align-items: flex-start; }
+  .actions-wrapper {
+    gap: 6px;
+  }
+
+  .btn-text {
+    display: none; 
+  }
+
+  .btn-icon-mobile {
+    display: inline;
+    font-size: 16px;
+  }
+
+  .btn-expand,
+  .btn-edit,
+  .btn-delete,
+  .btn-convert {
+    padding: 6px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
 }
 
 @media (max-width: 480px) {

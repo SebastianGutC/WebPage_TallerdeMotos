@@ -5,7 +5,7 @@ import { getAllServicios, createServicio, updateServicio, deleteServicio } from 
 const INITIAL = { nombre: "", descripcion: "", precio: "", icono: "" };
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileCirclePlus, faPenToSquare, faFileCircleCheck , faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faFileCirclePlus, faPenToSquare, faFileCircleCheck , faAngleDown, faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
 
 
 const ServiciosTab = () => {
@@ -189,8 +189,17 @@ const ServiciosTab = () => {
                         <td>${Number(s.precio).toLocaleString()}</td>
                         <td><code className="icon-code">{s.icono}</code></td>
                         <td className="actions-cell">
-                          <button className="btn-edit" onClick={() => handleEdit(s)}>Editar</button>
-                          <button className="btn-delete" onClick={() => handleDelete(s._id, s.nombre)}>Eliminar</button>
+                          <div className="actions-wrapper">
+                            <button className="btn-edit" onClick={() => handleEdit(s)}>
+                              <FontAwesomeIcon icon={faPencil} className="btn-icon-mobile" />
+                              <span className="btn-text">Editar</span>
+                            </button>
+
+                            <button className="btn-delete" onClick={() => handleDelete(s._id, s.nombre)}>
+                              <FontAwesomeIcon icon={faTrash} className="btn-icon-mobile" />
+                              <span className="btn-text">Eliminar</span>
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}

@@ -7,7 +7,7 @@ import API from "../../../services/Api";
 import { ESTADO_COLORS, ESTADO_LABEL } from "../citasConstants.jsx";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarPlus, faCaretDown, faAngleDown, faClock, faCalendarDay, faFileLines, faCheck, faXmark,  faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarPlus, faCaretDown, faAngleDown, faClock, faCalendarDay, faFileLines, faCheck, faXmark,  faEye, faEyeSlash, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const ESTADOS_ASIGNADA  = ["pendiente", "en_proceso"];
 const ESTADOS_REALIZADA = ["lista", "entregada", "cancelada", "no_asistio"];
@@ -276,8 +276,16 @@ const CitasTab = () => {
                             : <span className="text-muted">Sin asignar</span>}
                         </td>
                         <td className="actions-cell">
-                          <button className="btn-edit" onClick={() => startEdit(c)}>Editar</button>
-                          <button className="btn-delete" onClick={() => handleDelete(c._id)}>Eliminar</button>
+                          <div className="actions-wrapper">
+                            <button className="btn-edit" onClick={() => startEdit(c)}>
+                              <FontAwesomeIcon icon={faPencil} className="btn-icon-mobile" />
+                              <span className="btn-text">Editar</span>
+                            </button>
+                            <button className="btn-delete" onClick={() => handleDelete(c._id)}>
+                              <FontAwesomeIcon icon={faTrash} className="btn-icon-mobile"/>
+                              <span className="btn-text">Eliminar</span>
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     )}
@@ -364,8 +372,16 @@ const CitasTab = () => {
                         </td>
                         <td>{formatDate(c.fechaEntrega) || <span className="text-muted">—</span>}</td>
                         <td className="actions-cell">
-                          <button className="btn-edit" onClick={() => startEdit(c)}>Editar</button>
-                          <button className="btn-delete" onClick={() => handleDelete(c._id)}>Eliminar</button>
+                          <div className="actions-wrapper">
+                            <button className="btn-edit" onClick={() => startEdit(c)}>
+                              <FontAwesomeIcon icon={faPencil} className="btn-icon-mobile" />
+                              <span className="btn-text">Editar</span>
+                            </button>
+                            <button className="btn-delete" onClick={() => handleDelete(c._id)}>
+                              <FontAwesomeIcon icon={faTrash} className="btn-icon-mobile"/>
+                              <span className="btn-text">Eliminar</span>
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     )}
@@ -497,7 +513,7 @@ const CitasTab = () => {
                             {/* Total general */}
                             {(c.servicios?.length > 0 || c.productos?.length > 0) && (
                               <div className="detail-total-general">
-                                💰 Total de la cita:{" "}
+                                Total de la cita:{" "}
                                 <strong>
                                   ${(
                                     (c.servicios || []).reduce((a, s) => a + Number(s.costo), 0) +

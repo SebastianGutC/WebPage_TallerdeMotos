@@ -35,3 +35,9 @@ export const getAllProductos     = ()          => API.get("/productos");
 export const createProducto     = (data)      => API.post("/productos", data);
 export const updateProducto     = (id, data)  => API.put(`/productos/${id}`, data);
 export const deleteProducto     = (id)        => API.delete(`/productos/${id}`);
+
+// ─── MOTOCICLETAS ─────────────────────────────────────────────────────────────
+export const getAllMotocicletas  = ()          => API.get("/motocicletas");
+export const createMotocicleta  = (data)      => API.post("/motocicletas", data);
+export const updateMotocicleta  = (id, data)  => API.put(`/motocicletas/${id}`, data);
+export const deleteMotocicleta  = (id)        => API.delete(`/motocicletas/${id}`);

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { getAllProductos, createProducto, updateProducto, deleteProducto } from "../../../services/AdminService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartPlus, faPenToSquare, faCartArrowDown, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faCartPlus, faPenToSquare, faCartArrowDown, faAngleDown, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const INITIAL = { nombre: "", descripcion: "", precio: "", stock: "", marca: "", categoria: "", img64: "" };
 
@@ -170,7 +170,7 @@ const ProductosTab = () => {
                         onClick={() => setForm(prev => ({ ...prev, img64: "" }))}
                         title="Quitar imagen"
                       >
-                        ✕ Quitar imagen
+                        Quitar imagen
                       </button>
                     </div>
                   )}
@@ -268,19 +268,25 @@ const ProductosTab = () => {
                           </span>
                         </td>
                         <td className="actions-cell">
-                          <button
-                            className={`btn-edit ${editingId === p._id ? "btn-edit-active" : ""}`}
-                            onClick={() => handleEdit(p)}
-                          >
-                            {editingId === p._id ? "Editando..." : "Editar"}
-                          </button>
-                          <button
-                            className="btn-delete"
-                            onClick={() => handleDelete(p._id, p.nombre)}
-                            disabled={editingId === p._id}
-                          >
-                            Eliminar
-                          </button>
+                          <div className="actions-wrapper">  
+                            <button
+                              className={`btn-edit ${editingId === p._id ? "btn-edit-active" : ""}`}
+                              onClick={() => handleEdit(p)}
+                            >
+                              <FontAwesomeIcon icon={faPencil} className="btn-icon-mobile" />
+                              <span className="btn-text">
+                                {editingId === p._id ? "Editando..." : "Editar"}
+                              </span>
+                            </button>
+                            <button
+                              className="btn-delete"
+                              onClick={() => handleDelete(p._id, p.nombre)}
+                              disabled={editingId === p._id}
+                            >
+                              <FontAwesomeIcon icon={faTrash} className="btn-icon-mobile" />
+                              <span className="btn-text">Eliminar</span>
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}

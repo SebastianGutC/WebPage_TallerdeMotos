@@ -5,10 +5,11 @@ import TecnicosTab  from "./tabs/TecnicosTab";
 import CitasTab     from "./tabs/CitasTab";
 import ServiciosTab from "./tabs/ServiciosTab";
 import ProductosTab from "./tabs/ProductosTab";
+import MotocicletasTab from "./tabs/MotocicletasTab";
 import "./AdminPage.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserGroup, faWrench, faCalendar, faGear, faBasketShopping } from "@fortawesome/free-solid-svg-icons";
+import { faUserGroup, faWrench, faCalendar, faGear, faBasketShopping, faMotorcycle } from "@fortawesome/free-solid-svg-icons";
 
 const TABS = [
   { id: "usuarios",  label: "Usuarios",  icon: <FontAwesomeIcon icon={faUserGroup} /> },
@@ -16,6 +17,7 @@ const TABS = [
   { id: "citas",     label: "Citas",     icon: <FontAwesomeIcon icon={faCalendar} /> },
   { id: "servicios", label: "Servicios", icon: <FontAwesomeIcon icon={faGear} /> },
   { id: "productos", label: "Productos", icon: <FontAwesomeIcon icon={faBasketShopping} /> },
+  { id: "motocicletas",  label: "Motocicletas",  icon: <FontAwesomeIcon icon={faMotorcycle} /> },
 ];
 
 const AdminPage = () => {
@@ -28,6 +30,7 @@ const AdminPage = () => {
       case "citas":     return <CitasTab />;
       case "servicios": return <ServiciosTab />;
       case "productos": return <ProductosTab />;
+      case "motocicletas": return <MotocicletasTab />;
       default:          return null;
     }
   };

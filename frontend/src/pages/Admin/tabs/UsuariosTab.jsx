@@ -6,7 +6,7 @@ import {
 import { ESTADO_COLORS, ESTADO_LABEL } from "../citasConstants.jsx";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSortDown, faSortUp, faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { faSortDown, faSortUp, faCircleCheck, faCircleXmark, faEye, faEyeSlash, faUserGear, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 
 const UsuariosTab = () => {
@@ -216,22 +216,31 @@ const UsuariosTab = () => {
                         </button>
                       </td>
                       <td className="actions-cell">
-                        <button className="btn-expand" onClick={() => handleExpandCitas(u._id)}>
-                          {expandedCitas === u._id ? "Ocultar" : "Ver Citas"}
-                        </button>
-                        <button
-                          className="btn-convert"
-                          onClick={() => handleConvertToTecnico(u._id, u.nombre)}
-                          title="Convertir en técnico"
-                        >
-                          Técnico
-                        </button>
-                        <button className="btn-edit" onClick={() => handleStartEdit(u)}>
-                          Editar
-                        </button>
-                        <button className="btn-delete" onClick={() => handleDelete(u._id, u.nombre)}>
-                          Eliminar
-                        </button>
+                        <div className="actions-wrapper">
+                          <button className="btn-expand" onClick={() => handleExpandCitas(u._id)}>
+                            <FontAwesomeIcon
+                              icon={expandedCitas === u._id ? faEyeSlash : faEye}
+                              className="btn-icon-mobile"
+                            />
+                            <span className="btn-text">
+                              {expandedCitas === u._id ? "Ocultar" : "Ver Citas"}
+                            </span> 
+                          </button>
+                          <button className="btn-convert">
+                            <FontAwesomeIcon icon={faUserGear} className="btn-icon-mobile" />
+                            <span className="btn-text">Técnico</span>
+                          </button>
+
+                          <button className="btn-edit">
+                            <FontAwesomeIcon icon={faPen} className="btn-icon-mobile" />
+                            <span className="btn-text">Editar</span>
+                          </button>
+
+                          <button className="btn-delete">
+                            <FontAwesomeIcon icon={faTrash} className="btn-icon-mobile" />
+                            <span className="btn-text">Eliminar</span>
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   )}
