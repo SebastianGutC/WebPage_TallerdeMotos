@@ -23,6 +23,7 @@ function Servicios() {
     fetchServicios();
   }, []);
   console.log("usuario context:", usuario);
+  console.log("servicios:", servicios);
   return (
     <>
       {/* Banner principal */}
@@ -94,7 +95,7 @@ function Servicios() {
           {servicios.map((servicio) => (
             <div className="cell small-12 medium-6 large-4" key={servicio._id}>
               <CardServicio
-                titulo={servicio.nombre}
+                nombre={servicio.nombre}
                 descripcion={servicio.descripcion}
                 icono={servicio.icono}
                 precio={servicio.precio}
