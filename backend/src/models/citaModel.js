@@ -13,14 +13,12 @@ const CitaSchema = new mongoose.Schema(
     trim: true
   },
 
-  // Ahora los técnicos también son usuarios con rol TECNICO
   tecnicoId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Usuario",
     required: true
   },
 
-  // Cliente que agenda la cita
   usuarioId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Usuario",
@@ -74,6 +72,11 @@ const CitaSchema = new mongoose.Schema(
       }
     }
   ],
+
+    fechaIngreso: {
+    type: Date,
+    default: null
+  },
 
   fechaEntrega: {
     type: Date,

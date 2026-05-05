@@ -51,6 +51,8 @@ export const CartProvider = ({ children }) => {
     0
   );
 
+  const vaciarCarrito = () => setCartItems([]);
+
   return (
     <CartContext.Provider
       value={{
@@ -62,6 +64,7 @@ export const CartProvider = ({ children }) => {
         total,
         isCartOpen,
         toggleCart,
+        vaciarCarrito,
       }}
     >
       {children}
