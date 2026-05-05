@@ -1,5 +1,6 @@
 .dudas-container {
   margin-top: 8px;
+  margin-bottom: 38px;
 }
 
 .dudas-text-left {
@@ -103,7 +104,7 @@
 
   .dudas-subtext {
   font-size: 12px;
-  min-width: 300px;
+  min-width: 100px;
   text-align: left;
   margin-left: 10px;
 }
@@ -122,7 +123,7 @@
 @media (min-width: 681px) and (max-width: 1270px) {
   .dudas-subtext {
     font-size: 16px;
-    min-width: 370px;
+    min-width: 180px;
     text-align: left;
     margin-left: 0;
   } 

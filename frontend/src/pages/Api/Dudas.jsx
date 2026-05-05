@@ -1,12 +1,63 @@
-import React, { useRef } from "react";
+import React, { useRef, useLayoutEffect } from "react";
 import DialogflowWidget from "../../components/ChatBot/ChatBot.jsx";
 import "./Dudas.css";
 import fixer from "../../assets/fixer_icon.png";
+
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 
 export default function Dudas() {
+
+  gsap.registerPlugin(ScrollTrigger);
+  const containerRef = useRef(null);
+  const textRef = useRef(null);
+  const chatBoxRef = useRef(null);
+
+  useLayoutEffect(() => {
+  const ctx = gsap.context(() => {
+
+    // Estado inicial
+    gsap.set(textRef.current, {
+      opacity: 0,
+      y: 60
+    });
+
+    gsap.set(chatBoxRef.current, {
+      opacity: 0,
+      y: 80,
+      scale: 0.9
+    });
+
+    // Timeline
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 75%", // cuando entra en pantalla
+        toggleActions: "play none none none"
+      }
+    });
+
+    tl.to(textRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power3.out"
+    })
+    .to(chatBoxRef.current, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 1,
+      ease: "back.out(1.7)"
+    }, "-=0.5");
+
+  }, containerRef);
+
+  return () => ctx.revert();
+}, []);
 
   const chatRef = useRef(null);
 
@@ -20,11 +71,11 @@ export default function Dudas() {
   };
 
   return (
-    <div className="grid-container dudas-container">
+    <div ref={containerRef} className="grid-container dudas-container">
       <div className="grid-x grid-margin-x grid-padding-y align-middle">
 
         {/* ==== IZQUIERDA (TEXTO MODERNO) ==== */}
-        <div className="cell small-12 medium-6 dudas-text-left">
+        <div ref={textRef} className="cell small-12 medium-6 dudas-text-left">
 
           <h1 className="dudas-title">
             Fixer está aquí
@@ -51,7 +102,7 @@ export default function Dudas() {
         </div>
 
         {/* ==== DERECHA (CHATBOT, SIN CAMBIAR SU FUNCIONALIDAD) ==== */}
-        <div className="cell small-12 medium-6 chatbot-right">
+        <div ref={chatBoxRef} className="cell small-12 medium-6 dudas-chat-right">
           <DialogflowWidget ref={chatRef} />
         </div>
 

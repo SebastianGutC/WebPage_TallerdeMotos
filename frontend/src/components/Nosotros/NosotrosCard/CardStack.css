@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500&family=Syne:wght@600;700;800&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* El wrapper solo define ancho y padding horizontal.
+   NO define height: eso lo maneja el contenedor interno. */
+.stack-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Altura exacta = viewport completo menos el header fijo (80px).
+   Así la card ocupa justo el espacio visible sin solapar header ni footer. */
+.cards-container {
+  position: relative;
+  height: calc(100vh - 120px);
+  overflow: hidden;
+  border-radius: 20px; 
+}
+
+.stack-card {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  will-change: transform;
+  transform-origin: top center;
+}

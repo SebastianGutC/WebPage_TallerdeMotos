@@ -1,0 +1,412 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap");
+
+/* ══ TOKENS ════════════════════════════════════════════════════════════════ */
+:root {
+  --mf-black:   #0A0903;
+  --mf-dark:    #1a1a18;
+  --mf-red:     #FF1100;
+  --mf-orange:  #FF8200;
+  --mf-fire:    #FF6B00;
+  --mf-yellow:  #FFC100;
+  --mf-white:   #FFFFFF;
+  /* Fondos claros */
+  --mf-bg:      #FFFFFF;
+  --mf-bg-alt:  #F8F7F4;
+  --mf-border:  rgba(10, 9, 3, 0.08);
+  --mf-text:    #0A0903;
+  --mf-muted:   rgba(10, 9, 3, 0.5);
+}
+
+/* ══ SECTION ═══════════════════════════════════════════════════════════════ */
+.nh-section {
+  display: flex;
+  align-items: stretch;
+  min-height: 100vh;         /* Exactamente una pantalla */
+  max-height: 100vh;
+  background-color: var(--mf-bg);
+  overflow: hidden;
+  position: relative;
+  font-family: "Inter", "Barlow Condensed", sans-serif;
+}
+
+/* Borde inferior sutil */
+.nh-section::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--mf-border);
+  z-index: 10;
+}
+
+/* ══ CUADRÍCULA DECORATIVA ═══════════════════════════════ */
+.nh-grid-bg {
+  position: absolute;
+  inset: 0;
+  /* Líneas de cuadrícula grises muy tenues — las cruces de idstudio */
+  background-image:
+    linear-gradient(var(--mf-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--mf-border) 1px, transparent 1px);
+  background-size: 88px 88px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══ IZQUIERDA — texto ══════════════════════════════════════════════════════ */
+.nh-left {
+  flex: 0 0 52%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1.8rem;
+  /* Padding equilibrado — todo se ve en pantalla */
+  padding: 3rem 3.5rem 5rem 7vw;
+  position: relative;
+  z-index: 2;
+  /* Separador derecho tipo idstudio */
+  border-right: 1px solid var(--mf-border);
+}
+
+/* ── Badge ─────────────────────────────────────────────────────────────── */
+.nh-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #FF0000;
+  border: 1.75px solid rgba(255, 0, 0, 0.642);
+  background: transparent;
+  padding: 0.5em 1.2em 0.5em 0.9em;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.nh-badge-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #FF0000;
+  flex-shrink: 0;
+  animation: nh-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes nh-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.35; transform: scale(0.6); }
+}
+
+.nh-title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  line-height: 0.9;
+  color: var(--mf-text);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.7rem 0;
+}
+
+/* "Historia" en gradiente naranja */
+.nh-accent {
+  background: linear-gradient(95deg, var(--mf-red), var(--mf-orange), var(--mf-yellow));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Subtítulo debajo del título */
+.nh-subtitle {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 500px;
+  color: var(--mf-black);
+  line-height: 1.65;
+  margin: 0;
+  min-width: 250px;
+}
+
+/* ── Párrafo ───────────────────────────────────────────────────────────── */
+.nh-para {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #0A0903;
+  line-height: 1.8;
+  max-width: 44ch;
+  border-left: 2px solid var(--mf-red);
+  padding-left: 1.2rem;
+  margin: 0;
+  /* opacity/y controlados por GSAP */
+}
+
+.nh-para strong {
+  color: var(--mf-black);
+  font-weight: 600;
+}
+
+/* ── Regla decorativa ──────────────────────────────────────────────────── */
+.nh-rule {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  /* opacity/y controlados por GSAP */
+}
+
+.nh-rule-long  { display:block; height:2px; width:44px; background:var(--mf-orange); border-radius:2px; }
+.nh-rule-mid   { display:block; height:2px; width:18px; background:var(--mf-orange); opacity:0.4; border-radius:2px; }
+.nh-rule-short { display:block; height:2px; width:8px;  background:var(--mf-orange); opacity:0.18; border-radius:2px; }
+
+/* ── Stats / Contadores ────────────────────────────────────────────────── */
+.nh-stats {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  /* opacity/y controlados por GSAP */
+}
+
+.nh-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18em;
+}
+
+.nh-stat strong {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  line-height: 1;
+  color: var(--mf-text);
+  /* Gradiente naranja en los números */
+  background: linear-gradient(90deg, var(--mf-orange), var(--mf-red));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.01em;
+}
+
+.nh-stat span {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0A0903;
+}
+
+.nh-stat-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--mf-border);
+  flex-shrink: 0;
+}
+
+/* ── CTA link ──────────────────────────────────────────────────────────── */
+.nh-cta {
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--mf-white);
+  background: var(--mf-black);
+  text-decoration: none;
+  padding: 6px 15px;
+  width: fit-content;
+  transition: color 0.2s ease, gap 0.2s ease;
+}
+
+.nh-cta:hover {
+ background: rgba(10, 9, 3, 0.068);
+ color: var(--mf-black);
+ border: 2px solid var(--mf-black);
+  gap: 0.85em;
+}
+
+.nh-cta svg {
+  transition: transform 0.2s ease;
+}
+
+.nh-cta:hover svg {
+  transform: translateX(2px);
+}
+
+/* ══ DERECHA — canvas 3D ════════════════════════════════════════════════════ */
+.nh-right {
+  flex: 0 0 48%;
+  height: 100vh;
+  position: relative;
+  overflow: visible; /* Los botones pueden salir un poco */
+}
+
+/* Halo naranja detrás del modelo */
+.nh-glow-orange {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 70% 55% at 50% 50%,
+    rgba(254, 186, 0, 0.347) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Halo rojo inferior */
+.nh-glow-red {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 35% 30% at 50% 72%,
+    rgba(255, 55, 0, 0.263) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Canvas */
+.nh-right > canvas {
+  width:  100% !important;
+  height: 100% !important;
+  position: relative;
+  z-index: 1;
+  cursor: grab;
+}
+
+.nh-right > canvas:active { cursor: grabbing; }
+
+/* Hint de interacción */
+.nh-drag-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  font-family: "Inter", sans-serif;
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(10, 9, 3, 0.3);
+  pointer-events: none;
+  white-space: nowrap;
+  animation: nh-hint-fade 1s ease 4s forwards;
+}
+
+@keyframes nh-hint-fade {
+  to { opacity: 0; }
+}
+
+/* ══ BOTONES FLOTANTES — centrados, cerca del modelo ═════════════════════════
+   Posición simétrica: uno arriba del centro, otro abajo del centro.
+   El mouse-follow los mueve con gsap.to({x,y}).
+════════════════════════════════════════════════════════════════════════════ */
+.nh-float-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: absolute;
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  z-index: 20;
+  /* Sombra pronunciada para que "floten" sobre el canvas */
+  box-shadow: 0 6px 30px rgba(0,0,0,0.14);
+  transition: box-shadow 0.22s ease;
+  /* El transform X/Y lo maneja GSAP con el mouse */
+  will-change: transform;
+}
+
+/* Esquina superior derecha — oscuro */
+.nh-btn-dark {
+  top: 14%;
+  right: 8%;
+  background: var(--mf-black);
+  color: var(--mf-white);
+}
+
+.nh-btn-dark:hover {
+  box-shadow: 0 6px 25px rgba(10, 9, 3, 0.427);
+}
+
+/* Esquina inferior izquierda — naranja fuego */
+.nh-btn-fire {
+  bottom: 18%;
+  left: 8%;
+  background: linear-gradient(135deg, var(--mf-orange), var(--mf-red));
+  color: var(--mf-white);
+  box-shadow: 0 6px 28px rgba(255, 107, 0, 0.35);
+}
+
+.nh-btn-fire:hover {
+  box-shadow: 0 6px 25px rgba(255, 47, 0, 0.521);
+}
+
+.nh-icon-btn {
+  font-size: 1.2em; 
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* ══ RESPONSIVE ═════════════════════════════════════════════════════════════ */
+@media (max-width: 960px) {
+  .nh-section {
+    flex-direction: column;
+    max-height: none;
+  }
+
+  .nh-left {
+    flex: none;
+    border-right: none;
+    border-bottom: 1px solid var(--mf-border);
+    padding: 4.5rem 2rem 2.5rem 2rem;
+    gap: 1.4rem;
+    justify-content: flex-start;
+  }
+
+  .nh-right {
+    flex: none;
+    width: 100%;
+    height: 60vw;
+    min-height: 320px;
+  }
+
+  .nh-btn-dark { top: 6%; right: 5%; }
+  .nh-btn-fire { bottom: 8%; left: 5%; }
+}
+
+@media (max-width: 540px) {
+  .nh-left {
+    padding: 4rem 1.4rem 2rem;
+    gap: 1.2rem;
+  }
+
+  .nh-title {
+    font-size: clamp(3rem, 10vw, 4rem);
+  }
+
+  .nh-stats { gap: 1.2rem; }
+
+  .nh-stat-divider { height: 30px; }
+
+  .nh-right { height: 80vw; }
+
+  .nh-float-btn {
+    font-size: 0.75rem;
+    padding: 0.75em 1.6em;
+  }
+}

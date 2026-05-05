@@ -10,7 +10,7 @@ import CartMenu from "../../Repuestos/CartMenu/CartMenu";
 import { logoutUser } from "../../../services/AuthService";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket, faUser, faUserPlus, faUserShield } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -91,13 +91,13 @@ const Header = () => {
               onClick={() => navigate("/admin")}
               title="Acceder a Admin"
             >
-              <i className="fi-widget icon-btn"></i>
+              <FontAwesomeIcon icon={faUserShield} className="icon-mobile" />
               <span className="btn-text">Administrador</span>
             </button>
 
             {/* Botón cerrar sesión */}
             <button className="btn btn-logout-admin" onClick={handleLogout} title="Cerrar sesión">
-              <FontAwesomeIcon icon={faArrowRightFromBracket} />
+              <FontAwesomeIcon icon={faArrowRightFromBracket} className="icon-mobile" />
               <span className="btn-text">Cerrar sesión</span>
             </button>
           </div>
@@ -117,11 +117,11 @@ const Header = () => {
         {!user && (
           <div className="user-actions">
             <button className="btn btn-login" onClick={openLoginModal}>
-              <i className="fi-torso icon-btn"></i>
+              <FontAwesomeIcon icon={faUser} className="icon-mobile" />
               <span className="btn-text">Iniciar Sesión</span>
             </button>
             <button className="btn btn-register" onClick={openRegisterModal}>
-              <i className="fi-pencil icon-btn"></i>
+              <FontAwesomeIcon icon={faUserPlus} className="icon-mobile" />
               <span className="btn-text">Registrarme</span>
             </button>
           </div>
