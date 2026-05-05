@@ -2,17 +2,40 @@ import React, { useState } from "react";
 import "./Header.css";
 import "foundation-sites";
 import isologo from "../../../assets/isologo.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import LoginModal from "../../../pages/Login/LoginModal";
+import RegisterModal from "../../../pages/Register/RegisterModal";
 import { useCart } from "../../../context/CartContext";
 import CartMenu from "../../Repuestos/CartMenu/CartMenu";
 import { logoutUser } from "../../../services/AuthService";
-import { useAuth } from "../../../context/UseAuth"; 
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightFromBracket, faUser, faUserPlus, faUserShield } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { cartItems, toggleCart } = useCart();
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
-  const { usuario, isAuthenticated, logout, openLoginModal, openRegisterModal } = useAuth();
+  const openLoginModal = () => setIsLoginOpen(true);
+  const closeLoginModal = () => setIsLoginOpen(false);
+  const openRegisterModal = () => setIsRegisterOpen(true);
+  const closeRegisterModal = () => setIsRegisterOpen(false);
+
+  // Determina si el usuario actual es administrador
+  const isAdmin = user?.rol === "ADMIN";
+
+  useEffect(() => {
+    const loadUser = () => {
+      const userStorage = localStorage.getItem("user");
+      setUser(userStorage ? JSON.parse(userStorage) : null);
+    };
+
+    loadUser();
+    window.addEventListener("userChanged", loadUser);
+    return () => window.removeEventListener("userChanged", loadUser);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -20,7 +43,11 @@ const Header = () => {
     } catch (error) {
       console.log("Error cerrando sesión:", error);
     } finally {
-      logout(); 
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      setUser(null);
+      window.dispatchEvent(new Event("userChanged"));
+      navigate("/");
     }
   };
 
@@ -36,12 +63,12 @@ const Header = () => {
           <li><NavLink to="/servicios">Servicios</NavLink></li>
           <li><NavLink to="/repuestos">Repuestos</NavLink></li>
           <li><NavLink to="/nosotros">Nosotros</NavLink></li>
-          <li><NavLink to="/api">API</NavLink></li>
         </ul>
       </div>
 
       <div className="top-bar-right">
-        {isAuthenticated && (
+        {/* Carrito: solo para usuarios normales, no para admin */}
+        {user && !isAdmin && (
           <div className="cart-container">
             <button className="cart-btn" onClick={toggleCart}>
               <i className="fi-shopping-cart cart-icon"></i>
@@ -52,21 +79,47 @@ const Header = () => {
           </div>
         )}
 
-        {isAuthenticated ? (
+        {/* === CASO 1: Admin logueado === */}
+        {user && isAdmin && (
           <div className="user-section">
-            <span className="user-name">¡ Hola, {usuario.nombre} !</span>
+
+            {/* Botón que lleva al panel de administración */}
+            <button
+              className="btn btn-admin"
+              onClick={() => navigate("/admin")}
+              title="Acceder a Admin"
+            >
+              <FontAwesomeIcon icon={faUserShield} className="icon-mobile" />
+              <span className="btn-text">Administrador</span>
+            </button>
+
+            {/* Botón cerrar sesión */}
+            <button className="btn btn-logout-admin" onClick={handleLogout} title="Cerrar sesión">
+              <FontAwesomeIcon icon={faArrowRightFromBracket} className="icon-mobile" />
+              <span className="btn-text">Cerrar sesión</span>
+            </button>
+          </div>
+        )}
+
+        {/* === CASO 2: Usuario normal logueado === */}
+        {user && !isAdmin && (
+          <div className="user-section">
+            <span className="user-name">¡ Hola, {user.nombre} !</span>
             <button className="btn-logout" onClick={handleLogout}>
               <i className="fi-x"></i>
             </button>
           </div>
-        ) : (
+        )}
+
+        {/* === CASO 3: Sin sesión === */}
+        {!user && (
           <div className="user-actions">
             <button className="btn btn-login" onClick={openLoginModal}>
-              <i className="fi-torso icon-btn"></i>
+              <FontAwesomeIcon icon={faUser} className="icon-mobile" />
               <span className="btn-text">Iniciar Sesión</span>
             </button>
             <button className="btn btn-register" onClick={openRegisterModal}>
-              <i className="fi-pencil icon-btn"></i>
+              <FontAwesomeIcon icon={faUserPlus} className="icon-mobile" />
               <span className="btn-text">Registrarme</span>
             </button>
           </div>
@@ -81,8 +134,17 @@ const Header = () => {
 
       <CartMenu />
 
-      {/* ← Ya no necesitas LoginModal ni RegisterModal aquí,
-          el AuthProvider ya los renderiza globalmente */}
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={closeLoginModal}
+        openRegisterModal={openRegisterModal}
+      />
+
+      <RegisterModal
+        isOpen={isRegisterOpen}
+        onClose={closeRegisterModal}
+        openLoginModal={openLoginModal}
+      />
     </header>
   );
 };

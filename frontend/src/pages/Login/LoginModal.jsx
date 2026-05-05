@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import './login.css';
 import { loginUser } from "../../services/AuthService";
-import { useAuth } from "../../context/UseAuth";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
   const { login } = useAuth(); 
@@ -12,6 +11,9 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
     email: '',
     contraseña: ''
   });
+
+  const navigate = useNavigate();
+
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -44,14 +46,28 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
         navigate('/servicios');
       }
 
-      const nombreDisplay = res.data.user?.nombre || res.data.user?.email;
-      setSuccess(`¡Bienvenido, ${nombreDisplay}!`);
+      const user = res.data.user;
+      const nombreDisplay = user?.nombre || user?.email;
 
-      setTimeout(() => {
-        setFormData({ email: '', contraseña: '' });
-        setSuccess('');
-        onClose();
-      }, 2000);
+      if (user?.rol === "ADMIN") {
+        // Admin: saludo diferente, redirige al panel sin esperar
+        setSuccess(`¡Bienvenido de nuevo, ${nombreDisplay}! `);
+        setTimeout(() => {
+          setFormData({ email: '', contraseña: '' });
+          setSuccess('');
+          onClose();
+          navigate("/admin");
+        }, 1500);
+      } else {
+        // Usuario normal: saludo estándar, solo cierra el modal
+        setSuccess(`¡Bienvenido, ${nombreDisplay}!`);
+        setTimeout(() => {
+          setFormData({ email: '', contraseña: '' });
+          setSuccess('');
+          onClose();
+          navigate("/servicios")
+        }, 2000);
+      }
 
     } catch (error) {
       setError(error.response?.data?.message || 'Error al iniciar sesión');
@@ -80,7 +96,6 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
           {success && (
             <div className="alert-success">
               <p>{success}</p>
-              <button className="close-button-custom" type="button" onClick={handleCloseAlert}>&times;</button>
             </div>
           )}
 

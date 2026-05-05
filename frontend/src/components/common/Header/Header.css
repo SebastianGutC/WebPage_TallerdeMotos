@@ -60,9 +60,9 @@ body, html {
   border-radius: 60px;
 }
 
-.icon-btn {
-  display: none;
-}
+.icon-mobile {
+  display: none; 
+  }
 
 .btn {
   font-size: 15px;
@@ -106,7 +106,39 @@ body, html {
   background: none;
   border: none;
   cursor: pointer;
-  color: #fff;
+  color: #ffffff;
+}
+
+/* ─── Admin: botón "Administrador" ─────────────────────────── */
+.btn-admin {
+  background-color: #FF0000;
+  color: #ffffff;
+  border: 2px solid #0A0903;
+  font-weight: 800;
+}
+
+.btn-admin:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 2px 7px #0A0903;
+}
+
+/* ─── Admin: botón "Cerrar sesión" ──────────────────────────── */
+.btn-logout-admin {
+  background: #0A0903;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 10px;
+  padding: 5px 16px;
+  margin-left: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-logout-admin:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 2px 7px rgba(0, 0, 0, 0.4);
 }
 
 
@@ -128,6 +160,7 @@ body, html {
     flex-shrink: 0;
   }
 
+
   .menu-toggle {
     justify-content: center;
     align-items: center;
@@ -145,6 +178,7 @@ body, html {
     width: 28px;
     fill: #fff;
   }
+
 
   .top-bar-left {
     display: flex;
@@ -203,9 +237,9 @@ body, html {
     border: 2px solid #0A0903;
   }
 
-  .icon-btn {
-    display: inline;
-    font-size: 18px;
+  .icon-mobile {
+    display: inline-block;
+    font-size: 13px ;
     color: #fff;
   }
 
@@ -535,10 +569,6 @@ body, html {
   
   .btn-register {
     margin-right: 0 !important; /* TU MARGEN ROMPÍA EL WIDTH */
-  }
-
-  .icon-btn {
-    font-size: 16px;
   }
 }
 
