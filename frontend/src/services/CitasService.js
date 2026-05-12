@@ -68,6 +68,6 @@ export const removeProductoFromCita = async (citaId, productoId) => {
     return API.delete(`/citas/${citaId}/productos/${productoId}`);
 }
 
-export const agendarCita = async (id) => {
-    return API.put(`/citas/${id}/agendar`);
+export const agendarCita = async (id, data) => {
+    return API.put(`/citas/${id}/agendar`, data);
 }

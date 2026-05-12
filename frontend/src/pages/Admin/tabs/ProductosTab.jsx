@@ -1,22 +1,24 @@
-// src/pages/Admin/tabs/ProductosTab.jsx
 import React, { useEffect, useState } from "react";
 import { getAllProductos, createProducto, updateProducto, deleteProducto } from "../../../services/AdminService";
+import { getImagenUrl } from "../../../services/ProductosService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus, faPenToSquare, faCartArrowDown, faAngleDown, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-const INITIAL = { nombre: "", descripcion: "", precio: "", stock: "", marca: "", categoria: "", img64: "" };
+const INITIAL = { nombre: "", descripcion: "", precio: "", stock: "", marca: "", categoria: "" };
 
 const ProductosTab = () => {
-  const [productos, setProductos]   = useState([]);
-  const [loading, setLoading]       = useState(false);
-  const [search, setSearch]         = useState("");
-  const [form, setForm]             = useState(INITIAL);
-  const [editingId, setEditingId]   = useState(null);   // null = crear, id = editar
-  const [error, setError]           = useState("");
-  const [success, setSuccess]       = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [showForm, setShowForm]     = useState(false);
-  const [showList, setShowList]     = useState(true);
+  const [productos, setProductos]     = useState([]);
+  const [loading, setLoading]         = useState(false);
+  const [search, setSearch]           = useState("");
+  const [form, setForm]               = useState(INITIAL);
+  const [imagenFile, setImagenFile]   = useState(null);      // ✅ File real
+  const [imagenPreview, setImagenPreview] = useState("");    // ✅ solo para mostrar
+  const [editingId, setEditingId]     = useState(null);
+  const [error, setError]             = useState("");
+  const [success, setSuccess]         = useState("");
+  const [submitting, setSubmitting]   = useState(false);
+  const [showForm, setShowForm]       = useState(false);
+  const [showList, setShowList]       = useState(true);
 
   const fetchProductos = async () => {
     setLoading(true);
@@ -32,49 +34,70 @@ const ProductosTab = () => {
       .toLowerCase().includes(search.toLowerCase())
   );
 
-  // ── Cambios en el formulario ───────────────────────────────────────────────
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setError("");
   };
 
+  // ✅ Guarda el File y genera preview local con URL.createObjectURL
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => setForm(prev => ({ ...prev, img64: reader.result }));
-    reader.readAsDataURL(file);
+    setImagenFile(file);
+    setImagenPreview(URL.createObjectURL(file));
   };
 
-  // ── Guardar (crear o editar) ───────────────────────────────────────────────
+  const handleQuitarImagen = () => {
+    setImagenFile(null);
+    setImagenPreview("");
+  };
+
+  // ✅ Arma FormData y envía con multipart/form-data
   const handleSubmit = async () => {
     const { nombre, descripcion, precio, stock, marca, categoria } = form;
     if (!nombre || !descripcion || !precio || stock === "" || !marca || !categoria) {
-      setError("Todos los campos marcados con * son obligatorios."); return;
+      setError("Todos los campos marcados con * son obligatorios.");
+      return;
     }
+
     try {
       setSubmitting(true);
-      const data = { ...form, precio: Number(form.precio), stock: Number(form.stock) };
+
+      const formData = new FormData();
+      formData.append("nombre",      form.nombre);
+      formData.append("descripcion", form.descripcion);
+      formData.append("precio",      Number(form.precio));
+      formData.append("stock",       Number(form.stock));
+      formData.append("marca",       form.marca);
+      formData.append("categoria",   form.categoria);
+
+      // Solo adjunta la imagen si el usuario seleccionó una nueva
+      if (imagenFile) {
+        formData.append("imagen", imagenFile);
+      }
 
       if (editingId) {
-        await updateProducto(editingId, data);
+        await updateProducto(editingId, formData);
         setSuccess("Producto actualizado correctamente.");
       } else {
-        await createProducto(data);
+        await createProducto(formData);
         setSuccess("Producto creado correctamente.");
       }
 
       setForm(INITIAL);
+      setImagenFile(null);
+      setImagenPreview("");
       setEditingId(null);
       fetchProductos();
       setTimeout(() => setSuccess(""), 3000);
+
     } catch (err) {
       setError(err.response?.data?.message || "Error al guardar producto.");
-    } finally { setSubmitting(false); }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  // ── Abrir formulario en modo edición ──────────────────────────────────────
-  // Igual que ServiciosTab: rellena el form y abre el acordeón
   const handleEdit = (p) => {
     setForm({
       nombre:      p.nombre      || "",
@@ -83,22 +106,24 @@ const ProductosTab = () => {
       stock:       p.stock       || "",
       marca:       p.marca       || "",
       categoria:   p.categoria   || "",
-      img64:       p.img64       || "",   // ← imagen actual precargada
     });
+    setImagenFile(null);
+    // ✅ Usa getImagenUrl para mostrar la imagen actual del servidor
+    setImagenPreview(p.imagen ? getImagenUrl(p.imagen) : "");
     setEditingId(p._id);
     setShowForm(true);
     setError("");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // ── Cancelar edición ───────────────────────────────────────────────────────
   const handleCancel = () => {
     setForm(INITIAL);
+    setImagenFile(null);
+    setImagenPreview("");
     setEditingId(null);
     setError("");
   };
 
-  // ── Eliminar ───────────────────────────────────────────────────────────────
   const handleDelete = async (id, nombre) => {
     if (!window.confirm(`¿Eliminar el producto "${nombre}"?`)) return;
     try {
@@ -110,7 +135,7 @@ const ProductosTab = () => {
   return (
     <div className="tab-content">
 
-      {/* ══ ACORDEÓN: Crear / Editar producto ════════════════════════════════ */}
+      {/* ══ ACORDEÓN: Crear / Editar ════════════════════════════════════════ */}
       <div className="accordion-card">
         <button className="accordion-header" onClick={() => setShowForm(v => !v)}>
           <span className="section-left">
@@ -157,24 +182,24 @@ const ProductosTab = () => {
                 <textarea name="descripcion" value={form.descripcion} onChange={handleChange} rows={3} placeholder="Describe el producto..." />
               </div>
 
-              {/* ── Campo de imagen: muestra vista previa si ya tiene imagen ── */}
+              {/* ── Imagen ── */}
               <div className="form-group form-full">
                 <label>Imagen del producto</label>
                 <div className="image-upload-area">
-                  {form.img64 && (
+                  {imagenPreview && (
                     <div className="img-preview-wrapper">
-                      <img src={form.img64} alt="Vista previa" className="img-preview-large" />
+                      <img src={imagenPreview} alt="Vista previa" className="img-preview-large" />
                       <button
                         type="button"
                         className="btn-remove-img"
-                        onClick={() => setForm(prev => ({ ...prev, img64: "" }))}
-                        title="Quitar imagen"
+                        onClick={handleQuitarImagen}
                       >
                         Quitar imagen
                       </button>
                     </div>
                   )}
                   <label className="file-upload-label">
+                    {imagenPreview ? "Cambiar imagen" : "Seleccionar imagen"}
                     <input
                       type="file"
                       accept="image/*"
@@ -200,7 +225,7 @@ const ProductosTab = () => {
         )}
       </div>
 
-      {/* ══ ACORDEÓN: Inventario ══════════════════════════════════════════════ */}
+      {/* ══ ACORDEÓN: Inventario ════════════════════════════════════════════ */}
       <div className="accordion-card">
         <button className="accordion-header" onClick={() => setShowList(v => !v)}>
           <span className="section-left">
@@ -252,8 +277,9 @@ const ProductosTab = () => {
                         ].join(" ")}
                       >
                         <td>
-                          {p.img64
-                            ? <img src={p.img64} alt={p.nombre} className="table-img" />
+                          {/* ✅ getImagenUrl para servir la imagen desde el servidor */}
+                          {p.imagen
+                            ? <img src={getImagenUrl(p.imagen)} alt={p.nombre} className="table-img" />
                             : <span className="no-img">—</span>}
                         </td>
                         <td><strong>{p.nombre}</strong></td>
@@ -268,7 +294,7 @@ const ProductosTab = () => {
                           </span>
                         </td>
                         <td className="actions-cell">
-                          <div className="actions-wrapper">  
+                          <div className="actions-wrapper">
                             <button
                               className={`btn-edit ${editingId === p._id ? "btn-edit-active" : ""}`}
                               onClick={() => handleEdit(p)}

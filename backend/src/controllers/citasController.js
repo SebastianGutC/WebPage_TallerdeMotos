@@ -431,7 +431,7 @@ export const removeProductoFromCita = async (req, res) => {
 export const agendarCita = async (req, res) => {
   try {
     const { id } = req.params;
-    const { horaSeleccionada, usuarioId, servicios, estado } = req.body;
+    const { horaSeleccionada, usuarioId, servicios, estado, placaMoto, motocicletaId } = req.body;
 
     if (!usuarioId) {
       return res.status(400).json({ message: "El id del usuario es obligatorio" });
@@ -458,6 +458,8 @@ export const agendarCita = async (req, res) => {
 
     cita.usuarioId = usuarioId;
     cita.estado = estado ?? "pendiente";
+    cita.placaMoto = placaMoto;
+    cita.motocicletaId = motocicletaId;
     if (servicios) cita.servicios = servicios;
 
     await cita.save();

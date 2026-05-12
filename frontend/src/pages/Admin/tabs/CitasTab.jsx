@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from "react";
 import {
   getAllCitas, updateCitaEstado, asignarTecnicoCita, deleteCita, getAllUsers,
-} from "../../../services/AdminService";
-import API from "../../../services/Api";
+} from "../../../services/AdminService.js";
+import API from "../../../services/Api.js";
 import { ESTADO_COLORS, ESTADO_LABEL } from "../citasConstants.jsx";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// eslint-disable-next-line no-unused-vars
 import { faCalendarPlus, faCaretDown, faAngleDown, faClock, faCalendarDay, faFileLines, faCheck, faXmark,  faEye, faEyeSlash, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const ESTADOS_ASIGNADA  = ["pendiente", "en_proceso"];
@@ -85,6 +86,7 @@ const CitasTab = () => {
     try {
       const r = await getAllUsers();
       setTecnicos(r.data.filter(u => u.rol === "TECNICO" && u.habilitado));
+    // eslint-disable-next-line no-empty
     } catch {}
   };
 
@@ -96,28 +98,55 @@ const CitasTab = () => {
   const realizadas  = citas.filter(c => ESTADOS_REALIZADA.includes(c.estado));
 
   // ── Crear horario ──────────────────────────────────────────────────────────
-  const handleCrear = async () => {
-    const { fecha, hora, tecnicoId } = citaForm;
-    if (!fecha || !hora || !tecnicoId) {
-      setCitaError("Fecha, hora y técnico son obligatorios."); return;
-    }
-    setCreando(true);
-    try {
-      await API.post("/citas", {
-        fecha:     fixDate(fecha),  
-        hora,
-        tecnicoId,
-        estado:    "disponible",    
-      });
-      setCitaSuccess("Horario creado y disponible para los usuarios.");
-      setCitaForm(CITA_INITIAL);
-      setShowDisponibles(true);   
-      fetchCitas();
-      setTimeout(() => setCitaSuccess(""), 4000);
-    } catch (e) {
-      setCitaError(e.response?.data?.message || "Error al crear horario.");
-    } finally { setCreando(false); }
-  };
+const handleCrear = async () => {
+  setCitaError("");
+  setCitaSuccess("");
+
+  const { fecha, hora, tecnicoId } = citaForm;
+
+  // ── Log para ver exactamente qué hay en el form ──
+  console.log("Form values:", { fecha, hora, tecnicoId });
+
+  if (!fecha || !hora || !tecnicoId) {
+    setCitaError("Fecha, hora y técnico son obligatorios.");
+    return;
+  }
+
+  setCreando(true);
+
+  try {
+    const data = {
+      fecha: `${fecha}T12:00:00`,  // ✅ fuerza mediodía, evita desfase UTC
+      hora,
+      tecnicoId,
+      estado: "disponible",
+    };
+
+    console.log("Enviando:", data);
+
+    const res = await API.post("/citas", data);
+
+    console.log("Respuesta:", res.data);
+
+    setCitaSuccess("Horario creado correctamente");
+    setCitaForm(CITA_INITIAL);
+    fetchCitas();
+
+  } catch (e) {
+    console.error("Error completo:", e);
+    console.error("Response data:", e.response?.data);
+    console.error("Status:", e.response?.status);
+
+    setCitaError(
+      e.response?.data?.message ||
+      e.response?.data?.error ||
+      e.message ||
+      "Error al crear horario."
+    );
+  } finally {
+    setCreando(false);
+  }
+};
 
   // ── Edición inline ─────────────────────────────────────────────────────────
   const startEdit = (c) => {

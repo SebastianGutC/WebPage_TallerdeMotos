@@ -3,39 +3,20 @@ import "./Header.css";
 import "foundation-sites";
 import isologo from "../../../assets/isologo.png";
 import { NavLink, useNavigate } from "react-router-dom";
-import LoginModal from "../../../pages/Login/LoginModal";
-import RegisterModal from "../../../pages/Register/RegisterModal";
 import { useCart } from "../../../context/CartContext";
 import CartMenu from "../../Repuestos/CartMenu/CartMenu";
 import { logoutUser } from "../../../services/AuthService";
-
+import { useAuth } from "../../../context/UseAuth"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faUser, faUserPlus, faUserShield } from "@fortawesome/free-solid-svg-icons";
+
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { cartItems, toggleCart } = useCart();
-  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  const openLoginModal = () => setIsLoginOpen(true);
-  const closeLoginModal = () => setIsLoginOpen(false);
-  const openRegisterModal = () => setIsRegisterOpen(true);
-  const closeRegisterModal = () => setIsRegisterOpen(false);
-
-  // Determina si el usuario actual es administrador
-  const isAdmin = user?.rol === "ADMIN";
-
-  useEffect(() => {
-    const loadUser = () => {
-      const userStorage = localStorage.getItem("user");
-      setUser(userStorage ? JSON.parse(userStorage) : null);
-    };
-
-    loadUser();
-    window.addEventListener("userChanged", loadUser);
-    return () => window.removeEventListener("userChanged", loadUser);
-  }, []);
+  const { usuario, isAuthenticated, logout, openLoginModal, openRegisterModal } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -43,10 +24,7 @@ const Header = () => {
     } catch (error) {
       console.log("Error cerrando sesión:", error);
     } finally {
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-      setUser(null);
-      window.dispatchEvent(new Event("userChanged"));
+      logout(); 
       navigate("/");
     }
   };
@@ -63,12 +41,12 @@ const Header = () => {
           <li><NavLink to="/servicios">Servicios</NavLink></li>
           <li><NavLink to="/repuestos">Repuestos</NavLink></li>
           <li><NavLink to="/nosotros">Nosotros</NavLink></li>
+          <li><NavLink to="/api">API</NavLink></li>
         </ul>
       </div>
 
       <div className="top-bar-right">
-        {/* Carrito: solo para usuarios normales, no para admin */}
-        {user && !isAdmin && (
+        {isAuthenticated && (
           <div className="cart-container">
             <button className="cart-btn" onClick={toggleCart}>
               <i className="fi-shopping-cart cart-icon"></i>
@@ -79,8 +57,8 @@ const Header = () => {
           </div>
         )}
 
-        {/* === CASO 1: Admin logueado === */}
-        {user && isAdmin && (
+ {/* === CASO 1: Admin logueado === */}
+        {usuario && usuario.rol === "ADMIN" && (
           <div className="user-section">
 
             {/* Botón que lleva al panel de administración */}
@@ -102,17 +80,16 @@ const Header = () => {
         )}
 
         {/* === CASO 2: Usuario normal logueado === */}
-        {user && !isAdmin && (
+        {usuario && usuario.rol === "USUARIO" && (
           <div className="user-section">
-            <span className="user-name">¡ Hola, {user.nombre} !</span>
+            <span className="user-name">¡ Hola, {usuario.nombre} !</span>
             <button className="btn-logout" onClick={handleLogout}>
               <i className="fi-x"></i>
             </button>
           </div>
         )}
 
-        {/* === CASO 3: Sin sesión === */}
-        {!user && (
+        {!usuario && (
           <div className="user-actions">
             <button className="btn btn-login" onClick={openLoginModal}>
               <FontAwesomeIcon icon={faUser} className="icon-mobile" />
@@ -134,17 +111,6 @@ const Header = () => {
 
       <CartMenu />
 
-      <LoginModal
-        isOpen={isLoginOpen}
-        onClose={closeLoginModal}
-        openRegisterModal={openRegisterModal}
-      />
-
-      <RegisterModal
-        isOpen={isRegisterOpen}
-        onClose={closeRegisterModal}
-        openLoginModal={openLoginModal}
-      />
     </header>
   );
 };

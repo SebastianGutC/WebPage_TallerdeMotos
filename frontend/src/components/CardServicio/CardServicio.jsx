@@ -5,6 +5,7 @@ import { getCitasPorEstado, agendarCita } from "../../services/CitasService";
 import { useAuth } from "../../context/UseAuth";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { getAllMotocicletas } from "../../services/AdminService";
 
 const CardServicio = ({ nombre, descripcion, icono, precio }) => {
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -12,19 +13,25 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
   const [fechasDisponibles, setFechasDisponibles] = useState([]);
   const [fechaSeleccionada, setFechaSeleccionada] = useState(null);
   const [horasDisponibles, setHorasDisponibles] = useState([]);
-  const [horaSeleccionada, setHoraSeleccionada] = useState("");
-
+  const [citaSeleccionada, setCitaSeleccionada] = useState(null);
+  const [numeroPlaca, setNumeroPlaca] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [motocicletas, setMotocicletas] = useState([]);
+  const [motocicletaId, setMotocicletaId] = useState("");
 
-  const { usuario } = useAuth();
+  const { usuario, isAuthenticated, openLoginModal } = useAuth();
 
   useEffect(() => {
     const fetchCitas = async () => {
       try {
         const res = await getCitasPorEstado("disponible");
         const citas = res.data;
+
+        console.log("Citas disponibles:", citas); // ← verificá la estructura
+
         setCitasDisponibles(citas);
+
         const fechas = citas.map((cita) => new Date(cita.fecha).toDateString());
         setFechasDisponibles(fechas);
       } catch (error) {
@@ -36,13 +43,38 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
   }, [mostrarModal]);
 
   useEffect(() => {
+    const fetchMotocicletas = async () => {
+      try {
+        const res = await getAllMotocicletas();
+        setMotocicletas(res.data);
+      } catch (error) {
+        console.error("Error fetching motocicletas:", error);
+      }
+    };
+    if (mostrarModal) fetchMotocicletas();
+  }, [mostrarModal]);
+
+  const handleAgendar = (e) => {
+    e.stopPropagation();
+    if (!isAuthenticated) {
+      openLoginModal();
+      return;
+    } else {
+      abrirModal();
+    }
+  };
+
+  useEffect(() => {
     if (!fechaSeleccionada) return;
+
     const fechaStr = fechaSeleccionada.toDateString();
+
     const horas = citasDisponibles.filter(
-      (cita) => new Date(cita.fecha).toDateString() === fechaStr
+      (cita) => new Date(cita.fecha).toDateString() === fechaStr,
     );
+
     setHorasDisponibles(horas);
-    setHoraSeleccionada("");
+    setCitaSeleccionada(null);
   }, [fechaSeleccionada, citasDisponibles]);
 
   const abrirModal = () => {
@@ -54,7 +86,7 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
   const cerrarModal = () => {
     setMostrarModal(false);
     setFechaSeleccionada(null);
-    setHoraSeleccionada("");
+    setCitaSeleccionada(null);
     setErrorMsg("");
     setSuccessMsg("");
   };
@@ -63,28 +95,31 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
     setErrorMsg("");
     setSuccessMsg("");
 
-    if (!fechaSeleccionada || !horaSeleccionada) {
+    if (!fechaSeleccionada || !citaSeleccionada) {
       setErrorMsg("Debes seleccionar fecha y hora");
       return;
     }
 
+    console.log("Confirmando cita:", citaSeleccionada); // ← verificá los datos
+
     try {
-      await agendarCita(horaSeleccionada, {
-        usuarioId: usuario._id,
+      await agendarCita(citaSeleccionada._id.toString(), {
+        horaSeleccionada: citaSeleccionada.hora,
+        usuarioId: usuario.id,
         estado: "pendiente",
         servicios: [{ nombre, costo: precio }],
+        placaMoto: numeroPlaca,
+        motocicletaId: motocicletaId,
       });
 
-      setSuccessMsg("Cita agendada correctamente");
+      setSuccessMsg("¡Cita agendada correctamente!");
 
       setTimeout(() => {
         cerrarModal();
       }, 2000);
-
     } catch (error) {
-      setErrorMsg(
-        error.response?.data?.message || "Error al agendar la cita"
-      );
+      console.error("Error agendando cita:", error);
+      setErrorMsg(error.response?.data?.message || "Error al agendar la cita");
     }
   };
 
@@ -101,7 +136,7 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
         <div className="card-section card-servicio-body">
           <p className="descripcion-servicio">{descripcion}</p>
           <p className="precio-servicio">${precio.toLocaleString("es-CO")}</p>
-          <button className="button btn-servicio" onClick={abrirModal}>
+          <button className="button btn-servicio" onClick={handleAgendar}>
             Solicitar Servicio
           </button>
         </div>
@@ -151,14 +186,43 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
 
             <label>Selecciona la hora:</label>
             <select
-              value={horaSeleccionada}
-              onChange={(e) => setHoraSeleccionada(e.target.value)}
+              value={citaSeleccionada?._id?.toString() || ""}
+              onChange={(e) => {
+                const cita = horasDisponibles.find(
+                  (c) => c._id.toString() === e.target.value, // ✅ .toString() en ambos lados
+                );
+                console.log("Cita seleccionada:", cita); // ← verificá que no sea undefined
+                setCitaSeleccionada(cita || null);
+              }}
               disabled={!fechaSeleccionada}
             >
               <option value="">Selecciona...</option>
               {horasDisponibles.map((cita) => (
-                <option key={cita._id} value={cita._id}>
+                <option key={cita._id.toString()} value={cita._id.toString()}>
+                  {" "}
+                  {/* ✅ .toString() */}
                   {cita.hora}
+                </option>
+              ))}
+            </select>
+
+            <label>Inserta el número de placa:</label>
+            <input
+              type="text"
+              placeholder="Ej: ABC123"
+              value={numeroPlaca}
+              onChange={(e) => setNumeroPlaca(e.target.value)}
+            />
+
+            <label>Selecciona el modelo de tu motocicleta:</label>
+            <select
+              value={motocicletaId}
+              onChange={(e) => setMotocicletaId(e.target.value)}
+            >
+              <option value="">Selecciona...</option>
+              {motocicletas.map((moto) => (
+                <option key={moto._id} value={moto._id}>
+                  {moto.nombre} {moto.marca}
                 </option>
               ))}
             </select>

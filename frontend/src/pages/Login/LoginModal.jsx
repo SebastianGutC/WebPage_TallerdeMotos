@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './login.css';
 import { loginUser } from "../../services/AuthService";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/UseAuth";
 
 const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
   const { login } = useAuth(); 
@@ -11,8 +12,6 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
     email: '',
     contraseña: ''
   });
-
-  const navigate = useNavigate();
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
