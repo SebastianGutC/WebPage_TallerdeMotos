@@ -40,24 +40,58 @@ body, html {
 }
 
 .menu a {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 999px;
+
   font-size: 15px;
-  color: #0A0903;
   font-weight: bold;
-  transition: color 0.3s ease;
+  text-decoration: none;
+  color: #0A0903;
+
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    border 0.3s ease,
+    box-shadow 0.3s ease,
+    backdrop-filter 0.3s ease;
+
+  border: 1px solid transparent;
 }
 
+/* Hover glass */
 .menu a:hover {
-  border-radius: 60px;
-  background-color: rgba(255, 255, 255, 0.25);
-  color: #fff;
-  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+  color: #ffffff;
+
+  background: rgba(255, 255, 255, 0.144);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  box-shadow:
+    0 4px 18px rgba(255, 255, 255, 0.18),
+    inset 0 1px 1px rgba(255, 255, 255, 0.347);
 }
 
+/* Opción activa */
 .menu a.active {
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.25);
-  border-radius: 60px;
+  color: #ffffff;
+
+  background: rgba(255, 255, 255, 0.295);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 0.5px solid rgba(255,255,255,0.3);
+
+  box-shadow:
+    0 4px 18px rgba(255,255,255,0.2),
+    inset 0 2px 3px rgba(255,255,255,0.25);
 }
 
 .icon-mobile {

@@ -4,6 +4,10 @@ import { loginUser } from "../../services/AuthService";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/UseAuth";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleExclamation, faXmark } from "@fortawesome/free-solid-svg-icons";
+
+
 const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
   const { login } = useAuth(); 
   const navigate = useNavigate();
@@ -88,8 +92,18 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
         <form onSubmit={handleSubmit}>
           {error && (
             <div className="alert-error">
-              <p>{error}</p>
-              <button className="close-button-custom" type="button" onClick={handleCloseAlert}>&times;</button>
+              <div className="alert-content">
+                <FontAwesomeIcon icon={faCircleExclamation} className="alert-icon" />
+                <span className="alert-text">{error}</span>
+              </div>
+
+              <button
+                className="alert-close"
+                type="button"
+                onClick={handleCloseAlert}
+              >
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
             </div>
           )}
           {success && (

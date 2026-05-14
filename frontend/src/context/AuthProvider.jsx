@@ -28,8 +28,7 @@ export const AuthProvider = ({ children }) => {
 
     localStorage.setItem("usuario", JSON.stringify(data.usuario));
     localStorage.setItem("token", data.token);
-
-    closeLoginModal();
+    
   };
 
   const logout = () => {

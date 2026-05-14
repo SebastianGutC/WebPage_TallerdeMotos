@@ -1,5 +1,6 @@
 // src/components/Auth/ProtectedAdminRoute.jsx
 import { Navigate } from "react-router-dom";
+import { useAuth} from "../../../context/UseAuth";
 
 /**
  * Componente guardián de ruta.
@@ -14,11 +15,9 @@ import { Navigate } from "react-router-dom";
  *   } />
  */
 const ProtectedAdminRoute = ({ children }) => {
-  const userStorage = localStorage.getItem("user");
-  const user = userStorage ? JSON.parse(userStorage) : null;
+  const { usuario, isAuthenticated } = useAuth();
 
-  if (!user || user.rol !== "ADMIN") {
-    // Redirige al home sin dejar rastro en el historial
+  if (!isAuthenticated || usuario?.rol !== "ADMIN") {
     return <Navigate to="/" replace />;
   }
 

@@ -14,7 +14,6 @@ const AppRouter = () => {
       <Route path="/servicios" element={<Servicios />} />
       <Route path="/repuestos" element={<Repuestos />} />
       <Route path="/nosotros" element={<Nosotros />} />
-      <Route path="/api" element={<API />} />
 
       {/* Ruta protegida: solo accesible si rol === "ADMIN" */}
       <Route
