@@ -71,7 +71,7 @@ const Repuestos = () => {
     <section className="repuestos-section">
       <HeroSection />
 
-      <div className="grid-container">
+      <div className="grid-container" id="catalogo-repuestos">
         <div className="titulo-repuestos text-center">
           <h2>Catálogo de Repuestos</h2>
         </div>

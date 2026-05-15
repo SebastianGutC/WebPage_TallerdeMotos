@@ -8,7 +8,7 @@ import CartMenu from "../../Repuestos/CartMenu/CartMenu";
 import { logoutUser } from "../../../services/AuthService";
 import { useAuth } from "../../../context/UseAuth"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightFromBracket, faUser, faUserPlus, faUserShield } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket, faUser, faUserPlus, faUserShield, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 
 const Header = () => {
@@ -83,7 +83,7 @@ const Header = () => {
           <div className="user-section">
             <span className="user-name">¡ Hola, {usuario.nombre} !</span>
             <button className="btn-logout" onClick={handleLogout}>
-              <i className="fi-x"></i>
+              <FontAwesomeIcon icon={faXmark} />
             </button>
           </div>
         )}

@@ -68,7 +68,7 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
           setFormData({ email: '', contraseña: '' });
           setSuccess('');
           onClose();
-          navigate("/servicios")
+          navigate("/servicios#servicios")
         }, 2000);
       }
 

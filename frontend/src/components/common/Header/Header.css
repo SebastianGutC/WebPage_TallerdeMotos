@@ -24,7 +24,7 @@ body, html {
 .user-name {
   color: #0A0903;
   font-size: 17px;
-  margin-right: 30px;
+  margin-right: 65px;
 }
 
 .header-logo {
@@ -156,6 +156,29 @@ body, html {
   box-shadow: 3px 2px 7px #0A0903;
 }
 
+.btn-logout {
+  position: absolute;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(14, 14, 14, 0.39);
+  border: none;
+  color:#0A0903;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-logout:hover {
+  color:#ffffff;
+  transform: translateY(-50%) scale(1.1);
+}
+
 /* ─── Admin: botón "Cerrar sesión" ──────────────────────────── */
 .btn-logout-admin {
   background: #0A0903;
@@ -193,7 +216,6 @@ body, html {
     height: 46px;
     flex-shrink: 0;
   }
-
 
   .menu-toggle {
     justify-content: center;
@@ -246,6 +268,18 @@ body, html {
   .top-bar-center.open {
     display: block;
     animation: slideDown 0.4s ease forwards;
+  }
+
+  .user-name {
+    margin-right: 38px !important;
+    font-size: 14px;
+  }
+
+  /* Botón logout un poco más a la izquierda */
+  .btn-logout {
+    right: 8px !important;
+    width: 28px;
+    height: 28px;
   }
 
   .btn{
@@ -638,5 +672,6 @@ body, html {
   .menu-toggle {
     margin-left: 12px !important;
   }
+
 }
 

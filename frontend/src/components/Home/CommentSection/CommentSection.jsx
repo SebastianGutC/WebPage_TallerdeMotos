@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./CommentSection.css";
 import gsap from "gsap";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../../../context/UseAuth"; 
 
 const STATIC_COMMENTS = [
   {
@@ -39,18 +39,20 @@ const STATIC_COMMENTS = [
 ];
 
 const VISIBLE_CARDS = 3;
-const SCROLL_THRESHOLD = 120;
 
 export default function CommentSection() {
+  const { usuario, isAuthenticated, openLoginModal } = useAuth();
   const [comments, setComments] = useState(STATIC_COMMENTS);
   const [commentText, setCommentText] = useState("");
-  const [userName] = useState("Juan Sebastián Gutiérrez Cuenca");
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
+  const displayName = usuario
+    ? `${usuario.nombre} ${usuario.apellido || ""}`.trim()
+    : null;
+
   const sectionRef = useRef(null);
   const cardRefs = useRef([]);
-  const accumRef = useRef(0);
   const activeIndexRef = useRef(0);
   const isAnimatingRef = useRef(false);
   const commentsLenRef = useRef(comments.length);
@@ -182,51 +184,20 @@ export default function CommentSection() {
     return () => stopAutoplay();
   }, []);
 
-  // Scroll interacción
-  useEffect(() => {
-    const section = sectionRef.current;
-
-    const handleWheel = (e) => {
-      isUserInteracting.current = true;
-
-      const rect = section.getBoundingClientRect();
-      const inView =
-        rect.top < window.innerHeight * 0.9 &&
-        rect.bottom > window.innerHeight * 0.1;
-
-      if (!inView) return;
-
-      accumRef.current += e.deltaY;
-
-      if (accumRef.current > SCROLL_THRESHOLD) {
-        accumRef.current = 0;
-        goNext();
-      } else if (accumRef.current < -SCROLL_THRESHOLD) {
-        accumRef.current = 0;
-
-        if (!isAnimatingRef.current) {
-          const prevIdx =
-            (activeIndexRef.current - 1 + commentsLenRef.current) %
-            commentsLenRef.current;
-          setActiveIndex(prevIdx);
-        }
-      }
-
-      resetInteractionTimeout();
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: true });
-    return () => window.removeEventListener("wheel", handleWheel);
-  }, []);
-
   //  Nuevo comentario
 
   const handleShare = () => {
+    // Si no está logueado, abrir modal de login
+    if (!isAuthenticated) {
+      openLoginModal();
+      return;
+    }
+
     if (!commentText.trim()) return;
 
     const newComment = {
       id: Date.now(),
-      author: userName,
+      author: displayName,
       text: commentText.trim(),
       time: "Ahora mismo",
     };
@@ -234,7 +205,6 @@ export default function CommentSection() {
     setComments((prev) => [newComment, ...prev]);
     setCommentText("");
     setActiveIndex(0);
-
     isUserInteracting.current = true;
     resetInteractionTimeout();
   };
@@ -247,7 +217,13 @@ export default function CommentSection() {
         <span>Añadir un comentario</span>
         <button
           className="btn-add-comment"
-          onClick={() => document.getElementById("comment-textarea").focus()}
+          onClick={() => {
+            if (!isAuthenticated) {
+              openLoginModal();
+              return;
+            }
+            document.getElementById("comment-textarea").focus();
+          }}
         >
           <FontAwesomeIcon icon={faPlus} />
         </button>
@@ -257,26 +233,39 @@ export default function CommentSection() {
 
         {/* Formulario */}
         <div className="comment-form">
-          <p className="comment-form-author">{userName}</p>
 
-          <textarea
-            id="comment-textarea"
-            className="comment-textarea"
-            value={commentText}
-            onChange={(e) => {
-              setCommentText(e.target.value);
-              isUserInteracting.current = true;
-              resetInteractionTimeout();
-            }}
-            placeholder="Añadir un comentario"
-            rows={5}
-          />
+          {isAuthenticated ? (
+            // ── Usuario logueado: muestra nombre y textarea ──
+            <>
+              <p className="comment-form-author">{displayName}</p>
+              <textarea
+                id="comment-textarea"
+                className="comment-textarea"
+                value={commentText}
+                onChange={(e) => {
+                  setCommentText(e.target.value);
+                  isUserInteracting.current = true;
+                  resetInteractionTimeout();
+                }}
+                placeholder="Añadir un comentario"
+                rows={5}
+              />
+              <div className="comment-form-footer">
+                <button className="btn-share" onClick={handleShare}>
+                  Compartir
+                </button>
+              </div>
+            </>
+          ) : (
+            // ── Usuario no logueado: invitación a iniciar sesión ──
+            <div className="comment-login-prompt">
+              <p>¿Quieres dejar un comentario?</p>
+              <button className="btn-share" onClick={openLoginModal}>
+                Inicia sesión
+              </button>
+            </div>
+          )}
 
-          <div className="comment-form-footer">
-            <button className="btn-share" onClick={handleShare}>
-              Compartir
-            </button>
-          </div>
         </div>
 
         {/* Cards */}
@@ -315,7 +304,7 @@ export default function CommentSection() {
                 }}
               />
             ))}
-            <span className="deck-hint">Scroll o Click para avanzar</span>
+            <span className="deck-hint">Click para avanzar</span>
           </div>
         </div>
 

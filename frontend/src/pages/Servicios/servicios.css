@@ -37,6 +37,10 @@ h2{
   cursor: pointer;
 }
 
+#servicios {
+  scroll-margin-top: 100px;
+}
+
 .banner-servicios::after {
   content: "";
   position: absolute;

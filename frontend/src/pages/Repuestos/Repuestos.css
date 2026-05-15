@@ -55,6 +55,10 @@
   transition: all 0.2s ease;
 }
 
+#catalogo-repuestos {
+  scroll-margin-top: 100px;
+}
+
 /* BOTÓN FOCUS */
 .barra-busqueda.focused button {
   border: 1px solid #000;

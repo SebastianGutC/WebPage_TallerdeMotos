@@ -1,6 +1,7 @@
 import React, { useState, useRef, useImperativeHandle, forwardRef } from "react";
 import ReactMarkdown from "react-markdown"; 
 import "./chatBot.css";
+import API from "../../services/Api";
 import { SYSTEM_PROMPT } from "../../assets/js/InfoEmpresa";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -46,61 +47,31 @@ function limpiarSaludo(text, isFirstMessage) {
 
     const userQuestion = input;
     setInput("");
-
     setMessages((prev) => [...prev, { role: "user", text: userQuestion }]);
     setLoading(true);
 
     try {
-      const response = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" +
-          API_KEY,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [
-              { role: "user", parts: [{ text: SYSTEM_PROMPT }] },
-              { role: "user", parts: [{ text: userQuestion }] }
-            ],
-          }),
-        }
-      );
+      const res = await API.post("/chatbot", {
+        question: userQuestion,
+        systemPrompt: SYSTEM_PROMPT,
+      });
 
-      const data = await response.json();
+      let botText = res.data.text;
 
-      if (data.error) {
-        console.warn("Gemini Error:", data.error);
+      const isFirstBotMessage =
+        messages.filter((m) => m.role === "bot").length === 0;
 
-      
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "bot",
-            text:
-              "Lo siento, este servicio no está disponible en este momento. El asistente está saturado o no puede ofrecer una respuesta.",
-          },
-        ]);
-      } else {
-        let botText =
-          data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-          "Lo siento, no pude generar una respuesta.";
+      botText = limpiarSaludo(botText, isFirstBotMessage);
 
-        const isFirstBotMessage =
-          messages.filter((m) => m.role === "bot").length === 0;
+      setMessages((prev) => [...prev, { role: "bot", text: botText }]);
 
-        botText = limpiarSaludo(botText, isFirstBotMessage);
-
-        setMessages((prev) => [...prev, { role: "bot", text: botText }]);
-      }
     } catch (error) {
-      console.warn("Fetch Error:", error);
-
+      console.warn("Error chatbot:", error);
       setMessages((prev) => [
         ...prev,
         {
           role: "bot",
-          text:
-            "Lo siento, este servicio no está disponible en este momento. El asistente está saturado o no puede ofrecer una respuesta.",
+          text: "Lo siento, el asistente no está disponible en este momento.",
         },
       ]);
     }

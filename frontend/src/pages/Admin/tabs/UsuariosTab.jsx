@@ -4,6 +4,7 @@ import {
   getAllUsers, toggleUserStatus, deleteUser, getUserCitas, changeUserRole,
 } from "../../../services/AdminService";
 import { ESTADO_COLORS, ESTADO_LABEL } from "../citasConstants.jsx";
+import Swal from "sweetalert2";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSortDown, faSortUp, faCircleCheck, faCircleXmark, faEye, faEyeSlash, faUserGear, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -53,23 +54,84 @@ const UsuariosTab = () => {
 
   /* ── Eliminar ── */
   const handleDelete = async (id, nombre) => {
-    if (!window.confirm(`¿Eliminar a ${nombre}? Esta acción no se puede deshacer.`)) return;
+
+    const result = await Swal.fire({
+      title: "¿Eliminar usuario?",
+      text: `¿Seguro que deseas eliminar a ${nombre}? Esta acción no se puede deshacer.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
+
       await deleteUser(id);
+
       setUsers(prev => prev.filter(u => u._id !== id));
+
+      await Swal.fire({
+        title: "Usuario eliminado",
+        text: `${nombre} fue eliminado correctamente.`,
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
     } catch {
-      alert("Error al eliminar usuario.");
+
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo eliminar el usuario.",
+        icon: "error",
+        confirmButtonColor: "#dc2626",
+      });
+
     }
   };
 
   /* ── Convertir a técnico ── */
   const handleConvertToTecnico = async (id, nombre) => {
-    if (!window.confirm(`¿Convertir a ${nombre} en técnico? Podrá recibir citas asignadas.`)) return;
+
+    const result = await Swal.fire({
+      title: "¿Convertir a Técnico?",
+      text: `¿Deseas convertir a ${nombre} en técnico?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Sí, convertir",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#FF8200",
+      cancelButtonColor: "#8e8e8e",
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       await changeUserRole(id, "TECNICO");
+
       setUsers(prev => prev.filter(u => u._id !== id));
+
+      Swal.fire({
+        title: "Convertido",
+        text: `${nombre} ahora es técnico.`,
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
     } catch {
-      alert("Error al cambiar rol.");
+
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo cambiar el rol.",
+        icon: "error",
+      });
+
     }
   };
 
@@ -218,25 +280,32 @@ const UsuariosTab = () => {
                       <td className="actions-cell">
                         <div className="actions-wrapper">
                           <button className="btn-expand" onClick={() => handleExpandCitas(u._id)}>
-                            <FontAwesomeIcon
-                              icon={expandedCitas === u._id ? faEyeSlash : faEye}
-                              className="btn-icon-mobile"
-                            />
+                            <FontAwesomeIcon icon={expandedCitas === u._id ? faEyeSlash : faEye} className="btn-icon-mobile" />
                             <span className="btn-text">
                               {expandedCitas === u._id ? "Ocultar" : "Ver Citas"}
-                            </span> 
+                            </span>
                           </button>
-                          <button className="btn-convert">
+
+                          <button
+                            className="btn-convert"
+                            onClick={() => handleConvertToTecnico(u._id, u.nombre)} // ← agregado
+                          >
                             <FontAwesomeIcon icon={faUserGear} className="btn-icon-mobile" />
                             <span className="btn-text">Técnico</span>
                           </button>
 
-                          <button className="btn-edit">
+                          <button
+                            className="btn-edit"
+                            onClick={() => handleStartEdit(u)} // ← agregado
+                          >
                             <FontAwesomeIcon icon={faPen} className="btn-icon-mobile" />
                             <span className="btn-text">Editar</span>
                           </button>
 
-                          <button className="btn-delete">
+                          <button
+                            className="btn-delete"
+                            onClick={() => handleDelete(u._id, u.nombre)} // ← agregado
+                          >
                             <FontAwesomeIcon icon={faTrash} className="btn-icon-mobile" />
                             <span className="btn-text">Eliminar</span>
                           </button>

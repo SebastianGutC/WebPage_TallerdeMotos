@@ -1,8 +1,21 @@
 import React from "react";
 import "./HeroSection.css";
 import heroImage from "../../../assets/Homeimg/herosec.png";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/UseAuth";
 
 const HeroSection = () => {
+  const { isAuthenticated, openLoginModal } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAgendar = () => {
+    if (isAuthenticated) {
+      navigate("/servicios#servicios"); // ← agrega el hash
+    } else {
+      openLoginModal();
+    }
+  };
+
   return (
     <section
       className="herosec"
@@ -19,7 +32,9 @@ const HeroSection = () => {
             servicio confiable, rápido y con la más alta calidad para mantener
             tu moto siempre lista para rodar.
           </p>
-          <button className="btn-agendar">Agendar cita</button>
+          <button className="btn-agendar" onClick={handleAgendar}>
+            Agendar cita
+          </button>
         </div>
       </div>
     </section>

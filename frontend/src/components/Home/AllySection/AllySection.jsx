@@ -1,7 +1,19 @@
 import "./AllySection.css";
 import allyImage from "../../../assets/Homeimg/ally_image.jpg";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/UseAuth";
 
 const AllySection = () => {
+  const { isAuthenticated, openLoginModal } = useAuth();
+  const navigate = useNavigate();
+
+  const handleIngresar = () => {
+    if (isAuthenticated) {
+      navigate("/servicios");
+    } else {
+      openLoginModal();
+    }
+  };
 
   const reasons = [
     { icon: "fi-wrench", title: "Mantenimiento", desc: "Servicio técnico profesional y confiable." },
@@ -12,9 +24,7 @@ const AllySection = () => {
 
   return (
     <section className="ally-section grid-container">
-
       <div className="ally-card">
-
         <div className="ally-image">
           <div className="ally-image-inner">
             <img src={allyImage} alt="mantenimiento" />
@@ -42,9 +52,10 @@ const AllySection = () => {
 
           <div className="cta-container">
             <p>¿Quiéres conocer el estado de tu reparación?</p>
-            <button className="cta-button">Ingresar</button>
+            <button className="cta-button" onClick={handleIngresar}>
+              Ingresar
+            </button>
           </div>
-
         </div>
       </div>
     </section>

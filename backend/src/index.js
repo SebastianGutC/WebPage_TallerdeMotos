@@ -17,6 +17,7 @@ import citasRoutes from './routes/citasRoutes.js';
 import motocicletasRoutes from './routes/motocicletasRoutes.js';
 import userRoutes from './routes/userRoutes.js'; 
 import facturasRoutes from './routes/facturasRoutes.js';
+import chatbotRouter from "./routes/chatbot.route.js";
 
 const backend = express();
 
@@ -45,8 +46,8 @@ backend.use('/api/servicios', serviciosRoutes);
 backend.use('/api/citas', citasRoutes);
 backend.use('/api/motocicletas', motocicletasRoutes);
 backend.use('/api/usuarios', userRoutes); 
+backend.use("/api/chatbot", chatbotRouter);
 
-// 🔥 AGREGADO: facturas routes
 backend.use('/api/facturas', facturasRoutes);
 
 backend.get('/api/health', (req, res) => {

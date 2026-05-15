@@ -14,7 +14,21 @@ const Nosotros = () => {
   };
 
   const scrollToDudas = () => {
-    dudasRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const element = dudasRef.current;
+
+    if (!element) return;
+
+    const offset = 80; // ajusta según tu navbar
+
+    const top =
+      element.getBoundingClientRect().top +
+      window.pageYOffset -
+      offset;
+
+    window.scrollTo({
+      top,
+      behavior: "smooth",
+    });
   };
 
   return (

@@ -5,11 +5,13 @@ import CardPasos from "../../components/CardPasos/CardPasos";
 import "./servicios.css";
 import { getServicios } from "../../services/ServiciosService";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "../../context/UseAuth";
 
 function Servicios() {
   const [servicios, setServicios] = useState([]);
   const { usuario } = useAuth();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchServicios = async () => {
@@ -22,6 +24,15 @@ function Servicios() {
     };
     fetchServicios();
   }, []);
+
+  useEffect(() => {
+    if (location.hash === "#servicios") {
+      setTimeout(() => {
+        document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, [location]);
+
   console.log("usuario context:", usuario);
   console.log("servicios:", servicios);
   return (
