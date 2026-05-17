@@ -1,5 +1,4 @@
 import CardServicio from "../../components/CardServicio/CardServicio";
-import serviciosEnCurso from "../../assets/js/DataServiciosEnCurso";
 import CardServicioEnCurso from "../../components/CardServicioEnCurso/cardServicioEnCurso";
 import CardPasos from "../../components/CardPasos/CardPasos";
 import "./servicios.css";
@@ -7,9 +6,12 @@ import { getServicios } from "../../services/ServiciosService";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../../context/UseAuth";
+import {getCitasByUsuario} from "../../services/CitasService";
 
 function Servicios() {
   const [servicios, setServicios] = useState([]);
+  const [citasUsuario, setCitasUsuario] = useState([]);
+
   const { usuario } = useAuth();
   const location = useLocation();
 
@@ -22,13 +24,51 @@ function Servicios() {
         console.error("Error fetching servicios:", error);
       }
     };
+
     fetchServicios();
   }, []);
+
+  // Obtener citas del usuario
+useEffect(() => {
+  const fetchCitasUsuario = async () => {
+    try {
+      const res = await getCitasByUsuario(usuario.id);
+
+      const prioridadEstados = {
+        lista: 1,
+        en_proceso: 2,
+        pendiente: 3,
+        entregada: 4,
+        cancelada: 5,
+        no_asistio: 6
+      };
+
+      const citasOrdenadas = res.data.sort((a, b) => {
+        return (
+          (prioridadEstados[a.estado] || 999) -
+          (prioridadEstados[b.estado] || 999)
+        );
+      });
+
+      setCitasUsuario(citasOrdenadas);
+
+    } catch (error) {
+      console.error("Error fetching citas del usuario:", error);
+    }
+  };
+
+  if (usuario?.id) {
+    fetchCitasUsuario();
+  }
+
+}, [usuario]);
 
   useEffect(() => {
     if (location.hash === "#servicios") {
       setTimeout(() => {
-        document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" });
+        document
+          .getElementById("servicios")
+          ?.scrollIntoView({ behavior: "smooth" });
       }, 100);
     }
   }, [location]);
@@ -45,11 +85,12 @@ function Servicios() {
           ?.scrollIntoView({ behavior: "smooth" });
       }, 100);
     }
-    
   }, [location, usuario]);
 
   console.log("usuario context:", usuario);
   console.log("servicios:", servicios);
+  console.log("citas usuario:", citasUsuario);
+
   return (
     <>
       {/* Banner principal */}
@@ -71,7 +112,7 @@ function Servicios() {
       </section>
 
       {/* Servicios en curso */}
-      {usuario && usuario.rol ==="USUARIO" && (
+      {usuario && usuario.rol === "USUARIO" && (
         <section id="enCurso" className="grid-container servicios-en-curso">
           <div className="grid-x grid-padding-x align-center text-center">
             <div className="cell small-12 medium-10 large-8">
@@ -86,20 +127,24 @@ function Servicios() {
           </div>
 
           <div className="grid-x grid-margin-x grid-margin-y align-center">
-            {serviciosEnCurso.map((servicioEnCurso) => (
-              <div
-                className="cell small-12 medium-6 large-4"
-                key={servicioEnCurso.id}
-              >
-                <CardServicioEnCurso servicio={servicioEnCurso} />
-              </div>
-            ))}
+            {citasUsuario.length > 0 ? (
+              citasUsuario.map((cita) => (
+                <div
+                  className="cell small-12 medium-6 large-4"
+                  key={cita._id}
+                >
+                  <CardServicioEnCurso servicio={cita} />
+                </div>
+              ))
+            ) : (
+              <p>No tienes servicios registrados.</p>
+            )}
           </div>
         </section>
       )}
 
       <div className="contenedor-pasos">
-        <CardPasos></CardPasos>
+        <CardPasos />
       </div>
 
       {/* Catálogo de servicios */}
@@ -109,6 +154,7 @@ function Servicios() {
             <h2 className="text-primary titulo-catalogo">
               Catálogo de Servicios
             </h2>
+
             <p className="lead subtitulo-seccion text-left">
               En <strong className="texto-rojo">Motorfix</strong> ofrecemos los
               siguientes servicios. Los precios mostrados corresponden solo al

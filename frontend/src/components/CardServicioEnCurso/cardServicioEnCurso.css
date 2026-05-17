@@ -48,17 +48,27 @@
 }
 
 
-.estado.en-proceso { 
+.estado.en_proceso { 
     border-top: green 8px solid !important;
 }
 
-.estado.finalizado { 
+.estado.entregada { 
   border-top: #0a0903 8px solid !important; 
   color: #fff !important; }
 
 
-  .estado.pendiente-de-entrega{
+  .estado.pendiente{
   border-top: 8px solid #ff0000 !important; 
+  color: #fff !important;
+  }
+
+  .estado.lista{
+  border-top: 8px solid #FFC100 !important; 
+  color: #fff !important;
+  }
+
+  .estado.no_asistio, .estado.cancelada{
+  border-top: 8px solid #656564 !important; 
   color: #fff !important;
   }
 
