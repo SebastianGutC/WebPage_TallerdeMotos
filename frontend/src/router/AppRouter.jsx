@@ -6,6 +6,8 @@ import Repuestos from "../pages/Repuestos/Repuestos";
 import API from "../pages/Api/Dudas";
 import AdminPage from "../pages/Admin/AdminPage";
 import ProtectedAdminRoute from "../components/common/Auth/ProtectedAdminRoute";
+import TecnicoPage from "../pages/Tecnico/TecnicoPage";
+import ProtectedTecnicoRoute from "../components/common/Auth/ProtectedTecnicoRoute";
 
 const AppRouter = () => {
   return (
@@ -24,6 +26,16 @@ const AppRouter = () => {
           </ProtectedAdminRoute>
         }
       />
+      {/* Ruta protegida: solo accesible si rol === "TECNICO" */}
+      <Route
+        path="/tecnico"
+        element={
+          <ProtectedTecnicoRoute>
+            <TecnicoPage />
+          </ProtectedTecnicoRoute>
+        }
+      />
+
     </Routes>
   );
 };

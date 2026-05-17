@@ -3,7 +3,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Card from "./Card";
 import "./CardStack.css";
-
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/UseAuth";
 import { faUsers, faMedal, faHandshakeAngle } from "@fortawesome/free-solid-svg-icons";
 import img1 from "../../../assets/Nosotrosimg/moteros-comunidad.jpg";
 import img2 from "../../../assets/Nosotrosimg/motocalidad.jpg";
@@ -54,6 +55,43 @@ export default function CardStack() {
   const containerRef = useRef(null);
   const innerRef     = useRef(null);
   const cardRefs     = useRef([]);
+  const navigate = useNavigate();
+  const { isAuthenticated, openLoginModal } = useAuth();
+
+  const handleCardAction = (cta) => {
+
+    // AGENDAR CITA
+    if (cta === "Agendar Cita") {
+
+      if (isAuthenticated) {
+        navigate("/servicios#servicios");
+      } else {
+        openLoginModal();
+      }
+
+      return;
+    }
+
+    // CONOCER SERVICIOS
+    if (cta === "Conocer Servicios") {
+
+      if (isAuthenticated) {
+        navigate("/servicios#servicios");
+      } else {
+        openLoginModal();
+      }
+
+      return;
+    }
+
+    // VISÍTANOS
+    if (cta === "Visítanos") {
+      window.open(
+        "https://www.instagram.com/motorfixsas/",
+        "_blank"
+      );
+    }
+  };
 
   useLayoutEffect(() => {
   const ctx = gsap.context(() => {
@@ -140,7 +178,10 @@ export default function CardStack() {
             key={card.id}
             data={card}
             index={i}
-            ref={(el) => { if (el) cardRefs.current[i] = el; }}
+            onAction={() => handleCardAction(card.cta)}
+            ref={(el) => {
+              if (el) cardRefs.current[i] = el;
+            }}
           />
         ))}
       </div>

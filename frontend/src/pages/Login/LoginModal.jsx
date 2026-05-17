@@ -45,32 +45,26 @@ const LoginModal = ({ isOpen, onClose, openRegisterModal }) => {
         token: res.data.token,
       });
 
-      if(res.data.user.rol === "USUARIO") {
-        navigate('/servicios');
-      }
-
       const user = res.data.user;
       const nombreDisplay = user?.nombre || user?.email;
 
-      if (user?.rol === "ADMIN") {
-        // Admin: saludo diferente, redirige al panel sin esperar
-        setSuccess(`¡Bienvenido de nuevo, ${nombreDisplay}! `);
-        setTimeout(() => {
-          setFormData({ email: '', contraseña: '' });
-          setSuccess('');
-          onClose();
-          navigate("/admin");
-        }, 1500);
-      } else {
-        // Usuario normal: saludo estándar, solo cierra el modal
-        setSuccess(`¡Bienvenido, ${nombreDisplay}!`);
-        setTimeout(() => {
-          setFormData({ email: '', contraseña: '' });
-          setSuccess('');
-          onClose();
-          navigate("/servicios#servicios")
-        }, 2000);
-      }
+      // ── Destino según rol ──────────────────────────────────
+      const RUTAS_POR_ROL = {
+        ADMIN:    "/admin",
+        TECNICO:  "/tecnico",   // ← nuevo
+        USUARIO:  "/servicios#servicios",
+      };
+      const destino = RUTAS_POR_ROL[user?.rol] ?? "/";
+      // ───────────────────────────────────────────────────────
+
+      setSuccess(`¡Bienvenido, ${nombreDisplay}!`);
+
+      setTimeout(() => {
+        setFormData({ email: '', contraseña: '' });
+        setSuccess('');
+        onClose();
+        navigate(destino);   // ← único navigate, aplica para todos
+      }, 1500);
 
     } catch (error) {
       setError(error.response?.data?.message || 'Error al iniciar sesión');

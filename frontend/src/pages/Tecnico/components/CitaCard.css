@@ -1,0 +1,471 @@
+
+/* ── CitaCard.css — diseño original del panel técnico
+
+/* ── Card shell ──────────────────────────────────────────── */
+.cita-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.cita-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e1;
+}
+
+.cita-card.cita-cancelled {
+  border-left: 4px solid #ef4444;
+  background: #fff8f8;
+  opacity: 0.85;
+}
+
+.cita-card.cita-completed {
+  border-left: 4px solid #22c55e;
+  background: #f0fdf4;
+}
+
+.cita-card.cita-available {
+  border-left: 4px solid #3b82f6;
+  background: #f0f7ff;
+}
+
+.cita-card.cita-noshow {
+  border-left: 4px solid #94a3b8;
+  background: #f8fafc;
+  opacity: 0.7;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.cita-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.cita-card-header:hover {
+  background: #f8fafc;
+}
+
+.cita-card-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.moto-icon-wrapper {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cita-card.cita-available  .moto-icon-wrapper { background: #eff6ff; border-color: #bfdbfe; }
+.cita-card.cita-cancelled  .moto-icon-wrapper { background: #fef2f2; border-color: #fecaca; }
+.cita-card.cita-completed  .moto-icon-wrapper { background: #f0fdf4; border-color: #bbf7d0; }
+.cita-card.cita-noshow     .moto-icon-wrapper { background: #f1f5f9; border-color: #e2e8f0; }
+
+.moto-icon {
+  font-size: 1.1rem;
+  color: #f97316;
+}
+.cita-card.cita-available .moto-icon  { color: #3b82f6; }
+.cita-card.cita-cancelled .moto-icon  { color: #ef4444; }
+.cita-card.cita-completed .moto-icon  { color: #22c55e; }
+.cita-card.cita-noshow    .moto-icon  { color: #94a3b8; }
+
+.cita-main-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.moto-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.disponible-label {
+  color: #3b82f6;
+  font-style: italic;
+}
+
+.moto-placa {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #ea580c;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 4px;
+  padding: 2px 7px;
+  flex-shrink: 0;
+  font-family: 'Courier New', monospace;
+}
+
+.cliente-name {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+/* ── Right side ──────────────────────────────────────────── */
+.cita-card-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.cita-time {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+.cita-time svg {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.expand-btn {
+  color: #94a3b8;
+  font-size: 0.8rem;
+  padding: 4px 6px;
+}
+
+/* ── Status badges ───────────────────────────────────────── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.status-available  { color: #1d4ed8; background: #dbeafe; }
+.status-pending    { color: #92400e; background: #fef3c7; }
+.status-inprogress { color: #c2410c; background: #ffedd5; }
+.status-ready      { color: #6d28d9; background: #ede9fe; }
+.status-done       { color: #15803d; background: #dcfce7; }
+.status-cancelled  { color: #b91c1c; background: #fee2e2; }
+.status-noshow     { color: #475569; background: #f1f5f9; }
+
+/* ── Expanded body ───────────────────────────────────────── */
+.cita-card-body {
+  border-top: 1px solid #f1f5f9;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Banners ─────────────────────────────────────────────── */
+.available-banner,
+.cancelled-banner,
+.completed-banner,
+.noshow-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.available-banner  { background: #dbeafe; color: #1e40af; }
+.cancelled-banner  { background: #fee2e2; color: #991b1b; }
+.completed-banner  { background: #dcfce7; color: #166534; }
+.noshow-banner     { background: #f1f5f9; color: #475569; }
+
+/* ── Fecha row ───────────────────────────────────────────── */
+.cita-fecha-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+.cita-fecha-row svg { color: #f97316; }
+
+/* ── Sections ────────────────────────────────────────────── */
+.detail-section {
+  background: #e7e7e77e;
+  border: 1px solid #cfd3d9;
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.section-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #4d545fab;
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.section-title svg { color: #f97316; }
+
+/* ── Moto grid ───────────────────────────────────────────── */
+.moto-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.detail-label {
+  font-size: 0.67rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.detail-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.placa-code {
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.1em;
+  color: #ea580c !important;
+}
+
+/* ── Notes ───────────────────────────────────────────────── */
+.cita-notes {
+  font-size: 0.875rem;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Items list ──────────────────────────────────────────── */
+.items-list { margin-bottom: 8px; }
+
+.empty-list {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  font-style: italic;
+  margin: 0 0 6px;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  margin-bottom: 5px;
+  font-size: 0.875rem;
+}
+
+.item-name  { flex: 1; color: #1e293b; font-weight: 500; }
+.item-qty   {
+  font-size: 0.75rem;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.item-price {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #15803d;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: 5px;
+  opacity: 0.5;
+  transition: opacity 0.15s, background 0.15s;
+  line-height: 1;
+  font-size: 0.8rem;
+}
+.remove-btn:hover { opacity: 1; background: #fee2e2; }
+
+/* ── Add row ─────────────────────────────────────────────── */
+.add-item-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.item-select {
+  flex: 1;
+  min-width: 150px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 0.85rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.item-select:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.15);
+}
+
+.qty-input {
+  width: 64px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+  border-radius: 6px;
+  padding: 7px 8px;
+  font-size: 0.85rem;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.qty-input:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.15);
+}
+
+.add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f97316;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.add-btn:hover:not(:disabled)  { background: #ea580c; }
+.add-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ── Actions ─────────────────────────────────────────────── */
+.cita-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.action-btn:active   { transform: scale(0.98); }
+.action-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn-inprogress {
+  background: #ffedd5;
+  color: #c2410c;
+}
+.btn-inprogress:hover:not(:disabled) { background: #fed7aa; }
+
+.btn-ready {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+.btn-ready:hover:not(:disabled) { background: #ddd6fe; }
+
+.btn-complete {
+  background: #dcfce7;
+  color: #166534;
+  margin-left: auto;
+}
+.btn-complete:hover:not(:disabled) { background: #bbf7d0; }
+
+.btn-noshow {
+  background: #f1f5f9;
+  color: #64748b;
+}
+.btn-noshow:hover:not(:disabled) { background: #e2e8f0; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .cita-card-header  { flex-wrap: wrap; }
+  .cita-card-right   { width: 100%; justify-content: flex-end; }
+  .moto-details-grid { grid-template-columns: 1fr 1fr; }
+  .add-item-row      { flex-direction: column; }
+  .add-btn           { width: 100%; justify-content: center; }
+  .cita-actions      { flex-direction: column; }
+  .btn-complete      { margin-left: 0; }
+}

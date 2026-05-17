@@ -4,7 +4,7 @@ import "./Card.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
-const Card = forwardRef(function Card({ data, index }, ref) {
+const Card = forwardRef(function Card({ data, index, onAction }, ref) {
   const contentRef = useRef(null);
   const overlayRef = useRef(null);
   const rootRef = useRef(null);
@@ -66,6 +66,7 @@ const Card = forwardRef(function Card({ data, index }, ref) {
         <div className="card-item card-button-wrapper">
           <button
             className="card-button"
+            onClick={onAction}
             style={{ background: data.accentColor || "#3045FF" }}
           >
             {data.cta}

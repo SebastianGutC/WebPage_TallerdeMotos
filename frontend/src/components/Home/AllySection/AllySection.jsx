@@ -9,7 +9,7 @@ const AllySection = () => {
 
   const handleIngresar = () => {
     if (isAuthenticated) {
-      navigate("/servicios");
+      navigate("/servicios#enCurso");
     } else {
       openLoginModal();
     }

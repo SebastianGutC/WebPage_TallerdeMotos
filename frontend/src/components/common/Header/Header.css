@@ -180,7 +180,7 @@ body, html {
 }
 
 /* ─── Admin: botón "Cerrar sesión" ──────────────────────────── */
-.btn-logout-admin {
+.btn-logout-adtec {
   background: #0A0903;
   color: #ffffff;
   border: 2px solid #ffffff;
@@ -193,11 +193,23 @@ body, html {
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.btn-logout-admin:hover {
+.btn-logout-adtec:hover {
   transform: translateY(-2px);
   box-shadow: 3px 2px 7px rgba(0, 0, 0, 0.4);
 }
 
+/* ─── Tecnico: botón "tecnico" ─────────────────────────── */
+.btn-tecnico {
+  background-color: #ffffff;
+  color: #0A0903;
+  border: 2px solid #0A0903;
+  font-weight: 800;
+}
+
+.btn-tecnico:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 2px 7px #0A0903;
+}
 
 /* --- Responsive --- Dispositivos moviles */
 @media (max-width: 680px) {
@@ -344,8 +356,17 @@ body, html {
   }
 
   .menu a:hover {
-    background-color: rgba(255, 255, 255, 0.25);
-    color: #FFC100;
+    background: #ffffff;
+    color: #0A0903;
+    border-radius: 999px;
+    transform: scale(1.03);
+    box-shadow:
+      0 4px 14px rgba(255,255,255,0.25);
+    transition: 
+      background 0.25s ease,
+      color 0.25s ease,
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
   }
 
   @keyframes slideDown {
@@ -395,7 +416,7 @@ body, html {
   .svg-icon {
     height: 25px;
     width: 25px;
-    fill: #fff;
+    fill: #000000;
     transform: scale(1.5); 
   }
 
@@ -442,8 +463,17 @@ body, html {
   }
 
   .menu a:hover {
-    background-color: rgba(255, 255, 255, 0.25);
-    color: #FFC100;
+    background: #ffffff;
+    color: #0A0903;
+    border-radius: 999px;
+    transform: scale(1.03);
+    box-shadow:
+      0 4px 14px rgba(255,255,255,0.25);
+    transition: 
+      background 0.25s ease,
+      color 0.25s ease,
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
   }
 
   

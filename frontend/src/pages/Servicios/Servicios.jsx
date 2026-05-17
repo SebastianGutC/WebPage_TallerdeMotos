@@ -33,6 +33,21 @@ function Servicios() {
     }
   }, [location]);
 
+  useEffect(() => {
+    if (
+      location.hash === "#enCurso" &&
+      usuario &&
+      usuario.rol === "USUARIO"
+    ) {
+      setTimeout(() => {
+        document
+          .getElementById("enCurso")
+          ?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+    
+  }, [location, usuario]);
+
   console.log("usuario context:", usuario);
   console.log("servicios:", servicios);
   return (
@@ -57,7 +72,7 @@ function Servicios() {
 
       {/* Servicios en curso */}
       {usuario && usuario.rol ==="USUARIO" && (
-        <section className="grid-container servicios-en-curso">
+        <section id="enCurso" className="grid-container servicios-en-curso">
           <div className="grid-x grid-padding-x align-center text-center">
             <div className="cell small-12 medium-10 large-8">
               <h2 className="titulo-seccion">

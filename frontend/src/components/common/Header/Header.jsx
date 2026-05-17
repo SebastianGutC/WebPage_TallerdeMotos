@@ -8,7 +8,7 @@ import CartMenu from "../../Repuestos/CartMenu/CartMenu";
 import { logoutUser } from "../../../services/AuthService";
 import { useAuth } from "../../../context/UseAuth"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightFromBracket, faUser, faUserPlus, faUserShield, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket, faUser, faUserPlus, faUserShield, faXmark, faUserGear } from "@fortawesome/free-solid-svg-icons";
 
 
 const Header = () => {
@@ -71,7 +71,7 @@ const Header = () => {
             </button>
 
             {/* Botón cerrar sesión */}
-            <button className="btn btn-logout-admin" onClick={handleLogout} title="Cerrar sesión">
+            <button className="btn btn-logout-adtec" onClick={handleLogout} title="Cerrar sesión">
               <FontAwesomeIcon icon={faArrowRightFromBracket} className="icon-mobile" />
               <span className="btn-text">Cerrar sesión</span>
             </button>
@@ -84,6 +84,27 @@ const Header = () => {
             <span className="user-name">¡ Hola, {usuario.nombre} !</span>
             <button className="btn-logout" onClick={handleLogout}>
               <FontAwesomeIcon icon={faXmark} />
+            </button>
+          </div>
+        )}
+
+        {usuario && usuario.rol === "TECNICO" && (
+          <div className="user-section">
+
+            {/* Botón que lleva al panel de tecnico */}
+            <button
+              className="btn btn-tecnico"
+              onClick={() => navigate("/tecnico")}
+              title="Revisar mis citas"
+            >
+              <FontAwesomeIcon icon={faUserGear} className="icon-mobile" />
+              <span className="btn-text">Técnico</span>
+            </button>
+
+            {/* Botón cerrar sesión */}
+            <button className="btn btn-logout-adtec" onClick={handleLogout} title="Cerrar sesión">
+              <FontAwesomeIcon icon={faArrowRightFromBracket} className="icon-mobile" />
+              <span className="btn-text">Cerrar sesión</span>
             </button>
           </div>
         )}
