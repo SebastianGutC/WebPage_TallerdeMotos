@@ -49,7 +49,7 @@
 
 
 .estado.en_proceso { 
-    border-top: green 8px solid !important;
+    border-top: #FFC100  8px solid !important;
 }
 
 .estado.entregada { 
@@ -63,7 +63,7 @@
   }
 
   .estado.lista{
-  border-top: 8px solid #FFC100 !important; 
+  border-top: green 8px solid !important; 
   color: #fff !important;
   }
 

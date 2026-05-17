@@ -92,7 +92,8 @@ const CitaSchema = new mongoose.Schema(
       "lista",
       "entregada",
       "cancelada",
-      "no_asistio"
+      "no_asistio",
+      "expirada"
     ],
     default: "disponible"
   }

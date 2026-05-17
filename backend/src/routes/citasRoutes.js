@@ -61,7 +61,7 @@ router.put("/:id/agendar", agendarCita)
 
 // ADMIN
 router.put("/:id/asignar-tecnico", isAdmin, asignarTecnico);
-router.put("/:id/estado", isAdmin, cambiarEstadoCita);
+router.put("/:id/estado", isAdminOrTecnico, cambiarEstadoCita);
 
 // SERVICIOS
 router.post("/:id/servicios", isAdminOrTecnico, addServicioToCita);
@@ -70,5 +70,7 @@ router.delete("/:id/servicios/:index", isAdminOrTecnico, removeServicioFromCita)
 // PRODUCTOS
 router.post("/:id/productos", isAdminOrTecnico, addProductoToCita);
 router.delete("/:id/productos/:index", isAdminOrTecnico, removeProductoFromCita);
+
+
 
 export default router;

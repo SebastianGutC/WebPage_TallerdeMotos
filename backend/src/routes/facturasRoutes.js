@@ -16,4 +16,6 @@ router.get("/usuario/:usuarioId", validateToken, getFacturasByUsuario);
 
 router.get("/", validateToken, isAdmin, getFacturas);
 
+
+
 export default router;

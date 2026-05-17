@@ -6,7 +6,7 @@ export const getCitasAsignadas = ()           => API.get("/citas/tecnico/asignad
 export const getDetalleCita    = (id)         => API.get(`/citas/tecnico/detalle/${id}`);
 
 // FIX: el controller lee req.body.estado, NO nuevoEstado
-export const cambiarEstadoCita = (id, estado) => API.put(`/citas/${id}/cambiar-estado`, { estado });
+export const cambiarEstadoCita = (id, estado) => API.put(`/citas/${id}/estado`, { estado });
 
 // ─── SERVICIOS EN CITA ────────────────────────────────────────────────────────
 export const agregarServicio  = (citaId, servicioId)              => API.post(`/citas/${citaId}/servicios`, { servicioId });

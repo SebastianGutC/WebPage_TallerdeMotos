@@ -16,7 +16,7 @@ function CardServicioEnCurso({ servicio }) {
     lista: "Tu moto ya está lista para ser recogida.",
     entregada: "El servicio fue entregado exitosamente.",
     cancelada: "La cita fue cancelada.",
-    no_asistio: "No asististe a la cita programada."
+    no_asistio: "No asististe a la cita programada.",
   };
 
   const estadosFrontend = {
@@ -25,7 +25,7 @@ function CardServicioEnCurso({ servicio }) {
     lista: "Lista",
     entregada: "Entregada",
     cancelada: "Cancelada",
-    no_asistio: "No asistió"
+    no_asistio: "No asistió",
   };
 
   useEffect(() => {
@@ -54,16 +54,13 @@ function CardServicioEnCurso({ servicio }) {
         aria-labelledby={`svc-${servicio._id}-title`}
       >
         <header className="card-header-curso">
-          <h4
-            id={`svc-${servicio._id}-title`}
-            className="cliente-nombre"
-          >
-            {servicio.placaMoto}
+          <h4 id={`svc-${servicio._id}-title`} className="cliente-nombre">
+            {servicio.motocicletaId
+              ? `${servicio.motocicletaId.marca} ${servicio.motocicletaId.nombre}`
+              : servicio.placaMoto}
           </h4>
 
-          <span>
-            {estadosFrontend[servicio.estado] || servicio.estado}
-          </span>
+          <span>{estadosFrontend[servicio.estado] || servicio.estado}</span>
         </header>
 
         <div className="card-body-curso">
@@ -84,9 +81,7 @@ function CardServicioEnCurso({ servicio }) {
             <strong>Fecha ingreso:</strong>{" "}
             <span className="detalle">
               {servicio.fechaIngreso
-                ? new Date(
-                    servicio.fechaIngreso
-                  ).toLocaleDateString()
+                ? new Date(servicio.fechaIngreso).toLocaleDateString()
                 : "No registrada"}
             </span>
           </p>
@@ -95,18 +90,14 @@ function CardServicioEnCurso({ servicio }) {
             <strong>Fecha entrega:</strong>{" "}
             <span className="detalle">
               {servicio.fechaEntrega
-                ? new Date(
-                    servicio.fechaEntrega
-                  ).toLocaleDateString()
+                ? new Date(servicio.fechaEntrega).toLocaleDateString()
                 : "Pendiente"}
             </span>
           </p>
 
           <p className="valor-pagar">
             Valor a pagar:{" "}
-            <strong className="valor-total">
-              ${total.toLocaleString()}
-            </strong>
+            <strong className="valor-total">${total.toLocaleString()}</strong>
           </p>
 
           <div className="acciones-card">
@@ -115,13 +106,10 @@ function CardServicioEnCurso({ servicio }) {
                 <button className="btn-ver" onClick={abrirModal}>
                   Ver más detalles
                 </button>
-              )
-              }
+              )}
 
             {servicio.estado == "lista" && (
-              <button className="btn-pagar">
-                Pagar
-              </button>
+              <button className="btn-pagar">Pagar</button>
             )}
           </div>
         </div>
@@ -135,10 +123,7 @@ function CardServicioEnCurso({ servicio }) {
           aria-labelledby={`modal-${servicio._id}-title`}
           onClick={cerrarModal}
         >
-          <div
-            className="modal-detalles"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="modal-detalles" onClick={(e) => e.stopPropagation()}>
             <button
               className="cerrar-modal"
               aria-label="Cerrar detalles"
@@ -147,18 +132,13 @@ function CardServicioEnCurso({ servicio }) {
               ✕
             </button>
 
-            <h3
-              id={`modal-${servicio._id}-title`}
-              className="modal-titulo"
-            >
+            <h3 id={`modal-${servicio._id}-title`} className="modal-titulo">
               Detalles del servicio
             </h3>
 
             {/* Tabla productos */}
             <section className="modal-seccion">
-              <h5 className="subtitulo">
-                Productos usados
-              </h5>
+              <h5 className="subtitulo">Productos usados</h5>
 
               <div className="tabla-wrap">
                 <table className="tabla-repuestos">
@@ -173,55 +153,40 @@ function CardServicioEnCurso({ servicio }) {
 
                   <tbody>
                     {factura.productos?.length > 0 ? (
-                      factura.productos.map(
-                        (producto, i) => (
-                          <tr key={i}>
-                            <td className="text-center">
-                              {producto.nombre}
-                            </td>
+                      factura.productos.map((producto, i) => (
+                        <tr key={i}>
+                          <td className="text-center">{producto.nombre}</td>
 
-                            <td className="text-center">
-                              {producto.cantidad}
-                            </td>
+                          <td className="text-center">{producto.cantidad}</td>
 
-                            <td className="text-center">
-                              $
-                              {producto.costo.toLocaleString()}
-                            </td>
+                          <td className="text-center">
+                            ${producto.costo.toLocaleString()}
+                          </td>
 
-                            <td className="text-center">
-                              $
-                              {(
-                                producto.costo *
-                                producto.cantidad
-                              ).toLocaleString()}
-                            </td>
-                          </tr>
-                        )
-                      )
+                          <td className="text-center">
+                            $
+                            {(
+                              producto.costo * producto.cantidad
+                            ).toLocaleString()}
+                          </td>
+                        </tr>
+                      ))
                     ) : (
                       <tr>
-                        <td
-                          colSpan="4"
-                          className="text-center"
-                        >
+                        <td colSpan="4" className="text-center">
                           No se usaron productos
                         </td>
                       </tr>
                     )}
 
                     <tr className="fila-total">
-                      <td
-                        colSpan="3"
-                        className="text-right"
-                      >
+                      <td colSpan="3" className="text-right">
                         <strong>Total Productos</strong>
                       </td>
 
                       <td className="text-center">
                         <strong>
-                          $
-                          {factura.totalProductos.toLocaleString()}
+                          ${factura.totalProductos.toLocaleString()}
                         </strong>
                       </td>
                     </tr>
@@ -232,42 +197,31 @@ function CardServicioEnCurso({ servicio }) {
 
             {/* Tabla servicios */}
             <section className="modal-seccion">
-              <h5 className="subtitulo">
-                Resumen del servicio
-              </h5>
+              <h5 className="subtitulo">Resumen del servicio</h5>
 
               <div className="tabla-wrap">
                 <table className="tabla-servicio">
                   <tbody>
                     <tr>
-                      <td className="label">
-                        Servicios
-                      </td>
+                      <td className="label">Servicios</td>
 
                       <td className="valor">
                         {factura.servicios?.length > 0
-                          ? factura.servicios
-                              .map((s) => s.nombre)
-                              .join(", ")
+                          ? factura.servicios.map((s) => s.nombre).join(", ")
                           : "Sin servicios"}
                       </td>
                     </tr>
 
                     <tr>
-                      <td className="label">
-                        Precio servicios
-                      </td>
+                      <td className="label">Precio servicios</td>
 
                       <td className="valor">
-                        $
-                        {factura.totalServicios.toLocaleString()}
+                        ${factura.totalServicios.toLocaleString()}
                       </td>
                     </tr>
 
                     <tr>
-                      <td className="label">
-                        Total (servicio + productos)
-                      </td>
+                      <td className="label">Total (servicio + productos)</td>
 
                       <td className="valor total-final">
                         ${factura.total.toLocaleString()}
@@ -280,15 +234,10 @@ function CardServicioEnCurso({ servicio }) {
 
             <div className="modal-acciones">
               {servicio.estado == "lista" && (
-                <button className="btn-pagar">
-                  Pagar
-                </button>
+                <button className="btn-pagar">Pagar</button>
               )}
 
-              <button
-                className="btn-cerrar"
-                onClick={cerrarModal}
-              >
+              <button className="btn-cerrar" onClick={cerrarModal}>
                 Cerrar
               </button>
             </div>

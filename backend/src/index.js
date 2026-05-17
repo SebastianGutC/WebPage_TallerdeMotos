@@ -18,6 +18,7 @@ import motocicletasRoutes from './routes/motocicletasRoutes.js';
 import userRoutes from './routes/userRoutes.js'; 
 import facturasRoutes from './routes/facturasRoutes.js';
 import chatbotRouter from "./routes/chatbot.route.js";
+import "./jobs/actualizarCitasExpiradas.js";
 
 const backend = express();
 
