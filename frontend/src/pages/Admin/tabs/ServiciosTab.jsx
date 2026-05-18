@@ -19,6 +19,8 @@ import {
   faPencil,
 } from "@fortawesome/free-solid-svg-icons";
 
+import Swal from "sweetalert2";
+
 const ICONOS = [
   // Mecánica / taller
   { label: "Escudo / protección",  value: "fi-shield" },
@@ -194,15 +196,79 @@ const ServiciosTab = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleDelete = async (id, nombre) => {
-    if (!window.confirm(`¿Eliminar el servicio "${nombre}"?`)) return;
-    try {
-      await deleteServicio(id);
-      setServicios((prev) => prev.filter((s) => s._id !== id));
-    } catch {
-      alert("Error al eliminar servicio.");
-    }
-  };
+const handleDelete = async (id, nombre) => {
+
+  const result = await Swal.fire({
+    title: "¿Eliminar servicio?",
+    text: `El servicio "${nombre}" será eliminado permanentemente.`,
+    icon: "warning",
+
+    showCancelButton: true,
+
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+
+    customClass: {
+      popup: "swal-popup",
+      title: "swal-title",
+      htmlContainer: "swal-text",
+      confirmButton: "swal-confirm",
+      cancelButton: "swal-cancel",
+    },
+
+    buttonsStyling: false,
+    reverseButtons: true,
+  });
+
+  // SI CANCELA
+  if (!result.isConfirmed) return;
+
+  try {
+
+    await deleteServicio(id);
+
+    setServicios((prev) =>
+      prev.filter((s) => s._id !== id)
+    );
+
+    Swal.fire({
+      title: "Servicio eliminado",
+      text: "El servicio fue eliminado correctamente.",
+      icon: "success",
+
+      customClass: {
+        popup: "swal-popup",
+        title: "swal-title",
+        htmlContainer: "swal-text",
+        confirmButton: "swal-confirm",
+      },
+
+      buttonsStyling: false,
+      timer: 1800,
+      showConfirmButton: false,
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    Swal.fire({
+      title: "Error",
+      text: "No se pudo eliminar el servicio.",
+      icon: "error",
+
+      customClass: {
+        popup: "swal-popup",
+        title: "swal-title",
+        htmlContainer: "swal-text",
+        confirmButton: "swal-confirm",
+      },
+
+      buttonsStyling: false,
+    });
+
+  }
+};
 
   const handleCancel = () => {
     setForm(INITIAL);

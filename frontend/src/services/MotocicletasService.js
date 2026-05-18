@@ -24,11 +24,13 @@ export const obtenerDetallesTecnicos = async (id) => {
   return API.get(`/motocicletas/${id}/detalles-tecnicos`);
 }
 
-export const buscarMotocicletas = (make, model) =>
-  API.get("/motocicletas/buscar", {
-    params: { make, model },
+export const buscarMotocicleta = (make, model, year) =>{
+   return API.get("/motocicletas/buscar", {
+    params: { make, model, year },
   });
+}
+
 
 export const guardarMotocicletaSeleccionada = (data) =>{
-  API.post("/motocicletas/guardar", data);
+  return API.post("/motocicletas/guardar", data);
 }

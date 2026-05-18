@@ -3,7 +3,7 @@ import { getAllProductos, createProducto, updateProducto, deleteProducto } from 
 import { getImagenUrl } from "../../../services/ProductosService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus, faPenToSquare, faCartArrowDown, faAngleDown, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
-
+import Swal from "sweetalert2";
 const INITIAL = { nombre: "", descripcion: "", precio: "", stock: "", marca: "", categoria: "" };
 
 const ProductosTab = () => {
@@ -124,13 +124,79 @@ const ProductosTab = () => {
     setError("");
   };
 
-  const handleDelete = async (id, nombre) => {
-    if (!window.confirm(`¿Eliminar el producto "${nombre}"?`)) return;
-    try {
-      await deleteProducto(id);
-      setProductos(prev => prev.filter(p => p._id !== id));
-    } catch { alert("Error al eliminar producto."); }
-  };
+const handleDelete = async (id, nombre) => {
+
+  const result = await Swal.fire({
+    title: "¿Eliminar producto?",
+    text: `El producto "${nombre}" será eliminado permanentemente.`,
+    icon: "warning",
+
+    showCancelButton: true,
+
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+
+    customClass: {
+      popup: "swal-popup",
+      title: "swal-title",
+      htmlContainer: "swal-text",
+      confirmButton: "swal-confirm",
+      cancelButton: "swal-cancel",
+    },
+
+    buttonsStyling: false,
+    reverseButtons: true,
+  });
+
+  // SI CANCELA
+  if (!result.isConfirmed) return;
+
+  try {
+
+    await deleteProducto(id);
+
+    setProductos(prev =>
+      prev.filter(p => p._id !== id)
+    );
+
+    Swal.fire({
+      title: "Producto eliminado",
+      text: "El producto fue eliminado correctamente.",
+      icon: "success",
+
+      customClass: {
+        popup: "swal-popup",
+        title: "swal-title",
+        htmlContainer: "swal-text",
+        confirmButton: "swal-confirm",
+      },
+
+      buttonsStyling: false,
+      timer: 1800,
+      showConfirmButton: false,
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    Swal.fire({
+      title: "Error",
+      text: "No se pudo eliminar el producto.",
+      icon: "error",
+
+      customClass: {
+        popup: "swal-popup",
+        title: "swal-title",
+        htmlContainer: "swal-text",
+        confirmButton: "swal-confirm",
+      },
+
+      buttonsStyling: false,
+    });
+
+  }
+};
 
   return (
     <div className="tab-content">

@@ -48,8 +48,8 @@ export const asignarTecnico = async (id, tecnicoId) => {
     return API.put(`/citas/${id}/asignar-tecnico`, { tecnicoId });
 }
 
-export const cambiarEstadoCita = async (id, nuevoEstado) => {
-    return API.put(`/citas/${id}/cambiar-estado`, { nuevoEstado });
+export const cambiarEstadoCita = async (id, estado) => {
+    return API.put(`/citas/${id}/estado`, { estado });
 }
 
 export const addServicioToCita = async (citaId, servicioId) => {

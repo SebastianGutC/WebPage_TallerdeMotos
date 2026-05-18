@@ -61,7 +61,7 @@ router.put("/:id/agendar", agendarCita)
 
 // ADMIN
 router.put("/:id/asignar-tecnico", isAdmin, asignarTecnico);
-router.put("/:id/estado", isAdminOrTecnico, cambiarEstadoCita);
+router.put("/:id/estado", cambiarEstadoCita);
 
 // SERVICIOS
 router.post("/:id/servicios", isAdminOrTecnico, addServicioToCita);

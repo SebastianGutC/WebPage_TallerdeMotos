@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./CardServicioEnCurso.css";
 import { generarFacturaDesdeCita } from "../../services/FacturasService";
+import { generarFacturaCitaPDF } from "../../utils/generarFactura";
+import { useAuth } from "../../context/UseAuth";
+import { cambiarEstadoCita } from "../../services/CitasService";
+import Swal from "sweetalert2";
 
-function CardServicioEnCurso({ servicio }) {
+function CardServicioEnCurso({ servicio, onRefresh }) {
   const [modalAbierto, setModalAbierto] = useState(false);
   const [factura, setFactura] = useState(null);
   const [total, setTotal] = useState(0);
+  const { usuario } = useAuth();
 
   const abrirModal = () => setModalAbierto(true);
   const cerrarModal = () => setModalAbierto(false);
@@ -44,6 +49,54 @@ function CardServicioEnCurso({ servicio }) {
       fetchFactura();
     }
   }, [servicio]);
+
+  const handleCancelarCita = async (idCita) => {
+    const result = await Swal.fire({
+      title: "¿Cancelar cita?",
+      text: "Esta acción cambiará el estado de la cita a cancelada.",
+      icon: "warning",
+
+      showCancelButton: true,
+
+      confirmButtonText: "Sí, cancelar",
+      cancelButtonText: "No",
+
+      customClass: {
+        popup: "swal-popup",
+        title: "swal-title",
+        htmlContainer: "swal-text",
+        confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel",
+      },
+
+      buttonsStyling: false,
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      await cambiarEstadoCita(idCita, "cancelada");
+
+      Swal.fire({
+        title: "Cita cancelada",
+        text: "La cita fue cancelada correctamente.",
+        icon: "success",
+        timer: 1800,
+        showConfirmButton: false,
+      });
+
+      await onRefresh();
+
+    } catch (error) {
+      console.error(error);
+
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo cancelar la cita.",
+        icon: "error",
+      });
+    }
+  };
 
   return (
     <>
@@ -95,10 +148,15 @@ function CardServicioEnCurso({ servicio }) {
             </span>
           </p>
 
-          <p className="valor-pagar">
-            Valor a pagar:{" "}
-            <strong className="valor-total">${total.toLocaleString()}</strong>
-          </p>
+          {servicio.estado !== "cancelada" &&
+            servicio.estado !== "no_asistio" && (
+              <p className="valor-pagar">
+                Valor a pagar:{" "}
+                <strong className="valor-total">
+                  ${total.toLocaleString()}
+                </strong>
+              </p>
+            )}
 
           <div className="acciones-card">
             {servicio.estado !== "cancelada" &&
@@ -108,9 +166,26 @@ function CardServicioEnCurso({ servicio }) {
                 </button>
               )}
 
-            {servicio.estado == "lista" && (
-              <button className="btn-pagar">Pagar</button>
+            {servicio.estado == "pendiente" && (
+              <button
+                className="btn-pagar"
+                onClick={() => handleCancelarCita(servicio._id)}
+              >
+                cancelar
+              </button>
             )}
+
+            {servicio.estado == "lista" ||
+              (servicio.estado == "entregada" && (
+                <button
+                  className="btn-pagar"
+                  onClick={() =>
+                    generarFacturaCitaPDF(factura, usuario, servicio)
+                  }
+                >
+                  Descargar Factura
+                </button>
+              ))}
           </div>
         </div>
       </article>
@@ -233,9 +308,17 @@ function CardServicioEnCurso({ servicio }) {
             </section>
 
             <div className="modal-acciones">
-              {servicio.estado == "lista" && (
-                <button className="btn-pagar">Pagar</button>
-              )}
+              {servicio.estado == "lista" ||
+                (servicio.estado == "entregada" && (
+                  <button
+                    className="btn-pagar"
+                    onClick={() =>
+                      generarFacturaCitaPDF(factura, usuario, servicio)
+                    }
+                  >
+                    Descargar factura
+                  </button>
+                ))}
 
               <button className="btn-cerrar" onClick={cerrarModal}>
                 Cerrar

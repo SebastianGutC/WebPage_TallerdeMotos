@@ -6,6 +6,7 @@
   box-shadow: 10px 15px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   background-color: white;
+  border: 2px solid grey;
 }
 
 .card-servicio:hover {
@@ -28,7 +29,6 @@
   position: absolute;
   left: 8px;
   background-color: transparent;
-  border: 2px solid #FF8200;
   border-radius: 18px;
   width: 42px;
   height: 45px;
@@ -47,6 +47,7 @@
   font-weight: bold;
   font-size: 20px;;
   margin-left: 66px;
+  margin: 0 auto;
 }
 
 
@@ -134,7 +135,7 @@
 }
 
 .reveal input[type="date"],
-.reveal input[type="time"] {
+.reveal input[type="time"], .date-picker-custom {
   width: 100%;
   padding: 0.5rem;
   margin-top: 0.25rem;
@@ -147,6 +148,18 @@
   outline: none;
   border-color: #ff0000; /* color principal de tu taller */
   box-shadow: 0 0 3px #ff0000;
+}
+
+.error-agendar {
+  padding: 8px !important;
+  text-align: center;
+  max-width: 350px !important;
+  margin: 0 auto !important;
+}
+
+.error-agendar p {
+  margin: auto;
+  font-size: 14px;
 }
 
 .button-group {
@@ -183,14 +196,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 1200;
 }
 
 .modal {
   background: #fff;
   border-radius: 10px;
   padding: 2rem;
-  max-width: 420px;
+  max-width: 700px;
   width: 90%;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   animation: fadeIn 0.25s ease;
@@ -199,8 +212,9 @@
 .modal h4 {
   font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin: 0 auto;
   color: #333;
+  max-width: fit-content;
 }
 
 .modal label {
@@ -229,14 +243,14 @@
 
 .button.success {
   background-color: #ffc100 !important;
-  color: #fff;
+  color: black;
   border-radius: 15px;
   border: black 2px solid;
 }
 
 .button.alert {
   background-color: #ff0000 !important;
-  color: #1f1515;
+  color: white;
    border-radius: 15px;
    border: black 2px solid;
 }
@@ -259,6 +273,12 @@
   margin-bottom: 8px;
 }
 
+.form-error {
+  color: red;
+  font-size: 0.75rem;
+  margin-top: 2px;
+  display: flex;
+}
 .moto-search-row input {
   flex: 1;
   margin: 0;
@@ -269,4 +289,62 @@
   margin: 0;
 }
 
+.moto-confirmada {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  background-color: #ffbf0098;
+  text-align: center;
+  border-radius: 8px;
+  padding: 3px;
+  max-width: 250px;
+  margin: 0 auto;
+  max-height: fix-content;
+}
 
+.agendar-row{
+  display: inline-flex;
+  align-items: center;
+  min-width: 100%;
+  justify-content: space-around;
+}
+
+.contenedor-hora, .contenedor-fecha, .contenedor-placa{
+  display: column;
+  margin: auto;
+  min-width: 210px;
+  padding-right: 12px;
+}
+
+.contenedor-fecha .date-picker-custom {
+  min-width: 200px;
+}
+
+/* ── Contenedor del formulario manual ── */
+.form-manual-moto {
+  background: #f8f9fb;
+  border: 1px solid #e0e4ea;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
+.form-info {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 14px;
+  font-style: italic;
+}
+
+/* ── Grid interno del formulario ── */
+.form-manual-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .form-manual-grid {
+    grid-template-columns: 1fr;
+  }
+}

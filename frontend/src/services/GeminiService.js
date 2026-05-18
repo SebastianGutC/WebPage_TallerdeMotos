@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-export const buscarMotoConGemini = async (make, model) => {
+
+export const buscarMoto = async (make, model, year) => {
   try {
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
@@ -7,34 +8,41 @@ export const buscarMotoConGemini = async (make, model) => {
       throw new Error("No se encontró la API Key de Gemini");
     }
 
-    const prompt = `
-Devuelve ÚNICAMENTE un JSON válido.
+   const prompt = `
+Eres una base de datos técnica de motocicletas. Tu única función es devolver especificaciones REALES y VERIFICADAS.
 
-NO uses markdown.
-NO uses bloques de código.
-NO agregues explicaciones.
-NO agregues texto extra.
+REGLAS ESTRICTAS:
+- Solo devuelve información si tienes CERTEZA ABSOLUTA de que ese modelo y ese año exacto existen.
+- Si el año no coincide con los años de producción real de ese modelo, devuelve null.
+- Si el modelo no existe o nunca fue fabricado en ese año, devuelve null.
+- NO inventes especificaciones. NO aproximes. NO supongas.
+- NO devuelvas datos de un año diferente al solicitado.
+- Si tienes dudas, devuelve null. Es preferible null que datos incorrectos.
 
-La motocicleta es:
-${make} ${model}
+Motocicleta solicitada: ${make ? make + " " : ""}${model} año ${year}
 
-El JSON debe tener EXACTAMENTE esta estructura:
+Antes de responder verifica mentalmente:
+1. ¿Existe realmente este modelo?
+2. ¿Fue fabricado específicamente en el año ${year}?
+3. ¿Tengo datos verificados de ese año exacto?
+Si alguna respuesta es NO → devuelve null.
+
+Si todas las respuestas son SÍ, devuelve ÚNICAMENTE este JSON válido sin markdown, sin bloques de código, sin texto extra:
 
 {
-  "make": "marca",
-  "model": "modelo",
-  "year": "año",
-  "type": "tipo",
-  "displacement": "cilindraje",
-  "engine": "motor",
-  "front_brakes": "freno delantero",
-  "rear_brakes": "freno trasero",
-  "fuel_system": "sistema combustible",
-  "transmission": "transmisión"
+  "make": "marca real",
+  "model": "modelo real",
+  "year": "${year}",
+  "type": "tipo en español",
+  "displacement": "cilindraje en cc",
+  "engine": "tipo de motor en español",
+  "front_brakes": "freno delantero en español",
+  "rear_brakes": "freno trasero en español",
+  "fuel_system": "sistema de combustible en español",
+  "transmission": "transmisión en español"
 }
 
-Si no encuentras información confiable responde únicamente:
-null
+Si no tienes información 100% verificada devuelve exactamente: null
 `;
 
     const response = await fetch(

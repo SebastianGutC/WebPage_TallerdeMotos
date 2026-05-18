@@ -2,39 +2,11 @@ import React, { useEffect, useState } from "react";
 import "foundation-sites/dist/css/foundation.min.css";
 import "./cardServicio.css";
 import { getCitasPorEstado, agendarCita } from "../../services/CitasService";
+import { guardarMotocicletaSeleccionada } from "../../services/motocicletasService";
+import { buscarMotocicleta } from "../../services/motocicletasService";
 import { useAuth } from "../../context/UseAuth";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios";
-import {buscarMotoConGemini} from "../../services/GeminiService";
-
-const traducirTipo = (type) => {
-  const tipos = {
-    sport: "Deportiva",
-    naked: "Naked",
-    cruiser: "Crucero",
-    touring: "Turismo",
-    enduro: "Enduro",
-    motocross: "Motocross",
-    scooter: "Scooter",
-    trail: "Trail",
-    adventure: "Aventura",
-    supermoto: "Supermoto",
-    classic: "Clásica",
-    chopper: "Chopper",
-    "dual sport": "Doble propósito",
-    standard: "Estándar",
-    "off-road": "Fuera de carretera",
-    "sport touring": "Sport Touring",
-  };
-  return tipos[type?.toLowerCase()] || type || "No especificado";
-};
-
-const buscarMotocicletasAPI = (make, model) =>
-  axios.get("/api/motocicletas/buscar", { params: { make, model } });
-
-const guardarMotocicletaSeleccionada = (moto) =>
-  axios.post("/api/motocicletas/guardar", moto);
 
 const formatearHora = (hora24) => {
   if (!hora24) return "";
@@ -47,6 +19,7 @@ const formatearHora = (hora24) => {
 };
 
 const CardServicio = ({ nombre, descripcion, icono, precio }) => {
+  // ── Citas ──
   const [mostrarModal, setMostrarModal] = useState(false);
   const [citasDisponibles, setCitasDisponibles] = useState([]);
   const [fechasDisponibles, setFechasDisponibles] = useState([]);
@@ -58,15 +31,18 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
+  // ── Búsqueda de moto ──
   const [busquedaMarca, setBusquedaMarca] = useState("");
   const [busquedaModelo, setBusquedaModelo] = useState("");
-  const [resultadosBusqueda, setResultadosBusqueda] = useState([]);
+  const [busquedaAnio, setBusquedaAnio] = useState("");
+  const [motoEncontrada, setMotoEncontrada] = useState(null);
   const [buscando, setBuscando] = useState(false);
   const [errorBusqueda, setErrorBusqueda] = useState("");
   const [motocicletaId, setMotocicletaId] = useState("");
   const [guardandoMoto, setGuardandoMoto] = useState(false);
+  const [seleccionMoto, setSeleccionMoto] = useState(""); // "encontrada" | "otra"
 
-  const [mostrarFormManual, setMostrarFormManual] = useState(false);
+  // ── Formulario manual ──
   const [motoManual, setMotoManual] = useState({
     make: "",
     model: "",
@@ -79,10 +55,12 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
     fuel_system: "",
     transmission: "",
   });
+  // eslint-disable-next-line no-unused-vars
   const [guardandoManual, setGuardandoManual] = useState(false);
 
   const { usuario, isAuthenticated, openLoginModal } = useAuth();
 
+  // ── Cargar citas disponibles ──
   useEffect(() => {
     const fetchCitas = async () => {
       try {
@@ -98,6 +76,7 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
     if (mostrarModal) fetchCitas();
   }, [mostrarModal]);
 
+  // ── Filtrar horas por fecha ──
   useEffect(() => {
     if (!fechaSeleccionada) return;
     const fechaStr = fechaSeleccionada.toDateString();
@@ -134,10 +113,11 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
     setErrorPlaca("");
     setBusquedaMarca("");
     setBusquedaModelo("");
-    setResultadosBusqueda([]);
+    setBusquedaAnio("");
+    setMotoEncontrada(null);
+    setSeleccionMoto("");
     setErrorBusqueda("");
     setMotocicletaId("");
-    setMostrarFormManual(false);
     setMotoManual({
       make: "",
       model: "",
@@ -152,91 +132,103 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
     });
   };
 
-const buscarMotos = async () => {
-  if (!busquedaMarca && !busquedaModelo) {
-    setErrorBusqueda("Escribe al menos la marca o el modelo.");
-    return;
-  }
-
-  setBuscando(true);
-  setErrorBusqueda("");
-  setResultadosBusqueda([]);
-  setMotocicletaId("");
-  setMostrarFormManual(false);
-
-  let encontradaEnAPI = false;
-
-  // ── 1. Buscar en API externa ──
-  try {
-    const res = await buscarMotocicletasAPI(busquedaMarca, busquedaModelo);
-    const datos = Array.isArray(res.data) ? res.data : [];
-
-    if (datos.length > 0) {
-      setResultadosBusqueda(datos);
-      encontradaEnAPI = true;
+  const buscarMotos = async () => {
+    if (!busquedaModelo.trim()) {
+      setErrorBusqueda("El modelo de la moto es obligatorio.");
+      return;
     }
-  // eslint-disable-next-line no-unused-vars
-  } catch (err) {
-    // 404 u otro error → seguimos al siguiente paso
-  }
+    if (!busquedaAnio.trim()) {
+      setErrorBusqueda("El año de la moto es obligatorio.");
+      return;
+    }
+    if (busquedaAnio.length !== 4 || isNaN(busquedaAnio)) {
+      setErrorBusqueda("Ingresa un año válido. Ej: 2020");
+      return;
+    }
 
-  // ── 2. Si no se encontró en API → consultar Gemini ──
-  if (!encontradaEnAPI) {
-    setErrorBusqueda("Consultando IA, espera un momento...");
+    setBuscando(true);
+    setMotoEncontrada(null);
+    setSeleccionMoto("");
+    setMotocicletaId("");
+    setErrorBusqueda("Consultando, espera un momento...");
+
     try {
-      const motoGemini = await buscarMotoConGemini(busquedaMarca, busquedaModelo);
+      const res = await buscarMotocicleta(
+        busquedaMarca,
+        busquedaModelo,
+        busquedaAnio,
+      );
+      console.log("Respuesta buscarMotocicleta:", res.data);
 
-      if (motoGemini) {
-        setResultadosBusqueda([motoGemini]);
+      const moto = res.data;
+
+      if (moto && moto !== null) {
+        setMotoEncontrada(moto);
         setErrorBusqueda("");
       } else {
-        // Gemini no encontró nada → formulario manual
-        setMostrarFormManual(true);
+        setMotoEncontrada(null);
+        setSeleccionMoto("otra");
         setMotoManual((prev) => ({
           ...prev,
           make: busquedaMarca,
           model: busquedaModelo,
+          year: busquedaAnio,
         }));
         setErrorBusqueda("");
       }
-    } catch {
-      // Gemini falló → formulario manual
-      setMostrarFormManual(true);
+    } catch (error) {
+      // 404 = no encontrada → formulario manual
+      if (error.response?.status === 404) {
+        setMotoEncontrada(null);
+        setSeleccionMoto("otra");
+        setMotoManual((prev) => ({
+          ...prev,
+          make: busquedaMarca,
+          model: busquedaModelo,
+          year: busquedaAnio,
+        }));
+        setErrorBusqueda("");
+      } else {
+        setErrorBusqueda("Error al consultar. Intenta de nuevo.");
+      }
+    } finally {
+      setBuscando(false);
+    }
+  };
+
+  // ── Cuando el usuario elige en el select ──
+  const handleSeleccionMoto = async (e) => {
+    const valor = e.target.value;
+    setSeleccionMoto(valor);
+    setMotocicletaId("");
+
+    if (valor === "encontrada" && motoEncontrada) {
+      setGuardandoMoto(true);
+      try {
+        console.log("Guardando moto:", motoEncontrada); // ← log
+        const res = await guardarMotocicletaSeleccionada(motoEncontrada);
+        console.log("Respuesta guardar:", res.data); // ← log
+        setMotocicletaId(res.data._id);
+      } catch (error) {
+        console.log("Error guardando:", error.response?.data); // ← log
+        console.log("Status:", error.response?.status);
+      } finally {
+        setGuardandoMoto(false);
+      }
+    }
+
+    if (valor === "otra") {
       setMotoManual((prev) => ({
         ...prev,
         make: busquedaMarca,
         model: busquedaModelo,
+        year: busquedaAnio,
       }));
-      setErrorBusqueda("");
-    }
-  }
-
-  setBuscando(false);
-};
-
-  const handleSeleccionarMoto = async (e) => {
-    const index = parseInt(e.target.value);
-    if (isNaN(index)) {
-      setMotocicletaId("");
-      return;
-    }
-    const moto = resultadosBusqueda[index];
-    if (!moto) return;
-
-    setGuardandoMoto(true);
-    setErrorBusqueda("");
-
-    try {
-      const res = await guardarMotocicletaSeleccionada(moto);
-      setMotocicletaId(res.data._id);
-    } catch {
-      setErrorBusqueda("Error al guardar la motocicleta seleccionada.");
-      setMotocicletaId("");
-    } finally {
-      setGuardandoMoto(false);
     }
   };
 
+  // ── Guardar moto manual ──
+  // eslint-disable-next-line no-unused-vars
   const handleGuardarManual = async () => {
     const { make, model, year, displacement } = motoManual;
     if (!make || !model || !year || !displacement) {
@@ -247,7 +239,6 @@ const buscarMotos = async () => {
     try {
       const res = await guardarMotocicletaSeleccionada(motoManual);
       setMotocicletaId(res.data._id);
-      setMostrarFormManual(false);
     } catch {
       setErrorBusqueda("Error al guardar la motocicleta.");
     } finally {
@@ -255,6 +246,7 @@ const buscarMotos = async () => {
     }
   };
 
+  // ── Confirmar cita ──
   const confirmarCita = async () => {
     setErrorMsg("");
     setSuccessMsg("");
@@ -264,7 +256,7 @@ const buscarMotos = async () => {
       return;
     }
     if (!motocicletaId) {
-      setErrorMsg("Debes seleccionar tu motocicleta.");
+      setErrorMsg("Debes seleccionar y confirmar tu motocicleta.");
       return;
     }
     if (!numeroPlaca.trim() || errorPlaca) {
@@ -279,7 +271,7 @@ const buscarMotos = async () => {
         estado: "pendiente",
         servicios: [{ nombre, costo: precio }],
         placaMoto: numeroPlaca,
-        motocicletaId: motocicletaId,
+        motocicletaId,
       });
 
       setSuccessMsg("¡Cita agendada correctamente!");
@@ -313,12 +305,10 @@ const buscarMotos = async () => {
             <h4>Agendar cita para {nombre}</h4>
 
             {errorMsg && (
-              <div className="alert-error">
+              <div className="alert-error error-agendar">
+                {" "}
                 <p>{errorMsg}</p>
-                <button
-                  className="close-button-custom"
-                  onClick={() => setErrorMsg("")}
-                >
+                <button className="alert-close" onClick={() => setErrorMsg("")}>
                   &times;
                 </button>
               </div>
@@ -334,92 +324,100 @@ const buscarMotos = async () => {
                 </button>
               </div>
             )}
+            <div className="agendar-row">
+              <div className="contenedor-fecha">
+                {/* ── Fecha ── */}
+                <label>Selecciona la fecha:</label>
+                <DatePicker
+                  selected={fechaSeleccionada}
+                  onChange={(date) => setFechaSeleccionada(date)}
+                  filterDate={(date) =>
+                    fechasDisponibles.includes(date.toDateString())
+                  }
+                  placeholderText="Selecciona una fecha"
+                  dateFormat="dd/MM/yyyy"
+                  className="date-picker-custom"
+                />
+              </div>
 
-            {/* ── Fecha ── */}
-            <label>Selecciona la fecha:</label>
-            <DatePicker
-              selected={fechaSeleccionada}
-              onChange={(date) => setFechaSeleccionada(date)}
-              filterDate={(date) =>
-                fechasDisponibles.includes(date.toDateString())
-              }
-              placeholderText="Selecciona una fecha"
-              dateFormat="dd/MM/yyyy"
-            />
-
-            {/* ── Hora ── */}
-            <label>Selecciona la hora:</label>
-            <select
-              value={citaSeleccionada?._id?.toString() || ""}
-              onChange={(e) => {
-                const cita = horasDisponibles.find(
-                  (c) => c._id.toString() === e.target.value,
-                );
-                setCitaSeleccionada(cita || null);
-              }}
-              disabled={!fechaSeleccionada}
-            >
-              <option value="">Selecciona...</option>
-              {horasDisponibles.map((cita) => (
-                <option key={cita._id.toString()} value={cita._id.toString()}>
-                  {formatearHora(cita.hora)}
-                </option>
-              ))}
-            </select>
-
-            {/* ── Placa ── */}
-            <label>Número de placa:</label>
-            <input
-              type="text"
-              placeholder="Ej: ABC123"
-              maxLength={6}
-              value={numeroPlaca}
-              onChange={(e) => {
-                const valor = e.target.value
-                  .toUpperCase()
-                  .replace(/[^A-Z0-9]/g, "");
-
-                setNumeroPlaca(valor);
-
-                if (valor.length === 0) {
-                  setErrorPlaca("");
-                } else if (valor.length <= 3 && /^[A-Z]*$/.test(valor)) {
-                  setErrorPlaca("");
-                } else if (
-                  valor.length > 3 &&
-                  valor.length <= 5 &&
-                  /^[A-Z]{3}[0-9]*$/.test(valor)
-                ) {
-                  setErrorPlaca("");
-                } else if (
-                  valor.length === 6 &&
-                  /^[A-Z]{3}[0-9]{2}[A-Z0-9]$/.test(valor)
-                ) {
-                  setErrorPlaca("");
-                } else {
-                  setErrorPlaca("Formato inválido. Ej: ABC123");
-                }
-              }}
-            />
-            {errorPlaca && (
-              <span
-                style={{
-                  color: "red",
-                  fontSize: "0.75rem",
-                  marginTop: "2px",
-                  display: "block",
-                }}
-              >
-                {errorPlaca}
-              </span>
-            )}
+              <div className="contenedor-hora">
+                {/* ── Hora ── */}
+                <label>Selecciona la hora:</label>
+                <select
+                  value={citaSeleccionada?._id?.toString() || ""}
+                  onChange={(e) => {
+                    const cita = horasDisponibles.find(
+                      (c) => c._id.toString() === e.target.value,
+                    );
+                    setCitaSeleccionada(cita || null);
+                  }}
+                  disabled={!fechaSeleccionada}
+                >
+                  <option value="">Selecciona...</option>
+                  {horasDisponibles.map((cita) => (
+                    <option
+                      key={cita._id.toString()}
+                      value={cita._id.toString()}
+                    >
+                      {formatearHora(cita.hora)}
+                    </option>
+                  ))}
+                </select>{" "}
+              </div>
+              <div className="contenedor-placa">
+                {/* ── Placa ── */}
+                <label>Número de placa:</label>
+                <input
+                  type="text"
+                  placeholder="Ej: ABC123"
+                  maxLength={6}
+                  value={numeroPlaca}
+                  onChange={(e) => {
+                    const valor = e.target.value
+                      .toUpperCase()
+                      .replace(/[^A-Z0-9]/g, "");
+                    setNumeroPlaca(valor);
+                    if (valor.length === 0) {
+                      setErrorPlaca("");
+                    } else if (valor.length <= 3 && /^[A-Z]*$/.test(valor)) {
+                      setErrorPlaca("");
+                    } else if (
+                      valor.length > 3 &&
+                      valor.length <= 5 &&
+                      /^[A-Z]{3}[0-9]*$/.test(valor)
+                    ) {
+                      setErrorPlaca("");
+                    } else if (
+                      valor.length === 6 &&
+                      /^[A-Z]{3}[0-9]{2}[A-Z0-9]$/.test(valor)
+                    ) {
+                      setErrorPlaca("");
+                    } else {
+                      setErrorPlaca("Formato inválido. Ej: ABC123");
+                    }
+                  }}
+                />
+                {errorPlaca && (
+                  <span
+                    style={{
+                      color: "red",
+                      fontSize: "0.75rem",
+                      marginTop: "2px",
+                      display: "block",
+                    }}
+                  >
+                    {errorPlaca}
+                  </span>
+                )}
+              </div>
+            </div>
 
             {/* ── Búsqueda de moto ── */}
             <label>Busca tu motocicleta:</label>
             <div className="moto-search-row">
               <input
                 type="text"
-                placeholder="Marca (ej: Yamaha)"
+                placeholder="Marca (ej: Yamaha) — opcional"
                 value={busquedaMarca}
                 onChange={(e) => {
                   setBusquedaMarca(e.target.value);
@@ -429,10 +427,20 @@ const buscarMotos = async () => {
               />
               <input
                 type="text"
-                placeholder="Modelo (ej: MT-07)"
+                placeholder="Modelo * (ej: XTZ 150)"
                 value={busquedaModelo}
                 onChange={(e) => {
                   setBusquedaModelo(e.target.value);
+                  setErrorBusqueda("");
+                }}
+                onKeyDown={(e) => e.key === "Enter" && buscarMotos()}
+              />
+              <input
+                type="number"
+                placeholder="Año (ej: 2020)"
+                value={busquedaAnio}
+                onChange={(e) => {
+                  setBusquedaAnio(e.target.value);
                   setErrorBusqueda("");
                 }}
                 onKeyDown={(e) => e.key === "Enter" && buscarMotos()}
@@ -449,157 +457,186 @@ const buscarMotos = async () => {
 
             {errorBusqueda && <p className="form-error">{errorBusqueda}</p>}
 
-            {/* ── Select de resultados ── */}
-            {resultadosBusqueda.length > 0 && !mostrarFormManual && (
+            {/* ── Select: moto encontrada u otra ── */}
+            {motoEncontrada && (
               <>
-                <label>Selecciona el año exacto:</label>
+                <label>¿Es tu motocicleta?</label>
                 <select
-                  defaultValue=""
-                  onChange={handleSeleccionarMoto}
+                  value={seleccionMoto}
+                  onChange={handleSeleccionMoto}
                   disabled={guardandoMoto}
                 >
-                  <option value="">
-                    {guardandoMoto ? "Guardando..." : "Selecciona el año..."}
+                  <option value="">Selecciona...</option>
+                  <option value="encontrada">
+                    {motoEncontrada.year} — {motoEncontrada.make}{" "}
+                    {motoEncontrada.model} ({motoEncontrada.type})
                   </option>
-                  {resultadosBusqueda.map((moto, index) => (
-                    <option key={index} value={index}>
-                      {moto.year} — {moto.make} {moto.model} (
-                      {traducirTipo(moto.type)})
-                    </option>
-                  ))}
+                  <option value="otra">
+                    Otra (ingresar datos manualmente)
+                  </option>
                 </select>
               </>
             )}
 
-            {motocicletaId && !mostrarFormManual && (
-              <p className="moto-confirmada">
-                ✓ Motocicleta registrada correctamente
+            {!motoEncontrada &&
+              !buscando &&
+              busquedaModelo &&
+              errorBusqueda && (
+                <>
+                  <label>¿Es tu motocicleta?</label>
+                  <select value={seleccionMoto} onChange={handleSeleccionMoto}>
+                    <option value="">Selecciona...</option>
+                    <option value="otra">
+                      Otra (ingresar datos manualmente)
+                    </option>
+                  </select>
+                </>
+              )}
+
+            {/* ── Confirmación moto guardada ── */}
+            {motocicletaId && seleccionMoto === "encontrada" && (
+              <p className="moto-confirmada" display="none">
+                Motocicleta registrada correctamente
               </p>
             )}
 
             {/* ── Formulario manual ── */}
-            {mostrarFormManual && (
+            {seleccionMoto === "otra" && (
               <div className="form-manual-moto">
                 <p className="form-info">
-                  Tu moto no está en nuestra base de datos. Ingresa los datos
-                  manualmente:
+                  Ingresa los datos de tu motocicleta:
                 </p>
 
-                <div className="moto-search-row">
-                  <input
-                    placeholder="Marca *"
-                    value={motoManual.make}
-                    onChange={(e) =>
-                      setMotoManual({ ...motoManual, make: e.target.value })
-                    }
-                  />
-                  <input
-                    placeholder="Modelo *"
-                    value={motoManual.model}
-                    onChange={(e) =>
-                      setMotoManual({ ...motoManual, model: e.target.value })
-                    }
-                  />
-                  <input
-                    placeholder="Año *"
-                    type="number"
-                    value={motoManual.year}
-                    onChange={(e) =>
-                      setMotoManual({ ...motoManual, year: e.target.value })
-                    }
-                  />
-                </div>
+                <div className="form-manual-grid">
+                  <div className="modal-field">
+                    <label>Marca *</label>
+                    <input
+                      placeholder="Ej: Yamaha"
+                      value={motoManual.make}
+                      onChange={(e) =>
+                        setMotoManual({ ...motoManual, make: e.target.value })
+                      }
+                    />
+                  </div>
 
-                <div className="moto-search-row">
-                  <input
-                    placeholder="Cilindraje en cc * (ej: 150)"
-                    type="number"
-                    value={motoManual.displacement}
-                    onChange={(e) =>
-                      setMotoManual({
-                        ...motoManual,
-                        displacement: e.target.value,
-                      })
-                    }
-                  />
-                  <input
-                    placeholder="Tipo de motor (ej: Monocilíndrico)"
-                    value={motoManual.engine}
-                    onChange={(e) =>
-                      setMotoManual({ ...motoManual, engine: e.target.value })
-                    }
-                  />
-                  <input
-                    placeholder="Tipo (ej: Trail, Deportiva)"
-                    value={motoManual.type}
-                    onChange={(e) =>
-                      setMotoManual({ ...motoManual, type: e.target.value })
-                    }
-                  />
-                </div>
+                  <div className="modal-field">
+                    <label>Modelo *</label>
+                    <input
+                      placeholder="Ej: XTZ 150"
+                      value={motoManual.model}
+                      onChange={(e) =>
+                        setMotoManual({ ...motoManual, model: e.target.value })
+                      }
+                    />
+                  </div>
 
-                <div className="moto-search-row">
-                  <input
-                    placeholder="Freno delantero (ej: Disco simple)"
-                    value={motoManual.front_brakes}
-                    onChange={(e) =>
-                      setMotoManual({
-                        ...motoManual,
-                        front_brakes: e.target.value,
-                      })
-                    }
-                  />
-                  <input
-                    placeholder="Freno trasero (ej: Tambor)"
-                    value={motoManual.rear_brakes}
-                    onChange={(e) =>
-                      setMotoManual({
-                        ...motoManual,
-                        rear_brakes: e.target.value,
-                      })
-                    }
-                  />
-                </div>
+                  <div className="modal-field">
+                    <label>Año *</label>
+                    <input
+                      type="number"
+                      placeholder="Ej: 2020"
+                      value={motoManual.year}
+                      onChange={(e) =>
+                        setMotoManual({ ...motoManual, year: e.target.value })
+                      }
+                    />
+                  </div>
 
-                <div className="moto-search-row">
-                  <input
-                    placeholder="Combustible (ej: Carburador)"
-                    value={motoManual.fuel_system}
-                    onChange={(e) =>
-                      setMotoManual({
-                        ...motoManual,
-                        fuel_system: e.target.value,
-                      })
-                    }
-                  />
-                  <input
-                    placeholder="Transmisión (ej: 5 velocidades)"
-                    value={motoManual.transmission}
-                    onChange={(e) =>
-                      setMotoManual({
-                        ...motoManual,
-                        transmission: e.target.value,
-                      })
-                    }
-                  />
+                  <div className="modal-field">
+                    <label>Cilindraje (cc) *</label>
+                    <input
+                      type="number"
+                      placeholder="Ej: 150"
+                      value={motoManual.displacement}
+                      onChange={(e) =>
+                        setMotoManual({
+                          ...motoManual,
+                          displacement: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className="modal-field">
+                    <label>Tipo de motor</label>
+                    <input
+                      placeholder="Ej: Monocilíndrico"
+                      value={motoManual.engine}
+                      onChange={(e) =>
+                        setMotoManual({ ...motoManual, engine: e.target.value })
+                      }
+                    />
+                  </div>
+
+                  <div className="modal-field">
+                    <label>Tipo de moto</label>
+                    <input
+                      placeholder="Ej: Trail, Deportiva"
+                      value={motoManual.type}
+                      onChange={(e) =>
+                        setMotoManual({ ...motoManual, type: e.target.value })
+                      }
+                    />
+                  </div>
+
+                  <div className="modal-field">
+                    <label>Freno delantero</label>
+                    <input
+                      placeholder="Ej: Disco simple"
+                      value={motoManual.front_brakes}
+                      onChange={(e) =>
+                        setMotoManual({
+                          ...motoManual,
+                          front_brakes: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className="modal-field">
+                    <label>Freno trasero</label>
+                    <input
+                      placeholder="Ej: Tambor"
+                      value={motoManual.rear_brakes}
+                      onChange={(e) =>
+                        setMotoManual({
+                          ...motoManual,
+                          rear_brakes: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className="modal-field">
+                    <label>Combustible</label>
+                    <input
+                      placeholder="Ej: Carburador"
+                      value={motoManual.fuel_system}
+                      onChange={(e) =>
+                        setMotoManual({
+                          ...motoManual,
+                          fuel_system: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className="modal-field">
+                    <label>Transmisión</label>
+                    <input
+                      placeholder="Ej: 5 velocidades"
+                      value={motoManual.transmission}
+                      onChange={(e) =>
+                        setMotoManual({
+                          ...motoManual,
+                          transmission: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
                 </div>
 
                 {errorBusqueda && <p className="form-error">{errorBusqueda}</p>}
-
-                {motocicletaId ? (
-                  <p className="moto-confirmada">
-                    ✓ Motocicleta registrada correctamente
-                  </p>
-                ) : (
-                  <button
-                    type="button"
-                    className="button primary"
-                    onClick={handleGuardarManual}
-                    disabled={guardandoManual}
-                  >
-                    {guardandoManual ? "Guardando..." : "Confirmar motocicleta"}
-                  </button>
-                )}
               </div>
             )}
 

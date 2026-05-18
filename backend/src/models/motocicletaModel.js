@@ -11,7 +11,6 @@ const MotocicletaSchema = new mongoose.Schema({
     tipo_motor: { type: String, required: true },       
     sistema_frenos: { type: String, required: true }, 
     tipo_combustible: { type: String, required: true }, 
-    capacidad_aceite: { type: Number, required: true },
     tipo_transmision: { type: String, required: true }  
   }
 });

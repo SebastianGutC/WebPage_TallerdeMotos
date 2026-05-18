@@ -53,7 +53,7 @@
 }
 
 .estado.entregada { 
-  border-top: #0a0903 8px solid !important; 
+  border-top: #FF6C00 8px solid !important; 
   color: #fff !important; }
 
 
@@ -287,6 +287,60 @@ button {
   .modal-detalles { padding: 1rem; max-width: 95%; }
   .tabla-servicio .label { display:block; width:100%; text-align:left; }
   .tabla-servicio .valor { display:block; width:100%; text-align:left; margin-top:0.35rem; }
+}
+
+/* CONTENEDOR */
+.swal-popup{
+  border-radius:20px;
+  padding:24px;
+  width:420px;
+}
+
+/* TITULO */
+.swal-title{
+  font-size:1.5rem;
+  font-weight:700;
+  color:#111827;
+}
+
+/* TEXTO */
+.swal-text{
+  font-size:1rem;
+  color:#6b7280;
+}
+
+/* BOTÓN CONFIRMAR */
+.swal-confirm{
+  background:#ff0000;
+  color:white;
+  border:2px solid black;
+  padding:12px 18px;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
+  margin-left:10px;
+  transition:.2s;
+  margin-right:10px;
+}
+
+.swal-confirm:hover{
+  background:#dc2626;
+}
+
+/* BOTÓN CANCELAR */
+.swal-cancel{
+  background:#e5e7eb;
+  color:#111827;
+  border:none;
+  padding:12px 18px;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.swal-cancel:hover{
+  background:#d1d5db;
 }
 
 

@@ -1,31 +1,40 @@
 // src/pages/Admin/tabs/UsuariosTab.jsx
 import React, { useEffect, useState } from "react";
 import {
-  getAllUsers, toggleUserStatus, deleteUser, getUserCitas, changeUserRole,
+  getAllUsers,
+  toggleUserStatus,
+  deleteUser,
+  getUserCitas,
+  changeUserRole,
 } from "../../../services/AdminService";
 import { ESTADO_COLORS, ESTADO_LABEL } from "../citasConstants.jsx";
 import Swal from "sweetalert2";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSortDown, faSortUp, faCircleCheck, faCircleXmark, faEye, faEyeSlash, faUserGear, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
-
+import {
+  faEye,
+  faEyeSlash,
+  faUserGear,
+  faPen,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 
 const UsuariosTab = () => {
-  const [users, setUsers]             = useState([]);
-  const [loading, setLoading]         = useState(false);
-  const [search, setSearch]           = useState("");
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
   const [expandedCitas, setExpandedCitas] = useState(null);
-  const [userCitas, setUserCitas]     = useState({});
+  const [userCitas, setUserCitas] = useState({});
   const [loadingCitas, setLoadingCitas] = useState({});
-  const [editingId, setEditingId]     = useState(null);
-  const [editForm, setEditForm]       = useState({});
-  const [savingId, setSavingId]       = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [editForm, setEditForm] = useState({});
+  const [savingId, setSavingId] = useState(null);
 
   const fetchUsers = async () => {
     setLoading(true);
     try {
       const res = await getAllUsers();
-      setUsers(res.data.filter(u => u.rol === "USUARIO"));
+      setUsers(res.data.filter((u) => u.rol === "USUARIO"));
     } catch (err) {
       console.error(err);
     } finally {
@@ -33,20 +42,24 @@ const UsuariosTab = () => {
     }
   };
 
-  useEffect(() => { fetchUsers(); }, []);
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   /* ── Búsqueda ── */
-  const filtered = users.filter(u =>
+  const filtered = users.filter((u) =>
     `${u.nombre} ${u.apellido} ${u.email} ${u.telefono || ""}`
       .toLowerCase()
-      .includes(search.toLowerCase())
+      .includes(search.toLowerCase()),
   );
 
   /* ── Toggle activo/inactivo ── */
   const handleToggle = async (id, habilitado) => {
     try {
       await toggleUserStatus(id, habilitado);
-      setUsers(prev => prev.map(u => u._id === id ? { ...u, habilitado } : u));
+      setUsers((prev) =>
+        prev.map((u) => (u._id === id ? { ...u, habilitado } : u)),
+      );
     } catch {
       alert("Error al cambiar estado del usuario.");
     }
@@ -54,26 +67,31 @@ const UsuariosTab = () => {
 
   /* ── Eliminar ── */
   const handleDelete = async (id, nombre) => {
-
     const result = await Swal.fire({
       title: "¿Eliminar usuario?",
       text: `¿Seguro que deseas eliminar a ${nombre}? Esta acción no se puede deshacer.`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#dc2626",
-      cancelButtonColor: "#6b7280",
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
       reverseButtons: true,
+      customClass: {
+        popup: "swal-popup",
+        title: "swal-title",
+        htmlContainer: "swal-text",
+        confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel",
+      },
+
+      buttonsStyling: false,
     });
 
     if (!result.isConfirmed) return;
 
     try {
-
       await deleteUser(id);
 
-      setUsers(prev => prev.filter(u => u._id !== id));
+      setUsers((prev) => prev.filter((u) => u._id !== id));
 
       await Swal.fire({
         title: "Usuario eliminado",
@@ -82,22 +100,18 @@ const UsuariosTab = () => {
         timer: 2000,
         showConfirmButton: false,
       });
-
     } catch {
-
       Swal.fire({
         title: "Error",
         text: "No se pudo eliminar el usuario.",
         icon: "error",
         confirmButtonColor: "#dc2626",
       });
-
     }
   };
 
   /* ── Convertir a técnico ── */
   const handleConvertToTecnico = async (id, nombre) => {
-
     const result = await Swal.fire({
       title: "¿Convertir a Técnico?",
       text: `¿Deseas convertir a ${nombre} en técnico?`,
@@ -114,7 +128,7 @@ const UsuariosTab = () => {
     try {
       await changeUserRole(id, "TECNICO");
 
-      setUsers(prev => prev.filter(u => u._id !== id));
+      setUsers((prev) => prev.filter((u) => u._id !== id));
 
       Swal.fire({
         title: "Convertido",
@@ -123,15 +137,12 @@ const UsuariosTab = () => {
         timer: 2000,
         showConfirmButton: false,
       });
-
     } catch {
-
       Swal.fire({
         title: "Error",
         text: "No se pudo cambiar el rol.",
         icon: "error",
       });
-
     }
   };
 
@@ -139,9 +150,9 @@ const UsuariosTab = () => {
   const handleStartEdit = (u) => {
     setEditingId(u._id);
     setEditForm({
-      nombre:   u.nombre   || "",
+      nombre: u.nombre || "",
       apellido: u.apellido || "",
-      email:    u.email    || "",
+      email: u.email || "",
       telefono: u.telefono || "",
     });
   };
@@ -156,7 +167,9 @@ const UsuariosTab = () => {
     try {
       const API = (await import("../../../services/Api")).default;
       await API.put(`/usuarios/${id}`, editForm);
-      setUsers(prev => prev.map(u => u._id === id ? { ...u, ...editForm } : u));
+      setUsers((prev) =>
+        prev.map((u) => (u._id === id ? { ...u, ...editForm } : u)),
+      );
       setEditingId(null);
       setEditForm({});
     } catch {
@@ -168,17 +181,20 @@ const UsuariosTab = () => {
 
   /* ── Ver citas del usuario ── */
   const handleExpandCitas = async (id) => {
-    if (expandedCitas === id) { setExpandedCitas(null); return; }
+    if (expandedCitas === id) {
+      setExpandedCitas(null);
+      return;
+    }
     setExpandedCitas(id);
     if (userCitas[id] !== undefined) return;
-    setLoadingCitas(prev => ({ ...prev, [id]: true }));
+    setLoadingCitas((prev) => ({ ...prev, [id]: true }));
     try {
       const res = await getUserCitas(id);
-      setUserCitas(prev => ({ ...prev, [id]: res.data }));
+      setUserCitas((prev) => ({ ...prev, [id]: res.data }));
     } catch {
-      setUserCitas(prev => ({ ...prev, [id]: [] }));
+      setUserCitas((prev) => ({ ...prev, [id]: [] }));
     } finally {
-      setLoadingCitas(prev => ({ ...prev, [id]: false }));
+      setLoadingCitas((prev) => ({ ...prev, [id]: false }));
     }
   };
 
@@ -193,7 +209,7 @@ const UsuariosTab = () => {
         className="search-input"
         placeholder="Buscar por nombre, email o teléfono..."
         value={search}
-        onChange={e => setSearch(e.target.value)}
+        onChange={(e) => setSearch(e.target.value)}
       />
 
       {loading ? (
@@ -213,7 +229,7 @@ const UsuariosTab = () => {
               </tr>
             </thead>
             <tbody>
-              {filtered.map(u => (
+              {filtered.map((u) => (
                 <React.Fragment key={u._id}>
                   {/* ── Fila normal o en edición ── */}
                   {editingId === u._id ? (
@@ -223,13 +239,23 @@ const UsuariosTab = () => {
                           <input
                             className="inline-input"
                             value={editForm.nombre}
-                            onChange={e => setEditForm({ ...editForm, nombre: e.target.value })}
+                            onChange={(e) =>
+                              setEditForm({
+                                ...editForm,
+                                nombre: e.target.value,
+                              })
+                            }
                             placeholder="Nombre"
                           />
                           <input
                             className="inline-input"
                             value={editForm.apellido}
-                            onChange={e => setEditForm({ ...editForm, apellido: e.target.value })}
+                            onChange={(e) =>
+                              setEditForm({
+                                ...editForm,
+                                apellido: e.target.value,
+                              })
+                            }
                             placeholder="Apellido"
                           />
                         </div>
@@ -238,7 +264,9 @@ const UsuariosTab = () => {
                         <input
                           className="inline-input"
                           value={editForm.email}
-                          onChange={e => setEditForm({ ...editForm, email: e.target.value })}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, email: e.target.value })
+                          }
                           placeholder="Email"
                         />
                       </td>
@@ -246,7 +274,12 @@ const UsuariosTab = () => {
                         <input
                           className="inline-input"
                           value={editForm.telefono}
-                          onChange={e => setEditForm({ ...editForm, telefono: e.target.value })}
+                          onChange={(e) =>
+                            setEditForm({
+                              ...editForm,
+                              telefono: e.target.value,
+                            })
+                          }
                           placeholder="Teléfono"
                         />
                       </td>
@@ -259,14 +292,21 @@ const UsuariosTab = () => {
                         >
                           {savingId === u._id ? "Guardando..." : "✓ Guardar"}
                         </button>
-                        <button className="btn-secondary-sm" onClick={handleCancelEdit}>
+                        <button
+                          className="btn-secondary-sm"
+                          onClick={handleCancelEdit}
+                        >
                           ✕ Cancelar
                         </button>
                       </td>
                     </tr>
                   ) : (
                     <tr className={!u.habilitado ? "row-disabled" : ""}>
-                      <td><strong>{u.nombre} {u.apellido}</strong></td>
+                      <td>
+                        <strong>
+                          {u.nombre} {u.apellido}
+                        </strong>
+                      </td>
                       <td>{u.email}</td>
                       <td>{u.telefono || "—"}</td>
                       <td>
@@ -279,18 +319,33 @@ const UsuariosTab = () => {
                       </td>
                       <td className="actions-cell">
                         <div className="actions-wrapper">
-                          <button className="btn-expand" onClick={() => handleExpandCitas(u._id)}>
-                            <FontAwesomeIcon icon={expandedCitas === u._id ? faEyeSlash : faEye} className="btn-icon-mobile" />
+                          <button
+                            className="btn-expand"
+                            onClick={() => handleExpandCitas(u._id)}
+                          >
+                            <FontAwesomeIcon
+                              icon={
+                                expandedCitas === u._id ? faEyeSlash : faEye
+                              }
+                              className="btn-icon-mobile"
+                            />
                             <span className="btn-text">
-                              {expandedCitas === u._id ? "Ocultar" : "Ver Citas"}
+                              {expandedCitas === u._id
+                                ? "Ocultar"
+                                : "Ver Citas"}
                             </span>
                           </button>
 
                           <button
                             className="btn-convert"
-                            onClick={() => handleConvertToTecnico(u._id, u.nombre)} // ← agregado
+                            onClick={() =>
+                              handleConvertToTecnico(u._id, u.nombre)
+                            } // ← agregado
                           >
-                            <FontAwesomeIcon icon={faUserGear} className="btn-icon-mobile" />
+                            <FontAwesomeIcon
+                              icon={faUserGear}
+                              className="btn-icon-mobile"
+                            />
                             <span className="btn-text">Técnico</span>
                           </button>
 
@@ -298,7 +353,10 @@ const UsuariosTab = () => {
                             className="btn-edit"
                             onClick={() => handleStartEdit(u)} // ← agregado
                           >
-                            <FontAwesomeIcon icon={faPen} className="btn-icon-mobile" />
+                            <FontAwesomeIcon
+                              icon={faPen}
+                              className="btn-icon-mobile"
+                            />
                             <span className="btn-text">Editar</span>
                           </button>
 
@@ -306,7 +364,10 @@ const UsuariosTab = () => {
                             className="btn-delete"
                             onClick={() => handleDelete(u._id, u.nombre)} // ← agregado
                           >
-                            <FontAwesomeIcon icon={faTrash} className="btn-icon-mobile" />
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              className="btn-icon-mobile"
+                            />
                             <span className="btn-text">Eliminar</span>
                           </button>
                         </div>
@@ -319,11 +380,15 @@ const UsuariosTab = () => {
                     <tr className="expanded-row">
                       <td colSpan={5}>
                         <div className="expanded-content">
-                          <h4>Historial de citas — {u.nombre} {u.apellido}</h4>
+                          <h4>
+                            Historial de citas — {u.nombre} {u.apellido}
+                          </h4>
                           {loadingCitas[u._id] ? (
                             <p className="loading-text">Cargando citas...</p>
                           ) : !userCitas[u._id]?.length ? (
-                            <p className="empty-text">No tiene citas registradas.</p>
+                            <p className="empty-text">
+                              No tiene citas registradas.
+                            </p>
                           ) : (
                             <table className="inner-table">
                               <thead>
@@ -336,19 +401,33 @@ const UsuariosTab = () => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {userCitas[u._id].map(c => (
+                                {userCitas[u._id].map((c) => (
                                   <tr key={c._id}>
-                                    <td>{new Date(c.fecha).toLocaleDateString("es-CO")}</td>
+                                    <td>
+                                      {new Date(c.fecha).toLocaleDateString(
+                                        "es-CO",
+                                      )}
+                                    </td>
                                     <td>{c.hora}</td>
                                     <td>
-                                      <span className="estado-badge" style={{ background: ESTADO_COLORS[c.estado] || "#888" }}>
+                                      <span
+                                        className="estado-badge"
+                                        style={{
+                                          background:
+                                            ESTADO_COLORS[c.estado] || "#888",
+                                        }}
+                                      >
                                         {ESTADO_LABEL[c.estado] || c.estado}
                                       </span>
                                     </td>
                                     <td>
-                                      {c.tecnicoId
-                                        ? `${c.tecnicoId.nombre} ${c.tecnicoId.apellido}`
-                                        : <span className="text-muted">Sin asignar</span>}
+                                      {c.tecnicoId ? (
+                                        `${c.tecnicoId.nombre} ${c.tecnicoId.apellido}`
+                                      ) : (
+                                        <span className="text-muted">
+                                          Sin asignar
+                                        </span>
+                                      )}
                                     </td>
                                     <td>
                                       {c.motocicletaId

@@ -96,6 +96,15 @@ const CitaSchema = new mongoose.Schema(
       "expirada"
     ],
     default: "disponible"
+  },
+
+  metodoPago: {
+    type: String,
+    enum: ["efectivo", "tarjeta", "transferencia"],
+  },
+
+  fechaPago:{
+    type: Date
   }
 
 },

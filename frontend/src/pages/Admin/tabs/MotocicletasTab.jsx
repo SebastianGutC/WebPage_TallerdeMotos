@@ -1,8 +1,9 @@
 // src/pages/Admin/tabs/MotocicletasTab.jsx
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faMotorcycle, faCirclePlus ,faAngleDown, faPenToSquare, faListUl, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {faCirclePlus ,faAngleDown, faPenToSquare, faListUl, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { getAllMotocicletas, createMotocicleta, updateMotocicleta, deleteMotocicleta } from "../../../services/AdminService";
+import Swal from "sweetalert2";
 
 const INITIAL = {
   nombre:  "",
@@ -131,13 +132,79 @@ const MotocicletasTab = () => {
   const handleCancel = () => { setForm(INITIAL); setEditingId(null); setError(""); };
 
   // ── Eliminar ───────────────────────────────────────────────────────────────
-  const handleDelete = async (id, nombre) => {
-    if (!window.confirm(`¿Eliminar la motocicleta "${nombre}"?`)) return;
-    try {
-      await deleteMotocicleta(id);
-      setMotos(prev => prev.filter(m => m._id !== id));
-    } catch { alert("Error al eliminar motocicleta."); }
-  };
+const handleDelete = async (id, nombre) => {
+
+  const result = await Swal.fire({
+    title: "¿Eliminar motocicleta?",
+    text: `La motocicleta "${nombre}" será eliminada permanentemente.`,
+    icon: "warning",
+
+    showCancelButton: true,
+
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+
+    customClass: {
+      popup: "swal-popup",
+      title: "swal-title",
+      htmlContainer: "swal-text",
+      confirmButton: "swal-confirm",
+      cancelButton: "swal-cancel",
+    },
+
+    buttonsStyling: false,
+    reverseButtons: true,
+  });
+
+  // SI CANCELA
+  if (!result.isConfirmed) return;
+
+  try {
+
+    await deleteMotocicleta(id);
+
+    setMotos(prev =>
+      prev.filter(m => m._id !== id)
+    );
+
+    Swal.fire({
+      title: "Motocicleta eliminada",
+      text: "La motocicleta fue eliminada correctamente.",
+      icon: "success",
+
+      customClass: {
+        popup: "swal-popup",
+        title: "swal-title",
+        htmlContainer: "swal-text",
+        confirmButton: "swal-confirm",
+      },
+
+      buttonsStyling: false,
+      timer: 1800,
+      showConfirmButton: false,
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    Swal.fire({
+      title: "Error",
+      text: "No se pudo eliminar la motocicleta.",
+      icon: "error",
+
+      customClass: {
+        popup: "swal-popup",
+        title: "swal-title",
+        htmlContainer: "swal-text",
+        confirmButton: "swal-confirm",
+      },
+
+      buttonsStyling: false,
+    });
+
+  }
+};
 
   return (
     <div className="tab-content">

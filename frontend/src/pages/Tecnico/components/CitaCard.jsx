@@ -17,6 +17,7 @@ import {
   cambiarEstadoCita,
 } from "../../../services/TecnicoService";
 
+import {actualizarCita} from "../../../services/CitasService";
 /* ─────────────────────────────────────────────────────────────────
    HELPERS
 ───────────────────────────────────────────────────────────────── */
@@ -134,17 +135,23 @@ const CitaCard = ({
   const canAct        = !isCancelled && !isCompleted && !isNoShow && !isDisponible;
 
   /* ── Handlers de estado ── */
-  const handleEstado = async (nuevoEstado) => {
-    setLoadingAct(true);
-    try {
-      await cambiarEstadoCita(cita._id ?? cita.id, nuevoEstado);
-      onRefresh?.();
-    } catch (e) {
-      console.error("Error cambiando estado:", e);
-    } finally {
-      setLoadingAct(false);
+const handleEstado = async (nuevoEstado) => {
+  setLoadingAct(true);
+  try {
+    // Si pasa a en_proceso, primero guarda la fecha de ingreso
+    if (nuevoEstado === "en_proceso") {
+      await actualizarCita(cita._id ?? cita.id, { fechaIngreso: new Date() });
     }
-  };
+
+    // Luego cambia el estado en cualquier caso
+    await cambiarEstadoCita(cita._id ?? cita.id, nuevoEstado);
+    onRefresh?.();
+  } catch (e) {
+    console.error("Error cambiando estado:", e);
+  } finally {
+    setLoadingAct(false);
+  }
+};
 
   /* ── Handlers servicios ── */
   const handleAddServicio = async () => {

@@ -3,9 +3,14 @@ import "./ProductsCard.css";
 import gsap from "gsap";
 import { useCart } from "../../../context/CartContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartPlus, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCartPlus,
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { getProductos } from "../../../services/ProductosService";
 import { getImagenUrl } from "../../../services/ProductosService";
+import { useAuth } from "../../../context/UseAuth";
 
 const BASE_SPEED = 1.2;
 
@@ -17,6 +22,8 @@ export default function ProductsCard() {
   const speedRef = useRef(BASE_SPEED);
   const pausedRef = useRef(false);
   const { addToCart } = useCart();
+  const { isAuthenticated, openLoginModal } = useAuth();
+
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -31,11 +38,11 @@ export default function ProductsCard() {
   }, []);
 
   useEffect(() => {
-  if (products.length > 0) {
-    console.log("primer producto:", products[0]);
-    console.log("imagen:", products[0].imagen);
-  }
-}, [products]);
+    if (products.length > 0) {
+      console.log("primer producto:", products[0]);
+      console.log("imagen:", products[0].imagen);
+    }
+  }, [products]);
 
   const loopProducts = [...products, ...products];
 
@@ -54,7 +61,7 @@ export default function ProductsCard() {
 
     gsap.ticker.add(tick);
     return () => gsap.ticker.remove(tick);
-  }, [products]); 
+  }, [products]);
 
   const move = (direction) => {
     const impulse = direction * 8;
@@ -67,15 +74,21 @@ export default function ProductsCard() {
   };
 
   const handleAdd = (e, p) => {
-    e.stopPropagation();
-    addToCart({
-      imagen: p.imagen,
-      nombre: p.nombre,
-      precio: p.precio,
-    });
+    if (!isAuthenticated) {
+      openLoginModal();
+      return;
+    } else {
+      e.stopPropagation();
+      addToCart({
+        imagen: p.imagen,
+        nombre: p.nombre,
+        precio: p.precio,
+      });
+    }
   };
 
-  if (products.length === 0) return null; 
+  if (products.length === 0) return null;
+
 
   return (
     <section className="products-slider">
@@ -91,12 +104,16 @@ export default function ProductsCard() {
             <article
               key={i}
               className="product-card"
-              onMouseEnter={() => { pausedRef.current = true; }}
-              onMouseLeave={() => { pausedRef.current = false; }}
+              onMouseEnter={() => {
+                pausedRef.current = true;
+              }}
+              onMouseLeave={() => {
+                pausedRef.current = false;
+              }}
             >
               <div className="media">
                 <img
-                  src={getImagenUrl(p.imagen)} 
+                  src={getImagenUrl(p.imagen)}
                   alt={p.nombre}
                   className="product-image"
                 />
@@ -106,7 +123,7 @@ export default function ProductsCard() {
 
               <div className="product-details">
                 <p className="product-price">
-                  ${p.precio.toLocaleString("es-CO")} 
+                  ${p.precio.toLocaleString("es-CO")}
                 </p>
                 <button className="btn-add" onClick={(e) => handleAdd(e, p)}>
                   <FontAwesomeIcon icon={faCartPlus} />

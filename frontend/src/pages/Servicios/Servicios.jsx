@@ -3,7 +3,7 @@ import CardServicioEnCurso from "../../components/CardServicioEnCurso/cardServic
 import CardPasos from "../../components/CardPasos/CardPasos";
 import "./servicios.css";
 import { getServicios } from "../../services/ServiciosService";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../../context/UseAuth";
 import {getCitasByUsuario} from "../../services/CitasService";
@@ -28,40 +28,48 @@ function Servicios() {
     fetchServicios();
   }, []);
 
-  // Obtener citas del usuario
-useEffect(() => {
-  const fetchCitasUsuario = async () => {
-    try {
-      const res = await getCitasByUsuario(usuario.id);
+const fetchCitasUsuario = useCallback(async () => {
 
-      const prioridadEstados = {
-        lista: 1,
-        en_proceso: 2,
-        pendiente: 3,
-        entregada: 4,
-        cancelada: 5,
-        no_asistio: 6
-      };
+  if (!usuario?.id) return;
 
-      const citasOrdenadas = res.data.sort((a, b) => {
-        return (
-          (prioridadEstados[a.estado] || 999) -
-          (prioridadEstados[b.estado] || 999)
-        );
-      });
+  try {
 
-      setCitasUsuario(citasOrdenadas);
+    const res = await getCitasByUsuario(usuario.id);
 
-    } catch (error) {
-      console.error("Error fetching citas del usuario:", error);
-    }
-  };
+    const prioridadEstados = {
+      entregada: 1,
+      lista: 2,
+      en_proceso: 3,
+      pendiente: 4,
+      cancelada: 5,
+      no_asistio: 6
+    };
 
-  if (usuario?.id) {
-    fetchCitasUsuario();
+    const citasOrdenadas = res.data.sort((a, b) => {
+
+      return (
+        (prioridadEstados[a.estado] || 999) -
+        (prioridadEstados[b.estado] || 999)
+      );
+
+    });
+
+    setCitasUsuario(citasOrdenadas);
+
+  } catch (error) {
+
+    console.error("Error fetching citas del usuario:", error);
+
   }
 
 }, [usuario]);
+
+  // Obtener citas del usuario
+useEffect(() => {
+
+  fetchCitasUsuario();
+
+}, [fetchCitasUsuario]);
 
   useEffect(() => {
     if (location.hash === "#servicios") {
@@ -133,7 +141,7 @@ useEffect(() => {
                   className="cell small-12 medium-6 large-4"
                   key={cita._id}
                 >
-                  <CardServicioEnCurso servicio={cita} />
+                  <CardServicioEnCurso servicio={cita} onRefresh={fetchCitasUsuario}/>
                 </div>
               ))
             ) : (

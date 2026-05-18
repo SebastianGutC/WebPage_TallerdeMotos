@@ -1,87 +1,5 @@
 import Motocicleta from "../models/motocicletaModel.js";
 import axios from "axios";
-import {
-  traducirTipo,
-  traducirMotor,
-  traducirFrenos,
-  traducirCombustible,
-  traducirTransmision,
-} from "../utils/motoTranslations.js";
-
-export const testAPI = async (req, res) => {
-  try {
-    // Probar diferentes formas del nombre
-    const pruebas = ["XTZ", "XTZ150", "XTZ 150", "XTZ-150"];
-    const resultados = {};
-
-    for (const modelo of pruebas) {
-      const { data } = await axios.get(
-        "https://api.api-ninjas.com/v1/motorcycles",
-        {
-          params: { make: "yamaha", model: modelo },
-          headers: { "X-Api-Key": process.env.API_NINJAS_KEY },
-        }
-      );
-      resultados[modelo] = data.map(m => ({ make: m.make, model: m.model, year: m.year }));
-    }
-
-    res.json(resultados);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-export const buscarMotocicletas = async (req, res) => {
-  let { make, model } = req.query;
-
-  const normalizar = (str) => {
-    if (!str) return "";
-    return str.trim().replace(/\s+/g, "").replace(/-/g, "").toLowerCase();
-  };
-
-  const makeNorm  = make?.trim() || "";
-  const modelNorm = normalizar(model);
-
-  try {
-    const variantes = [
-      model?.trim(),
-      modelNorm,
-      model?.trim().replace(/(\D+)(\d+)/, "$1 $2"),
-      model?.trim().replace(/\s+/g, "-"),
-    ].filter(Boolean);
-
-    const variantesUnicas = [...new Set(variantes)];
-    let dataAPI = [];
-
-    for (const variante of variantesUnicas) {
-      const respuesta = await axios.get(
-        "https://api.api-ninjas.com/v1/motorcycles",
-        {
-          params: { make: makeNorm, model: variante },
-          headers: { "X-Api-Key": process.env.API_NINJAS_KEY },
-        }
-      );
-      if (respuesta.data.length > 0) {
-        dataAPI = respuesta.data;
-        break;
-      }
-    }
-
-    if (!dataAPI.length) {
-      return res.status(404).json({ message: "No se encontraron resultados." });
-    }
-
-    // ── Retorna datos crudos de la API sin guardar nada ──
-    res.json(dataAPI);
-
-  } catch (error) {
-    console.error("ERROR:", error.message);
-    res.status(500).json({
-      message: "Error al buscar motocicletas.",
-      detalle: error.message,
-    });
-  }
-};
 
 export const guardarMotocicleta = async (req, res) => {
   try {
@@ -96,7 +14,6 @@ export const guardarMotocicleta = async (req, res) => {
       return res.status(400).json({ message: "Marca, modelo y año son obligatorios." });
     }
 
-    // Verificar si ya existe
     const existe = await Motocicleta.findOne({
       marca:  make,
       nombre: model,
@@ -105,19 +22,17 @@ export const guardarMotocicleta = async (req, res) => {
 
     if (existe) return res.json({ _id: existe._id });
 
-    // No existe → guardar
     const nueva = new Motocicleta({
       marca:  make  || "No especificado",
       nombre: model || "No especificado",
-      tipo:   traducirTipo(type),
-      modelo: String(year),
+      tipo:   type,
+      modelo: year,
       detalles: {
         cilindraje:       parseFloat(displacement) || 0,
-        tipo_motor:       traducirMotor(engine),
-        sistema_frenos:   traducirFrenos(front_brakes, rear_brakes),
-        tipo_combustible: traducirCombustible(fuel_system),
-        capacidad_aceite: 0,
-        tipo_transmision: traducirTransmision(transmission),
+        tipo_motor:       engine,
+        sistema_frenos:   `delantero: ${front_brakes || "No especificado"} || trasero: ${rear_brakes || "No especificado"}`,
+        tipo_combustible: fuel_system,
+        tipo_transmision: transmission,
       },
     });
 
@@ -133,7 +48,6 @@ export const guardarMotocicleta = async (req, res) => {
   }
 };
 
-// Para obtener todas las guardadas (el select original)
 export const getAllMotocicletas = async (req, res) => {
   try {
     const motos = await Motocicleta.find().sort({ marca: 1, nombre: 1 });
@@ -274,3 +188,4 @@ export const obtenerDetallesTecnicos = async (req, res) => {
     });
   }
 };
+

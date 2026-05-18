@@ -2,12 +2,9 @@ import React, { useState, useRef, useImperativeHandle, forwardRef } from "react"
 import ReactMarkdown from "react-markdown"; 
 import "./chatBot.css";
 import API from "../../services/Api";
-import { SYSTEM_PROMPT } from "../../assets/js/InfoEmpresa";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMessage} from "@fortawesome/free-solid-svg-icons";
-
-const API_KEY = "AIzaSyDYneNSIgWNAJd_8X_CI0aYo5NOdP05gGM";
 
 const Chatbot = forwardRef((props, ref) => {
   const [input, setInput] = useState("");
@@ -53,7 +50,6 @@ function limpiarSaludo(text, isFirstMessage) {
     try {
       const res = await API.post("/chatbot", {
         question: userQuestion,
-        systemPrompt: SYSTEM_PROMPT,
       });
 
       let botText = res.data.text;

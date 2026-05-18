@@ -1,80 +1,220 @@
-export const traducirTipo = (type) => {
-  const tipos = {
-    "sport": "Deportiva",
-    "naked": "Naked",
-    "cruiser": "Crucero",
-    "touring": "Turismo",
-    "enduro": "Enduro",
-    "motocross": "Motocross",
-    "scooter": "Scooter",
-    "trail": "Trail",
-    "adventure": "Aventura",
-    "supermoto": "Supermoto",
-    "classic": "Clásica",
-    "chopper": "Chopper",
-    "dual sport": "Doble propósito",
-    "standard": "Estándar",
-    "off-road": "Fuera de carretera",
-  };
-  return tipos[type?.toLowerCase()] || type || "No especificado";
-};
+export const traduccionesEstaticas = {
+  // ── TIPOS DE MOTO ──
+  "sport": "Deportiva",
+  "naked": "Naked",
+  "naked bike": "Naked",
+  "cruiser": "Crucero",
+  "touring": "Turismo",
+  "sport touring": "Sport Touring",
+  "enduro": "Enduro",
+  "enduro / offroad": "Enduro / Fuera de carretera",
+  "enduro/offroad": "Enduro / Fuera de carretera",
+  "off-road": "Fuera de carretera",
+  "offroad": "Fuera de carretera",
+  "dual sport": "Doble propósito",
+  "dual-sport": "Doble propósito",
+  "adventure": "Aventura",
+  "adventure touring": "Aventura Turismo",
+  "motocross": "Motocross",
+  "supermoto": "Supermoto",
+  "supermotard": "Supermoto",
+  "scooter": "Scooter",
+  "maxi scooter": "Maxi Scooter",
+  "trail": "Trail",
+  "chopper": "Chopper",
+  "classic": "Clásica",
+  "standard": "Estándar",
+  "scrambler": "Scrambler",
+  "bobber": "Bobber",
+  "cafe racer": "Cafe Racer",
+  "minibike": "Minimoto",
+  "mini bike": "Minimoto",
+  "trial": "Trial",
+  "cross": "Cross",
+  "pit bike": "Pit Bike",
+  "electric": "Eléctrica",
 
-export const traducirMotor = (engine) => {
-  if (!engine) return "No especificado";
-  return engine
-    .replace("In-line two", "Bicilíndrico en línea")
-    .replace("In-line four", "Cuatro cilindros en línea")
-    .replace("In-line three", "Tricilíndrico en línea")
-    .replace("Single cylinder", "Monocilíndrico")
-    .replace("V-twin", "V-twin")
-    .replace("V-four", "V-cuatro")
-    .replace("Boxer twin", "Bóxer bicilíndrico")
-    .replace("four-stroke", "cuatro tiempos")
-    .replace("two-stroke", "dos tiempos")
-    .replace("DOHC", "DOHC")
-    .replace("SOHC", "SOHC");
-};
+  // ── MOTORES ──
+  "single cylinder, four-stroke": "Monocilíndrico, 4 tiempos",
+  "single cylinder, two-stroke": "Monocilíndrico, 2 tiempos",
+  "single cylinder": "Monocilíndrico",
+  "twin, four-stroke": "Bicilíndrico, 4 tiempos",
+  "twin, two-stroke": "Bicilíndrico, 2 tiempos",
+  "twin cylinder": "Bicilíndrico",
+  "parallel twin": "Bicilíndrico paralelo",
+  "parallel twin, four-stroke": "Bicilíndrico paralelo, 4 tiempos",
+  "v-twin": "V-Twin",
+  "v twin": "V-Twin",
+  "v-twin, four-stroke": "V-Twin, 4 tiempos",
+  "l-twin": "L-Twin",
+  "inline four": "Cuatro cilindros en línea",
+  "inline-four": "Cuatro cilindros en línea",
+  "inline four, four-stroke": "Cuatro cilindros en línea, 4 tiempos",
+  "inline three": "Tres cilindros en línea",
+  "inline-three": "Tres cilindros en línea",
+  "inline 3": "Tres cilindros en línea",
+  "inline 4": "Cuatro cilindros en línea",
+  "four cylinder": "Cuatro cilindros",
+  "three cylinder": "Tres cilindros",
+  "two cylinder": "Bicilíndrico",
+  "v4": "V4",
+  "v-4": "V4",
+  "v4, four-stroke": "V4, 4 tiempos",
+  "boxer twin": "Bicilíndrico Boxer",
+  "boxer": "Boxer",
+  "rotary": "Rotativo",
+  "two-stroke": "2 tiempos",
+  "four-stroke": "4 tiempos",
+  "2-stroke": "2 tiempos",
+  "4-stroke": "4 tiempos",
+  "dohc": "DOHC (doble árbol de levas)",
+  "sohc": "SOHC (árbol de levas simple)",
+  "ohv": "OHV",
+  "ohc": "OHC",
 
-export const traducirFrenos = (front, rear) => {
-  const t = (val) => {
-    if (!val) return "No especificado";
-    return val
-      .replace("Single disc", "Disco simple")
-      .replace("Double disc", "Disco doble")
-      .replace("Drum", "Tambor")
-      .replace("Single-piston caliper", "Pinza un pistón")
-      .replace("Multi-piston caliper", "Pinza múltiple")
-      .replace("ABS", "ABS")
-      .replace(/hydraulic\.?/gi, "")     
-      .replace(/\.\s*\./g, ".")           
-      .replace(/\s{2,}/g, " ")            
-      .trim()
-      .replace(/\.$/, "");                
-  };
-  return `Delantero: ${t(front)} | Trasero: ${t(rear)}`;
-};
+  // ── FRENOS DELANTEROS ──
+  "single disc": "Disco simple",
+  "double disc": "Doble disco",
+  "double disc. abs": "Doble disco con ABS",
+  "single disc. abs": "Disco simple con ABS",
+  "hydraulic disc": "Disco hidráulico",
+  "hydraulic single disc": "Disco hidráulico simple",
+  "hydraulic double disc": "Doble disco hidráulico",
+  "disc": "Disco",
+  "disc brake": "Freno de disco",
+  "drum": "Tambor",
+  "drum brake": "Freno de tambor",
+  "expanding brake (drum brake)": "Freno de tambor",
+  "expanding brake": "Freno de tambor",
+  "linked brakes": "Frenos combinados",
+  "combined brakes": "Frenos combinados",
+  "abs": "ABS",
+  "with abs": "Con ABS",
+  "without abs": "Sin ABS",
+  "optional abs": "ABS opcional",
+  "brembo": "Brembo",
+  "nissin": "Nissin",
+  "tokico": "Tokico",
+  "wave disc": "Disco tipo ola",
+  "petal disc": "Disco tipo pétalo",
+  "floating disc": "Disco flotante",
+  "ventilated disc": "Disco ventilado",
+  "4-piston caliper": "Pinza de 4 pistones",
+  "2-piston caliper": "Pinza de 2 pistones",
+  "radial caliper": "Pinza radial",
 
-export const traducirCombustible = (fuel) => {
-  if (!fuel) return "Gasolina";
-  const f = fuel.toLowerCase();
-  if (f.includes("injection")) return "Inyección";
-  if (f.includes("carburetor")) return "Carburador";
-  if (f.includes("electric")) return "Eléctrico";
-  return fuel;
-};
+  // ── FRENOS TRASEROS ──
+  "single disc. hydraulic": "Disco hidráulico simple",
+  "hydraulic disc. abs": "Disco hidráulico con ABS",
+  "rear drum": "Tambor trasero",
+  "rear disc": "Disco trasero",
 
-export const traducirTransmision = (trans) => {
-  if (!trans) return "No especificado";
-  return trans
-    .replace(/(\d+)-speed/i, "$1 velocidades")
-    .replace(/(\d+)\s+speed/i, "$1 velocidades")
-    .replace("Manual", "Manual")
-    .replace("Automatic", "Automática")
-    .replace("Semi-automatic", "Semiautomática")
-    .replace("CVT", "CVT (automática continua)")
-    .replace(/chain\s*\(final drive\)/gi, "Cadena")     
-    .replace(/shaft\s*\(final drive\)/gi, "Cardan")     
-    .replace(/belt\s*\(final drive\)/gi, "Correa")      
-    .replace(/\s{2,}/g, " ")
-    .trim();
+  // ── COMBUSTIBLE ──
+  "carburettor": "Carburador",
+  "carburetor": "Carburador",
+  "carb": "Carburador",
+  "single carburettor": "Carburador simple",
+  "twin carburettors": "Doble carburador",
+  "fuel injection": "Inyección de combustible",
+  "fuel-injection": "Inyección de combustible",
+  "injection": "Inyección",
+  "electronic fuel injection": "Inyección electrónica de combustible",
+  "efi": "Inyección electrónica (EFI)",
+  "electronic injection": "Inyección electrónica",
+  "port injection": "Inyección en el puerto",
+  "direct injection": "Inyección directa",
+  "throttle body injection": "Inyección por cuerpo de aceleración",
+  "mikuni": "Carburador Mikuni",
+  "keihin": "Carburador Keihin",
+  "dell'orto": "Carburador Dell'Orto",
+  "dellorto": "Carburador Dell'Orto",
+  "pgm-fi": "PGM-FI (inyección electrónica Honda)",
+  "pgm fi": "PGM-FI (inyección electrónica Honda)",
+
+  // ── TRANSMISIÓN ──
+  "chain (final drive)": "Transmisión por cadena",
+  "chain   (final drive)": "Transmisión por cadena",
+  "chain  (final drive)": "Transmisión por cadena",
+  "chain": "Cadena",
+  "belt (final drive)": "Transmisión por correa",
+  "belt drive": "Transmisión por correa",
+  "belt": "Correa",
+  "shaft (final drive)": "Transmisión por árbol",
+  "shaft drive": "Transmisión por árbol",
+  "shaft": "Árbol de transmisión",
+  "6-speed": "6 velocidades",
+  "6 speed": "6 velocidades",
+  "5-speed": "5 velocidades",
+  "5 speed": "5 velocidades",
+  "4-speed": "4 velocidades",
+  "4 speed": "4 velocidades",
+  "3-speed": "3 velocidades",
+  "3 speed": "3 velocidades",
+  "cvt": "CVT (automática)",
+  "automatic": "Automática",
+  "semi-automatic": "Semiautomática",
+  "manual": "Manual",
+  "6-speed manual": "Manual 6 velocidades",
+  "5-speed manual": "Manual 5 velocidades",
+  "6-speed, chain drive": "6 velocidades, transmisión por cadena",
+  "5-speed, chain drive": "5 velocidades, transmisión por cadena",
+  "sequential": "Secuencial",
+  "sequential 6-speed": "Secuencial 6 velocidades",
+  "sequential 5-speed": "Secuencial 5 velocidades",
+  "wet clutch": "Embrague húmedo",
+  "dry clutch": "Embrague seco",
+  "slipper clutch": "Embrague antirrebote",
+  "assist & slipper clutch": "Embrague asistido y antirrebote",
+
+  // ── REFRIGERACIÓN ──
+  "air cooled": "Refrigerado por aire",
+  "air-cooled": "Refrigerado por aire",
+  "liquid cooled": "Refrigerado por líquido",
+  "liquid-cooled": "Refrigerado por líquido",
+  "water cooled": "Refrigerado por agua",
+  "water-cooled": "Refrigerado por agua",
+  "oil cooled": "Refrigerado por aceite",
+  "oil-cooled": "Refrigerado por aceite",
+  "air & oil cooled": "Refrigerado por aire y aceite",
+  "air/oil cooled": "Refrigerado por aire y aceite",
+
+  // ── SUSPENSIÓN ──
+  "telescopic fork": "Horquilla telescópica",
+  "telescopic forks": "Horquilla telescópica",
+  "upside-down fork": "Horquilla invertida",
+  "inverted fork": "Horquilla invertida",
+  "usd fork": "Horquilla invertida",
+  "monoshock": "Monoamortiguador",
+  "single shock": "Monoamortiguador",
+  "twin shock": "Doble amortiguador",
+  "swingarm": "Basculante",
+  "link suspension": "Suspensión por enlace",
+  "pro-link": "Pro-Link",
+  "uni-trak": "Uni-Trak",
+  "mono cross": "Mono Cross",
+  "full floater": "Full Floater",
+  "air suspension": "Suspensión neumática",
+  "electronic suspension": "Suspensión electrónica",
+  "adjustable suspension": "Suspensión ajustable",
+  "preload adjustable": "Preload ajustable",
+
+  // ── ARRANQUE ──
+  "electric": "Eléctrico",
+  "electric start": "Arranque eléctrico",
+  "kick start": "Arranque por patada",
+  "kick": "Patada",
+  "electric & kick": "Eléctrico y patada",
+  "electric/kick": "Eléctrico y patada",
+
+  // ── CHASIS ──
+  "steel frame": "Chasis de acero",
+  "aluminum frame": "Chasis de aluminio",
+  "aluminium frame": "Chasis de aluminio",
+  "tubular frame": "Chasis tubular",
+  "diamond frame": "Chasis diamante",
+  "twin spar frame": "Chasis doble viga",
+  "trellis frame": "Chasis trellis",
+  "monocoque": "Monocasco",
+  "perimeter frame": "Chasis perímetro",
+  "backbone frame": "Chasis columna vertebral",
 };
