@@ -23,3 +23,12 @@ export const eliminarMotocicleta = async (id) => {
 export const obtenerDetallesTecnicos = async (id) => {
   return API.get(`/motocicletas/${id}/detalles-tecnicos`);
 }
+
+export const buscarMotocicletas = (make, model) =>
+  API.get("/motocicletas/buscar", {
+    params: { make, model },
+  });
+
+export const guardarMotocicletaSeleccionada = (data) =>{
+  API.post("/motocicletas/guardar", data);
+}
