@@ -379,6 +379,39 @@ body, html {
       transform: translateY(2px);
     }
   }
+
+  @media (max-width: 680px) {
+  .user-section {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .user-name {
+    font-size: 12px;
+    margin-right: 0 !important;
+    white-space: nowrap;
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Quitar el absolute que lo superpone al menú */
+  .btn-logout {
+    position: relative !important;
+    right: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+  }
+
+  .btn-logout:hover {
+    transform: scale(1.1) !important;
+  }
+}
 }
 
 /* --- Responsive --- Tablets */
@@ -703,5 +736,58 @@ body, html {
     margin-left: 12px !important;
   }
 
+}
+
+@media (max-width: 680px) {
+  .top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+  }
+
+  .user-section {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .user-name {
+    font-size: 11px;
+    margin-right: 0 !important;
+    white-space: nowrap;
+    max-width: 75px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── Este es el fix clave: sacar el absolute ── */
+  .btn-logout {
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: rgba(14, 14, 14, 0.39);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-logout:hover {
+    transform: scale(1.1) !important;
+    color: #fff;
+  }
+
+  /* ── Separar visualmente el toggle del logout ── */
+  .menu-toggle {
+    margin-left: 4px;
+    flex-shrink: 0;
+  }
 }
 

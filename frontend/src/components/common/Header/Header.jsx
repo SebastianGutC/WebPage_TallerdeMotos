@@ -82,7 +82,7 @@ const Header = () => {
         {usuario && usuario.rol === "USUARIO" && (
           <div className="user-section">
             <span className="user-name">¡ Hola, {usuario.nombre} !</span>
-            <button className="btn-logout" onClick={handleLogout}>
+            <button className="btn-logout icon-mobile" onClick={handleLogout}>
               <FontAwesomeIcon icon={faXmark} />
             </button>
           </div>

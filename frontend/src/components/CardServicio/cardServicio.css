@@ -204,9 +204,13 @@
   border-radius: 10px;
   padding: 2rem;
   max-width: 700px;
-  width: 90%;
+  width: 95%;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   animation: fadeIn 0.25s ease;
+  overflow-y: auto;
+  max-height: 90vh;
+  position: relative;
+  min-height: 450px;
 }
 
 .modal h4 {
@@ -215,6 +219,7 @@
   margin: 0 auto;
   color: #333;
   max-width: fit-content;
+  margin-bottom: 30px;
 }
 
 .modal label {
@@ -235,11 +240,20 @@
 }
 
 .modal-buttons {
-  margin-top: 1.5rem;
   display: flex;
   justify-content: space-around;
+  max-width: 400px;
+  margin:  0 auto;
+  padding-top: 20px;
  
 }
+
+.modal.modal-expandido {
+  min-width: min(1200px, 95vw);  /* en PC: 1200px, en móvil: 95% de la pantalla */
+  max-width: 97vw;               /* nunca desborda */
+  width: fit-content;  
+}
+
 
 .button.success {
   background-color: #ffc100 !important;
@@ -324,9 +338,7 @@
   background: #f8f9fb;
   border: 1px solid #e0e4ea;
   border-radius: 10px;
-  padding: 16px 20px;
-  margin-top: 12px;
-  margin-bottom: 8px;
+  padding: 10px 20px;
 }
 
 .form-info {
@@ -339,7 +351,8 @@
 /* ── Grid interno del formulario ── */
 .form-manual-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 1rem;
 }
 
 /* ── Responsive ── */
@@ -347,4 +360,394 @@
   .form-manual-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.modal-columnas {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+/* Columna izquierda: formulario de cita */
+.modal-columna-izquierda {
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 260px;
+  max-width: 620px;
+}
+
+/* Columna derecha: formulario manual de moto */
+.modal-columna-derecha {
+  flex: 1 1 auto;
+  min-width: 300px;
+  border-left: 2px solid #e8e8e8;
+  padding-left: 1.5rem;
+}
+
+/* Mensaje neutral de búsqueda (no es un error) */
+.mensaje-busqueda {
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin: 0.3rem 0 0.2rem;
+  font-style: italic;
+}
+
+
+/* Texto del detalle de la moto encontrada */
+.moto-detalle {
+  font-size: 0.88rem;
+  color: #374151;
+  margin: 0.2rem 0 0.5rem;
+  font-weight: 500;
+}
+
+/* Botón para rechazar la moto encontrada */
+.btn-cambiar-moto {
+  font-size: 0.78rem;
+  padding: 0.3rem 0.7rem;
+  margin: 0;
+}
+
+/* Error de placa como span */
+.placa-error-msg {
+  color: red;
+  font-size: 0.75rem;
+  margin-top: 2px;
+  display: block;
+}
+
+/* Responsive: en pantallas pequeñas, columnas apiladas */
+@media (max-width: 700px) {
+  .modal-columnas {
+    flex-direction: column;
+  }
+
+  .modal-columna-derecha {
+    border-left: none;
+    border-top: 2px solid #e8e8e8;
+    padding-left: 0;
+    padding-top: 1rem;
+  }
+
+  .modal.modal-expandido {
+    max-width: 95vw;
+  }
+}
+
+/* ── Formulario manual de moto — estilos exclusivos ── */
+
+.form-manual-moto .modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.form-manual-moto .modal-field label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.form-manual-moto .modal-field input {
+  width: 100%;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.88rem;
+  color: #1f2937;
+  background-color: #f9fafb;
+  border: 1.5px solid #d1d5db;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  box-shadow: none;
+  margin: 0;
+}
+
+.form-manual-moto .modal-field input:focus {
+  border-color: #f97316;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+}
+
+.form-manual-moto .modal-field input::placeholder {
+  color: #9ca3af;
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+.form-manual-moto .modal-field input:hover:not(:focus) {
+  border-color: #9ca3af;
+}
+
+
+/* Tablet: < 900px — columnas apiladas */
+@media (max-width: 900px) {
+  .modal-columnas {
+    flex-direction: column;
+  }
+
+  .modal-columna-derecha {
+    border-left: none;
+    border-top: 2px solid #e8e8e8;
+    padding-left: 0;
+    padding-top: 1rem;
+    width: 100%;
+  }
+
+  .modal-columna-izquierda {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .modal.modal-expandido {
+    width: 97vw;
+    max-width: 97vw;
+  }
+}
+
+/* Móvil: < 600px */
+@media (max-width: 600px) {
+  .modal {
+    padding: 1rem 0.85rem;
+    border-radius: 8px;
+  }
+
+  .agendar-row {
+    flex-direction: column;
+  }
+
+  .contenedor-hora,
+  .contenedor-fecha,
+  .contenedor-placa {
+    width: 100%;
+    flex: unset;
+  }
+
+  .moto-search-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .moto-search-row input,
+  .moto-search-row button {
+    width: 100%;
+    flex: unset;
+  }
+
+  .form-manual-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .modal-buttons .button {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .modal h4 {
+    font-size: 1.05rem;
+    text-align: center;
+  }
+}
+
+/* ── Inputs y select de la columna izquierda ── */
+
+.modal-columna-izquierda .contenedor-fecha .date-picker-custom,
+.modal-columna-izquierda .contenedor-hora select,
+.modal-columna-izquierda .contenedor-placa input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  color: #1f2937;
+  background-color: #f9fafb;
+  border: 1.5px solid #d1d5db;
+  border-radius: 7px;
+  outline: none;
+  box-shadow: none;
+  box-sizing: border-box;
+  margin-top: 0.25rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  appearance: auto;
+}
+
+.modal-columna-izquierda .contenedor-fecha .date-picker-custom:focus,
+.modal-columna-izquierda .contenedor-hora select:focus,
+.modal-columna-izquierda .contenedor-placa input:focus {
+  border-color: #ffc100;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 193, 0, 0.2);
+}
+
+.modal-columna-izquierda .contenedor-fecha .date-picker-custom:hover:not(:focus),
+.modal-columna-izquierda .contenedor-hora select:hover:not(:focus),
+.modal-columna-izquierda .contenedor-placa input:hover:not(:focus) {
+  border-color: #9ca3af;
+}
+
+.modal-columna-izquierda .contenedor-fecha .date-picker-custom::placeholder,
+.modal-columna-izquierda .contenedor-placa input::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+  font-size: 0.82rem;
+}
+
+/* ── Labels de los contenedores ── */
+.modal-columna-izquierda .contenedor-fecha label,
+.modal-columna-izquierda .contenedor-hora label,
+.modal-columna-izquierda .contenedor-placa label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0;
+}
+
+/* ── Inputs de búsqueda de moto ── */
+.modal-columna-izquierda .moto-search-row input {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.87rem;
+  color: #1f2937;
+  background-color: #f9fafb;
+  border: 1.5px solid #d1d5db;
+  border-radius: 7px;
+  outline: none;
+  box-shadow: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.modal-columna-izquierda .moto-search-row input:focus {
+  border-color: #ffc100;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 193, 0, 0.2);
+}
+
+.modal-columna-izquierda .moto-search-row input:hover:not(:focus) {
+  border-color: #9ca3af;
+}
+
+.modal-columna-izquierda .moto-search-row input::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+  font-size: 0.82rem;
+}
+
+/* ── Moto encontrada ── */
+
+.moto-encontrada-info {
+  background: #fffbeb;
+  border: 1.5px solid #ffc100;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  max-width: fit-content;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+.moto-encontrada-info .moto-confirmada {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #92610a;
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0;
+  max-width: 100%;
+  margin: 0;
+  text-align: left;
+}
+
+.moto-encontrada-info .moto-detalle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.moto-encontrada-info .btn-cambiar-moto {
+  font-size: 0.78rem;
+  padding: 0.3rem 0.85rem;
+  margin: 0.25rem 0 0;
+  background-color: transparent !important;
+  color: #92610a;
+  border: 1.5px solid #ffc100;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.moto-encontrada-info .btn-cambiar-moto:hover {
+  background-color: #ffc100 !important;
+  color: #1f2937;
+}
+
+.custom-datepicker {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #dcdcdc;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.custom-datepicker:focus {
+  border-color: #111827;
+}
+
+.react-datepicker {
+  border-radius: 18px;
+  border: none;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  font-family: inherit;
+}
+
+.react-datepicker__header {
+  background: #111827;
+  border-bottom: none;
+}
+
+.react-datepicker__current-month {
+  color: white;
+  font-weight: 600;
+}
+
+.react-datepicker__day {
+  border-radius: 10px;
+  transition: 0.2s;
+}
+
+.react-datepicker__day:hover {
+  background-color: #111827;
+  color: white;
+}
+
+.react-datepicker__day--selected {
+  background-color: #111827 !important;
+  color: white !important;
+}
+
+.react-datepicker__day--today {
+  font-weight: bold;
+  color: #2563eb;
+}
+
+.react-datepicker {
+  font-size: 0.8rem;
+  transform: scale(0.85);
+  transform-origin: top left;
+  z-index: 2500;
 }

@@ -1,37 +1,66 @@
-import React, { useEffect, useState } from "react";
-import { getAllProductos, createProducto, updateProducto, deleteProducto } from "../../../services/AdminService";
+import React, { useEffect, useState, useRef } from "react";
+import {
+  getAllProductos,
+  createProducto,
+  updateProducto,
+  deleteProducto,
+} from "../../../services/AdminService";
 import { getImagenUrl } from "../../../services/ProductosService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartPlus, faPenToSquare, faCartArrowDown, faAngleDown, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCartPlus,
+  faPenToSquare,
+  faCartArrowDown,
+  faAngleDown,
+  faPencil,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
-const INITIAL = { nombre: "", descripcion: "", precio: "", stock: "", marca: "", categoria: "" };
+const INITIAL = {
+  nombre: "",
+  descripcion: "",
+  precio: "",
+  stock: "",
+  marca: "",
+  categoria: "",
+  modelo: "",
+};
 
 const ProductosTab = () => {
-  const [productos, setProductos]     = useState([]);
-  const [loading, setLoading]         = useState(false);
-  const [search, setSearch]           = useState("");
-  const [form, setForm]               = useState(INITIAL);
-  const [imagenFile, setImagenFile]   = useState(null);      // ✅ File real
-  const [imagenPreview, setImagenPreview] = useState("");    // ✅ solo para mostrar
-  const [editingId, setEditingId]     = useState(null);
-  const [error, setError]             = useState("");
-  const [success, setSuccess]         = useState("");
-  const [submitting, setSubmitting]   = useState(false);
-  const [showForm, setShowForm]       = useState(false);
-  const [showList, setShowList]       = useState(true);
+  const [productos, setProductos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
+  const [form, setForm] = useState(INITIAL);
+  const [imagenFile, setImagenFile] = useState(null); 
+  const [imagenPreview, setImagenPreview] = useState(""); 
+  const [editingId, setEditingId] = useState(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [showList, setShowList] = useState(true);
+  const fileInputRef = useRef(null);
 
   const fetchProductos = async () => {
     setLoading(true);
-    try { const res = await getAllProductos(); setProductos(res.data); }
-    catch (err) { console.error(err); }
-    finally { setLoading(false); }
+    try {
+      const res = await getAllProductos();
+      setProductos(res.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  useEffect(() => { fetchProductos(); }, []);
+  useEffect(() => {
+    fetchProductos();
+  }, []);
 
-  const filtered = productos.filter(p =>
+  const filtered = productos.filter((p) =>
     `${p.nombre} ${p.marca || ""} ${p.categoria || ""}`
-      .toLowerCase().includes(search.toLowerCase())
+      .toLowerCase()
+      .includes(search.toLowerCase()),
   );
 
   const handleChange = (e) => {
@@ -39,7 +68,6 @@ const ProductosTab = () => {
     setError("");
   };
 
-  // ✅ Guarda el File y genera preview local con URL.createObjectURL
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -50,12 +78,23 @@ const ProductosTab = () => {
   const handleQuitarImagen = () => {
     setImagenFile(null);
     setImagenPreview("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
-  // ✅ Arma FormData y envía con multipart/form-data
   const handleSubmit = async () => {
-    const { nombre, descripcion, precio, stock, marca, categoria } = form;
-    if (!nombre || !descripcion || !precio || stock === "" || !marca || !categoria) {
+    const { nombre, descripcion, precio, stock, marca, categoria, modelo } =
+      form;
+    if (
+      !nombre ||
+      !descripcion ||
+      !precio ||
+      stock === "" ||
+      !marca ||
+      !categoria ||
+      !modelo
+    ) {
       setError("Todos los campos marcados con * son obligatorios.");
       return;
     }
@@ -64,12 +103,13 @@ const ProductosTab = () => {
       setSubmitting(true);
 
       const formData = new FormData();
-      formData.append("nombre",      form.nombre);
+      formData.append("nombre", form.nombre);
       formData.append("descripcion", form.descripcion);
-      formData.append("precio",      Number(form.precio));
-      formData.append("stock",       Number(form.stock));
-      formData.append("marca",       form.marca);
-      formData.append("categoria",   form.categoria);
+      formData.append("precio", Number(form.precio));
+      formData.append("stock", Number(form.stock));
+      formData.append("marca", form.marca);
+      formData.append("categoria", form.categoria);
+      formData.append("modelo", form.modelo);
 
       // Solo adjunta la imagen si el usuario seleccionó una nueva
       if (imagenFile) {
@@ -87,10 +127,12 @@ const ProductosTab = () => {
       setForm(INITIAL);
       setImagenFile(null);
       setImagenPreview("");
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
       setEditingId(null);
       fetchProductos();
       setTimeout(() => setSuccess(""), 3000);
-
     } catch (err) {
       setError(err.response?.data?.message || "Error al guardar producto.");
     } finally {
@@ -100,15 +142,15 @@ const ProductosTab = () => {
 
   const handleEdit = (p) => {
     setForm({
-      nombre:      p.nombre      || "",
+      nombre: p.nombre || "",
       descripcion: p.descripcion || "",
-      precio:      p.precio      || "",
-      stock:       p.stock       || "",
-      marca:       p.marca       || "",
-      categoria:   p.categoria   || "",
+      precio: p.precio || "",
+      stock: p.stock || "",
+      marca: p.marca || "",
+      categoria: p.categoria || "",
+      modelo: p.modelo || "",
     });
     setImagenFile(null);
-    // ✅ Usa getImagenUrl para mostrar la imagen actual del servidor
     setImagenPreview(p.imagen ? getImagenUrl(p.imagen) : "");
     setEditingId(p._id);
     setShowForm(true);
@@ -120,90 +162,88 @@ const ProductosTab = () => {
     setForm(INITIAL);
     setImagenFile(null);
     setImagenPreview("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
     setEditingId(null);
     setError("");
   };
 
-const handleDelete = async (id, nombre) => {
+  const handleDelete = async (id, nombre) => {
+    const result = await Swal.fire({
+      title: "¿Eliminar producto?",
+      text: `El producto "${nombre}" será eliminado permanentemente.`,
+      icon: "warning",
 
-  const result = await Swal.fire({
-    title: "¿Eliminar producto?",
-    text: `El producto "${nombre}" será eliminado permanentemente.`,
-    icon: "warning",
+      showCancelButton: true,
 
-    showCancelButton: true,
-
-    confirmButtonText: "Sí, eliminar",
-    cancelButtonText: "Cancelar",
-
-    customClass: {
-      popup: "swal-popup",
-      title: "swal-title",
-      htmlContainer: "swal-text",
-      confirmButton: "swal-confirm",
-      cancelButton: "swal-cancel",
-    },
-
-    buttonsStyling: false,
-    reverseButtons: true,
-  });
-
-  // SI CANCELA
-  if (!result.isConfirmed) return;
-
-  try {
-
-    await deleteProducto(id);
-
-    setProductos(prev =>
-      prev.filter(p => p._id !== id)
-    );
-
-    Swal.fire({
-      title: "Producto eliminado",
-      text: "El producto fue eliminado correctamente.",
-      icon: "success",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
 
       customClass: {
         popup: "swal-popup",
         title: "swal-title",
         htmlContainer: "swal-text",
         confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel",
       },
 
       buttonsStyling: false,
-      timer: 1800,
-      showConfirmButton: false,
+      reverseButtons: true,
     });
 
-  } catch (error) {
+    // SI CANCELA
+    if (!result.isConfirmed) return;
 
-    console.error(error);
+    try {
+      await deleteProducto(id);
 
-    Swal.fire({
-      title: "Error",
-      text: "No se pudo eliminar el producto.",
-      icon: "error",
+      setProductos((prev) => prev.filter((p) => p._id !== id));
 
-      customClass: {
-        popup: "swal-popup",
-        title: "swal-title",
-        htmlContainer: "swal-text",
-        confirmButton: "swal-confirm",
-      },
+      Swal.fire({
+        title: "Producto eliminado",
+        text: "El producto fue eliminado correctamente.",
+        icon: "success",
 
-      buttonsStyling: false,
-    });
+        customClass: {
+          popup: "swal-popup",
+          title: "swal-title",
+          htmlContainer: "swal-text",
+          confirmButton: "swal-confirm",
+        },
 
-  }
-};
+        buttonsStyling: false,
+        timer: 1800,
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      console.error(error);
+
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo eliminar el producto.",
+        icon: "error",
+
+        customClass: {
+          popup: "swal-popup",
+          title: "swal-title",
+          htmlContainer: "swal-text",
+          confirmButton: "swal-confirm",
+        },
+
+        buttonsStyling: false,
+      });
+    }
+  };
 
   return (
     <div className="tab-content">
-
       {/* ══ ACORDEÓN: Crear / Editar ════════════════════════════════════════ */}
       <div className="accordion-card">
-        <button className="accordion-header" onClick={() => setShowForm(v => !v)}>
+        <button
+          className="accordion-header"
+          onClick={() => setShowForm((v) => !v)}
+        >
           <span className="section-left">
             <span className="section-icon">
               <FontAwesomeIcon icon={editingId ? faPenToSquare : faCartPlus} />
@@ -213,39 +253,86 @@ const handleDelete = async (id, nombre) => {
             </span>
           </span>
           <span className="accordion-arrow">
-            <FontAwesomeIcon icon={faAngleDown} className={showForm ? "rotate" : ""} />
+            <FontAwesomeIcon
+              icon={faAngleDown}
+              className={showForm ? "rotate" : ""}
+            />
           </span>
         </button>
 
         {showForm && (
           <div className="accordion-body">
-            {error   && <p className="form-error">{error}</p>}
+            {error && <p className="form-error">{error}</p>}
             {success && <p className="form-success">{success}</p>}
 
             <div className="form-grid">
               <div className="form-group">
                 <label>Nombre *</label>
-                <input name="nombre" value={form.nombre} onChange={handleChange} placeholder="Ej: Filtro de aire" />
+                <input
+                  name="nombre"
+                  value={form.nombre}
+                  onChange={handleChange}
+                  placeholder="Ej: Filtro de aire"
+                />
               </div>
               <div className="form-group">
                 <label>Marca *</label>
-                <input name="marca" value={form.marca} onChange={handleChange} placeholder="Ej: Honda" />
+                <input
+                  name="marca"
+                  value={form.marca}
+                  onChange={handleChange}
+                  placeholder="Ej: Honda"
+                />
+              </div>
+              <div className="form-group">
+                <label>Modelo *</label>
+                <input
+                  name="modelo"
+                  value={form.modelo}
+                  onChange={handleChange}
+                  placeholder="Ej: CB190R"
+                />
               </div>
               <div className="form-group">
                 <label>Categoría *</label>
-                <input name="categoria" value={form.categoria} onChange={handleChange} placeholder="Ej: Filtros" />
+                <input
+                  name="categoria"
+                  value={form.categoria}
+                  onChange={handleChange}
+                  placeholder="Ej: Filtros"
+                />
               </div>
               <div className="form-group">
                 <label>Precio *</label>
-                <input name="precio" type="number" min="0" value={form.precio} onChange={handleChange} placeholder="0" />
+                <input
+                  name="precio"
+                  type="number"
+                  min="0"
+                  value={form.precio}
+                  onChange={handleChange}
+                  placeholder="0"
+                />
               </div>
               <div className="form-group">
                 <label>Stock *</label>
-                <input name="stock" type="number" min="0" value={form.stock} onChange={handleChange} placeholder="0" />
+                <input
+                  name="stock"
+                  type="number"
+                  min="0"
+                  value={form.stock}
+                  onChange={handleChange}
+                  placeholder="0"
+                />
               </div>
               <div className="form-group form-full">
                 <label>Descripción *</label>
-                <textarea name="descripcion" value={form.descripcion} onChange={handleChange} rows={3} placeholder="Describe el producto..." />
+                <textarea
+                  name="descripcion"
+                  value={form.descripcion}
+                  onChange={handleChange}
+                  rows={3}
+                  placeholder="Describe el producto..."
+                />
               </div>
 
               {/* ── Imagen ── */}
@@ -254,7 +341,11 @@ const handleDelete = async (id, nombre) => {
                 <div className="image-upload-area">
                   {imagenPreview && (
                     <div className="img-preview-wrapper">
-                      <img src={imagenPreview} alt="Vista previa" className="img-preview-large" />
+                      <img
+                        src={imagenPreview}
+                        alt="Vista previa"
+                        className="img-preview-large"
+                      />
                       <button
                         type="button"
                         className="btn-remove-img"
@@ -267,6 +358,7 @@ const handleDelete = async (id, nombre) => {
                   <label className="file-upload-label">
                     {imagenPreview ? "Cambiar imagen" : "Seleccionar imagen"}
                     <input
+                      ref={fileInputRef}
                       type="file"
                       accept="image/*"
                       onChange={handleImageChange}
@@ -278,8 +370,16 @@ const handleDelete = async (id, nombre) => {
             </div>
 
             <div className="form-actions">
-              <button className="btn-primary" onClick={handleSubmit} disabled={submitting}>
-                {submitting ? "Guardando..." : editingId ? "Guardar cambios" : "Crear producto"}
+              <button
+                className="btn-primary"
+                onClick={handleSubmit}
+                disabled={submitting}
+              >
+                {submitting
+                  ? "Guardando..."
+                  : editingId
+                    ? "Guardar cambios"
+                    : "Crear producto"}
               </button>
               {editingId && (
                 <button className="btn-secondary" onClick={handleCancel}>
@@ -293,7 +393,10 @@ const handleDelete = async (id, nombre) => {
 
       {/* ══ ACORDEÓN: Inventario ════════════════════════════════════════════ */}
       <div className="accordion-card">
-        <button className="accordion-header" onClick={() => setShowList(v => !v)}>
+        <button
+          className="accordion-header"
+          onClick={() => setShowList((v) => !v)}
+        >
           <span className="section-left">
             <span className="section-icon">
               <FontAwesomeIcon icon={faCartArrowDown} />
@@ -302,7 +405,10 @@ const handleDelete = async (id, nombre) => {
             <span className="count-badge-inline">{productos.length}</span>
           </span>
           <span className="accordion-arrow">
-            <FontAwesomeIcon icon={faAngleDown} className={showList ? "rotate" : ""} />
+            <FontAwesomeIcon
+              icon={faAngleDown}
+              className={showList ? "rotate" : ""}
+            />
           </span>
         </button>
 
@@ -312,7 +418,7 @@ const handleDelete = async (id, nombre) => {
               className="search-input"
               placeholder="Buscar por nombre, marca o categoría..."
               value={search}
-              onChange={e => setSearch(e.target.value)}
+              onChange={(e) => setSearch(e.target.value)}
             />
 
             {loading ? (
@@ -334,7 +440,7 @@ const handleDelete = async (id, nombre) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filtered.map(p => (
+                    {filtered.map((p) => (
                       <tr
                         key={p._id}
                         className={[
@@ -344,18 +450,32 @@ const handleDelete = async (id, nombre) => {
                       >
                         <td>
                           {/* ✅ getImagenUrl para servir la imagen desde el servidor */}
-                          {p.imagen
-                            ? <img src={getImagenUrl(p.imagen)} alt={p.nombre} className="table-img" />
-                            : <span className="no-img">—</span>}
+                          {p.imagen ? (
+                            <img
+                              src={getImagenUrl(p.imagen)}
+                              alt={p.nombre}
+                              className="table-img"
+                            />
+                          ) : (
+                            <span className="no-img">—</span>
+                          )}
                         </td>
-                        <td><strong>{p.nombre}</strong></td>
+                        <td>
+                          <strong>{p.nombre}</strong>
+                        </td>
                         <td>{p.marca}</td>
                         <td>{p.categoria}</td>
                         <td>${Number(p.precio).toLocaleString()}</td>
                         <td>
-                          <span className={`stock-badge ${
-                            p.stock === 0 ? "stock-empty" : p.stock < 5 ? "stock-low" : "stock-ok"
-                          }`}>
+                          <span
+                            className={`stock-badge ${
+                              p.stock === 0
+                                ? "stock-empty"
+                                : p.stock < 5
+                                  ? "stock-low"
+                                  : "stock-ok"
+                            }`}
+                          >
                             {p.stock}
                           </span>
                         </td>
@@ -365,7 +485,10 @@ const handleDelete = async (id, nombre) => {
                               className={`btn-edit ${editingId === p._id ? "btn-edit-active" : ""}`}
                               onClick={() => handleEdit(p)}
                             >
-                              <FontAwesomeIcon icon={faPencil} className="btn-icon-mobile" />
+                              <FontAwesomeIcon
+                                icon={faPencil}
+                                className="btn-icon-mobile"
+                              />
                               <span className="btn-text">
                                 {editingId === p._id ? "Editando..." : "Editar"}
                               </span>
@@ -375,7 +498,10 @@ const handleDelete = async (id, nombre) => {
                               onClick={() => handleDelete(p._id, p.nombre)}
                               disabled={editingId === p._id}
                             >
-                              <FontAwesomeIcon icon={faTrash} className="btn-icon-mobile" />
+                              <FontAwesomeIcon
+                                icon={faTrash}
+                                className="btn-icon-mobile"
+                              />
                               <span className="btn-text">Eliminar</span>
                             </button>
                           </div>
