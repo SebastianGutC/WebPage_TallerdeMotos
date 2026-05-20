@@ -12,17 +12,10 @@ cron.schedule("*/10 * * * * *", async () => {
 
     for (const cita of citasDisponibles) {
 
-      const fecha = new Date(cita.fecha);
+      const fechaStr = cita.fecha.toISOString().split("T")[0];
+      const fechaCita = new Date(`${fechaStr}T${cita.hora}:00`);
 
-      const [horas, minutos] = cita.hora
-        .split(":")
-        .map(Number);
-
-      fecha.setHours(horas);
-      fecha.setMinutes(minutos);
-      fecha.setSeconds(0);
-
-      if (fecha < ahora) {
+      if (fechaCita < ahora) {
 
         await Cita.findByIdAndUpdate(
           cita._id,
@@ -32,7 +25,7 @@ cron.schedule("*/10 * * * * *", async () => {
         );
 
         console.log(
-          `Cita ${cita._id} marcada como expirada`
+          `Cita ${cita._id} marcada como expirada, hora de la cita: ${cita.hora} ahora: ${ahora}`
         );
       }
     }

@@ -11,7 +11,6 @@ import API from "../../../services/Api.js";
 import { ESTADO_COLORS, ESTADO_LABEL } from "../citasConstants.jsx";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// eslint-disable-next-line no-unused-vars
 import {
   faCalendarPlus,
   faAngleDown,

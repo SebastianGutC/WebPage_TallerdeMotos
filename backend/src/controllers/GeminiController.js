@@ -80,43 +80,36 @@ const buscarEnBDLocal = async (make, model, year) => {
   }
 };
 
-// ── Generar variantes del modelo ──
 const generarVariantes = (make, model) => {
   const variantes = new Set();
   const modelLimpio = model?.trim() ?? "";
   const makeLimpio = make?.trim() ?? "";
 
-  // Original
   variantes.add({ make: makeLimpio, model: modelLimpio });
 
-  // Sin espacios: "XTZ 125" → "XTZ125"
   variantes.add({ make: makeLimpio, model: modelLimpio.replace(/\s+/g, "") });
 
-  // Con espacio entre letras y números: "XTZ125" → "XTZ 125"
   variantes.add({
     make: makeLimpio,
     model: modelLimpio.replace(/([a-zA-Z])(\d)/g, "$1 $2"),
   });
 
-  // Con guión: "MT07" → "MT-07"
   variantes.add({
     make: makeLimpio,
     model: modelLimpio.replace(/([a-zA-Z])(\d)/g, "$1-$2"),
   });
 
-  // Sin guión: "MT-07" → "MT07"
   variantes.add({ make: makeLimpio, model: modelLimpio.replace(/-/g, "") });
 
-  // Sin guión con espacio: "MT-07" → "MT 07"
+
   variantes.add({ make: makeLimpio, model: modelLimpio.replace(/-/g, " ") });
 
-  // Uppercase
+
   variantes.add({
     make: makeLimpio.toUpperCase(),
     model: modelLimpio.toUpperCase(),
   });
 
-  // Solo modelo sin marca (por si el usuario escribe la marca dentro del modelo)
   variantes.add({ make: "", model: modelLimpio });
 
   return [...variantes];
@@ -126,7 +119,7 @@ const generarVariantes = (make, model) => {
 const buscarEnAPINinja = async (make, model, year) => {
   try {
     const variantes = generarVariantes(make, model);
-    console.log(`🔄 Probando ${variantes.length} variantes en API Ninja...`);
+    console.log(`Probando ${variantes.length} variantes en API Ninja...`);
 
     // Buscar todas las variantes en paralelo
     const resultados = await Promise.all(
@@ -165,7 +158,7 @@ const buscarEnAPINinja = async (make, model, year) => {
     if (!encontrada) return null;
 
     console.log(
-      "✅ Moto encontrada en API Ninja:",
+      "Moto encontrada en API Ninja:",
       encontrada.make,
       encontrada.model,
       encontrada.year,
@@ -241,7 +234,7 @@ Si no tienes información 100% verificada devuelve exactamente: null
 
     const data = await response.json();
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    console.log("✅ Respuesta Gemini:", text);
+    console.log("Respuesta Gemini:", text);
 
     return parsearRespuestaGemini(text);
   } catch (error) {
@@ -257,25 +250,24 @@ export const buscarMoto = async (req, res) => {
 
   try {
     // 0. BD local
-    console.log("0️⃣ Consultando base de datos local...");
+    console.log("0 - Consultando base de datos local...");
     const motoLocal = await buscarEnBDLocal(make, model, year);
     if (motoLocal) return res.json(motoLocal);
 
     // 1. API Ninja
-    console.log("1️⃣ No encontrada localmente, consultando API Ninja...");
+    console.log("1 - No encontrada localmente, consultando API Ninja...");
     const motoNinja = await buscarEnAPINinja(make, model, year);
     if (motoNinja) return res.json(motoNinja);
 
     // 2. Gemini
-    console.log("2️⃣ No encontrada en API Ninja, consultando Gemini...");
+    console.log("2 - No encontrada en API Ninja, consultando Gemini...");
     const motoGemini = await buscarEnGemini(make, model, year);
     if (motoGemini) return res.json(motoGemini);
 
-    // 3. No encontrada → formulario manual
-    console.log("3️⃣ No encontrada en ninguna fuente.");
+    console.log("3 - No encontrada en ninguna fuente.");
     return res.status(404).json(null);
   } catch (error) {
-    console.error("💥 Error general:", error.message);
+    console.error("Error general:", error.message);
     res.status(500).json({ message: "Error al buscar motocicleta." });
   }
 };

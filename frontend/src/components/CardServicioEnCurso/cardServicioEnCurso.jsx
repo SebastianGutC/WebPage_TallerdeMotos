@@ -175,8 +175,8 @@ function CardServicioEnCurso({ servicio, onRefresh }) {
               </button>
             )}
 
-            {servicio.estado == "lista" ||
-              (servicio.estado == "entregada" && (
+            {(servicio.estado == "lista" ||
+              servicio.estado == "entregada") && (
                 <button
                   className="btn-pagar"
                   onClick={() =>
@@ -185,7 +185,7 @@ function CardServicioEnCurso({ servicio, onRefresh }) {
                 >
                   Descargar Factura
                 </button>
-              ))}
+              )}
           </div>
         </div>
       </article>
@@ -308,8 +308,8 @@ function CardServicioEnCurso({ servicio, onRefresh }) {
             </section>
 
             <div className="modal-acciones">
-              {servicio.estado == "lista" ||
-                (servicio.estado == "entregada" && (
+              {(servicio.estado == "lista" ||
+                servicio.estado == "entregada") && (
                   <button
                     className="btn-pagar"
                     onClick={() =>
@@ -318,7 +318,7 @@ function CardServicioEnCurso({ servicio, onRefresh }) {
                   >
                     Descargar factura
                   </button>
-                ))}
+                )}
 
               <button className="btn-cerrar" onClick={cerrarModal}>
                 Cerrar

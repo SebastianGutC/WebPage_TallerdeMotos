@@ -7,15 +7,13 @@ import { buscarMotocicleta } from "../../services/motocicletasService";
 import { useAuth } from "../../context/UseAuth";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { formatearHora } from "../../utils/formatoHora";
 
-const formatearHora = (hora24) => {
-  if (!hora24) return "";
-  const [hora, minutos] = hora24.split(":");
-  let h = parseInt(hora, 10);
-  const periodo = h >= 12 ? "PM" : "AM";
-  h = h % 12;
-  h = h === 0 ? 12 : h;
-  return `${h}:${minutos} ${periodo}`;
+// ── Helper: parsear fecha ISO sin zona horaria ──
+const parsearFechaISO = (isoString) => {
+  const soloFecha = isoString.substring(0, 10); // "2026-05-20"
+  const [year, month, day] = soloFecha.split("-").map(Number);
+  return new Date(year, month - 1, day);
 };
 
 const CardServicio = ({ nombre, descripcion, icono, precio }) => {
@@ -30,6 +28,7 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
   const [errorPlaca, setErrorPlaca] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [horasAgrupadas, setHorasAgrupadas] = useState({});
 
   // ── Búsqueda de moto ──
   const [busquedaMarca, setBusquedaMarca] = useState("");
@@ -38,9 +37,9 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
   const [motoEncontrada, setMotoEncontrada] = useState(null);
   const [buscando, setBuscando] = useState(false);
   const [errorBusqueda, setErrorBusqueda] = useState("");
-  const [mensajeBusqueda, setMensajeBusqueda] = useState(""); // ← mensaje neutral (no error)
+  const [mensajeBusqueda, setMensajeBusqueda] = useState("");
   const [motocicletaId, setMotocicletaId] = useState("");
-  const [seleccionMoto, setSeleccionMoto] = useState(""); // "encontrada" | "otra"
+  const [seleccionMoto, setSeleccionMoto] = useState("");
   const [mostrarFormularioManual, setMostrarFormularioManual] = useState(false);
 
   // ── Formulario manual ──
@@ -66,15 +65,7 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
         const res = await getCitasPorEstado("disponible");
         setCitasDisponibles(res.data);
         setFechasDisponibles(
-          res.data.map((c) => {
-            const fecha = new Date(c.fecha);
-            const fechaUTC = new Date(
-              fecha.getUTCFullYear(),
-              fecha.getUTCMonth(),
-              fecha.getUTCDate(),
-            );
-            return fechaUTC.toDateString();
-          }),
+          res.data.map((c) => parsearFechaISO(c.fecha).toDateString()),
         );
       } catch (error) {
         console.error("Error fetching citas:", error);
@@ -86,22 +77,30 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
   // ── Filtrar horas por fecha ──
   useEffect(() => {
     if (!fechaSeleccionada) return;
+
     const fechaStr = new Date(
       fechaSeleccionada.getFullYear(),
       fechaSeleccionada.getMonth(),
       fechaSeleccionada.getDate(),
     ).toDateString();
 
-    setHorasDisponibles(
-      citasDisponibles.filter((c) => {
-        const fechaUTC = new Date(
-          new Date(c.fecha).getUTCFullYear(),
-          new Date(c.fecha).getUTCMonth(),
-          new Date(c.fecha).getUTCDate(),
-        );
-        return fechaUTC.toDateString() === fechaStr;
-      }),
+    const citasDelDia = citasDisponibles.filter(
+      (c) => parsearFechaISO(c.fecha).toDateString() === fechaStr,
     );
+
+    // Agrupar por hora → { "08:00 AM": [cita1, cita2, cita3], ... }
+    const grupos = {};
+    for (const cita of citasDelDia) {
+      if (!grupos[cita.hora]) grupos[cita.hora] = [];
+      grupos[cita.hora].push(cita);
+    }
+
+    // Guardar el grupo completo para poder elegir técnico al confirmar
+    setHorasAgrupadas(grupos); // { hora: [citas] }
+
+    // Para el select solo mostrar horas únicas (la primera de cada grupo)
+    const unicas = Object.values(grupos).map((grupo) => grupo[0]);
+    setHorasDisponibles(unicas);
     setCitaSeleccionada(null);
   }, [fechaSeleccionada, citasDisponibles]);
 
@@ -212,7 +211,6 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
         setSeleccionMoto("encontrada");
         setMostrarFormularioManual(false);
       } else {
-        // ── Devuelve null: mostrar mensaje y formulario manual ──
         setMotoEncontrada(null);
         setSeleccionMoto("otra");
         setMostrarFormularioManual(true);
@@ -252,9 +250,6 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
   const confirmarCita = async () => {
     setErrorMsg("");
     setSuccessMsg("");
-    console.log("motocicletaId:", motocicletaId);
-    console.log("motoEncontrada:", motoEncontrada);
-    console.log("seleccionMoto:", seleccionMoto);
 
     if (!fechaSeleccionada || !citaSeleccionada) {
       setErrorMsg("Debes seleccionar fecha y hora.");
@@ -290,9 +285,15 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
       return;
     }
 
+    const grupoHora = horasAgrupadas[citaSeleccionada.hora] || [
+      citaSeleccionada,
+    ];
+    const citaAsignada =
+      grupoHora[Math.floor(Math.random() * grupoHora.length)];
+
     try {
-      await agendarCita(citaSeleccionada._id.toString(), {
-        horaSeleccionada: citaSeleccionada.hora,
+      await agendarCita(citaAsignada._id.toString(), {
+        horaSeleccionada: citaAsignada.hora,
         usuarioId: usuario.id,
         estado: "pendiente",
         servicios: [{ nombre, costo: precio }],
@@ -353,9 +354,8 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
               </div>
             )}
 
-            {/* ── Layout de dos columnas ── */}
             <div className="modal-columnas">
-              {/* ── Columna izquierda: Formulario de cita ── */}
+              {/* ── Columna izquierda ── */}
               <div className="modal-columna-izquierda">
                 <div className="agendar-row">
                   <div className="contenedor-fecha">
@@ -369,6 +369,13 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                           date.getMonth(),
                           date.getDate(),
                         ).toDateString();
+                        console.log(
+                          "filterDate comparando:",
+                          fechaLocal,
+                          "| disponibles:",
+                          fechasDisponibles,
+                        );
+
                         return fechasDisponibles.includes(fechaLocal);
                       }}
                       onChangeRaw={(e) => e.preventDefault()}
@@ -391,14 +398,16 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                       disabled={!fechaSeleccionada}
                     >
                       <option value="">Selecciona...</option>
-                      {horasDisponibles.map((cita) => (
-                        <option
-                          key={cita._id.toString()}
-                          value={cita._id.toString()}
-                        >
-                          {formatearHora(cita.hora)}
-                        </option>
-                      ))}
+                      {[...horasDisponibles]
+                        .sort((a, b) => a.hora.localeCompare(b.hora))
+                        .map((cita) => (
+                          <option
+                            key={cita._id.toString()}
+                            value={cita._id.toString()}
+                          >
+                            {formatearHora(cita.hora)}
+                          </option>
+                        ))}
                     </select>
                   </div>
 
@@ -448,7 +457,7 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                 <div className="moto-search-row">
                   <input
                     type="text"
-                    placeholder="Marca (ej: Yamaha) — opcional"
+                    placeholder="Marca (ej: Yamaha)"
                     value={busquedaMarca}
                     onChange={(e) => {
                       setBusquedaMarca(e.target.value);
@@ -486,15 +495,12 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                   </button>
                 </div>
 
-                {/* Mensaje neutral de búsqueda (no error) */}
                 {mensajeBusqueda && (
                   <p className="mensaje-busqueda">{mensajeBusqueda}</p>
                 )}
 
-                {/* Error de búsqueda */}
                 {errorBusqueda && <p className="form-error">{errorBusqueda}</p>}
 
-                {/* ── Moto encontrada en BD ── */}
                 {motoEncontrada && seleccionMoto === "encontrada" && (
                   <div className="moto-encontrada-info">
                     <p className="moto-confirmada">
@@ -528,14 +534,13 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                 )}
               </div>
 
-              {/* ── Columna derecha: Formulario manual de moto ── */}
+              {/* ── Columna derecha: Formulario manual ── */}
               {mostrarFormularioManual && (
                 <div className="modal-columna-derecha">
                   <div className="form-manual-moto">
                     <p className="form-info">
                       Ingresa los datos de tu motocicleta:
                     </p>
-
                     <div className="form-manual-grid">
                       <div className="modal-field">
                         <label>Marca *</label>
@@ -550,7 +555,6 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                           }
                         />
                       </div>
-
                       <div className="modal-field">
                         <label>Modelo *</label>
                         <input
@@ -564,7 +568,6 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                           }
                         />
                       </div>
-
                       <div className="modal-field">
                         <label>Año *</label>
                         <input
@@ -579,7 +582,6 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                           }
                         />
                       </div>
-
                       <div className="modal-field">
                         <label>Cilindraje (cc) *</label>
                         <input
@@ -594,7 +596,6 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                           }
                         />
                       </div>
-
                       <div className="modal-field">
                         <label>Tipo de motor</label>
                         <input
@@ -608,7 +609,6 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                           }
                         />
                       </div>
-
                       <div className="modal-field">
                         <label>Tipo de moto</label>
                         <input
@@ -622,7 +622,6 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                           }
                         />
                       </div>
-
                       <div className="modal-field">
                         <label>Freno delantero</label>
                         <input
@@ -636,7 +635,6 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                           }
                         />
                       </div>
-
                       <div className="modal-field">
                         <label>Freno trasero</label>
                         <input
@@ -650,7 +648,6 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                           }
                         />
                       </div>
-
                       <div className="modal-field">
                         <label>Combustible</label>
                         <input
@@ -664,7 +661,6 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                           }
                         />
                       </div>
-
                       <div className="modal-field">
                         <label>Transmisión</label>
                         <input
@@ -682,8 +678,9 @@ const CardServicio = ({ nombre, descripcion, icono, precio }) => {
                   </div>
                 </div>
               )}
-              {/* fin modal-columnas */}
             </div>
+            {/* fin modal-columnas */}
+
             {/* ── Botones finales ── */}
             <div className="modal-buttons">
               <button className="button success" onClick={confirmarCita}>
